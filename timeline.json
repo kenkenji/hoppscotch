@@ -2,6 +2,242 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4325-20260911T230222Z",
+      "timestamp": "2026-09-11T23:02:22Z",
+      "pr_number": 4325,
+      "pr_title": "fix(status): fix import status message",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4325",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-11T07:35:05Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 14,
+        "deletions": 12,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4337-20260911T230217Z",
+      "timestamp": "2026-09-11T23:02:17Z",
+      "pr_number": 4337,
+      "pr_title": "fix: close context menu when no text is selected",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4337",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-11T06:10:22Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 18,
+        "deletions": 8,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4333-20260911T230212Z",
+      "timestamp": "2026-09-11T23:02:12Z",
+      "pr_number": 4333,
+      "pr_title": "chore: bump github actions to v4",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4333",
+      "components": [],
+      "source": "ai",
+      "author": "trivikr",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-10T08:02:12Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 4,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4336-20260911T230207Z",
+      "timestamp": "2026-09-11T23:02:07Z",
+      "pr_number": 4336,
+      "pr_title": "fix: ensure cross-platform compatibility with file exports",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4336",
+      "components": [
+        "collections",
+        "environments",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-10T07:23:33Z",
+      "ai_components": [
+        "collections",
+        "environments",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 116,
+        "deletions": 109,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4315-20260911T230201Z",
+      "timestamp": "2026-09-11T23:02:01Z",
+      "pr_number": 4315,
+      "pr_title": "fix: sidebar codegen crashing and AWS Signature Auth flow updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4315",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-01T15:55:06Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 63,
+        "deletions": 26,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4311-20260911T230152Z",
+      "timestamp": "2026-09-11T23:01:52Z",
+      "pr_number": 4311,
+      "pr_title": "chore: AWS Signature Authorization type flow updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4311",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-30T14:58:27Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 92,
+        "deletions": 41,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4310-20260911T230146Z",
+      "timestamp": "2026-09-11T23:01:46Z",
+      "pr_number": 4310,
+      "pr_title": "feat: graphql response schema ui",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4310",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-30T12:08:01Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 46,
+        "deletions": 27,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4305-20260911T230141Z",
+      "timestamp": "2026-09-11T23:01:41Z",
+      "pr_number": 4305,
+      "pr_title": "feat(cli): add support for AWS Signature Authorization type",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4305",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-30T08:42:32Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 231,
+        "deletions": 6,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4142-20260911T230137Z",
+      "timestamp": "2026-09-11T23:01:37Z",
+      "pr_number": 4142,
+      "pr_title": "feat: add support for AWS Signature authorization",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4142",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-30T08:30:13Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 1490,
+        "deletions": 657,
+        "changed_files": 26
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4309-20260911T230132Z",
+      "timestamp": "2026-09-11T23:01:32Z",
+      "pr_number": 4309,
+      "pr_title": "fix: resolve multiple UI issues and account for `description` field in syncing context",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4309",
+      "components": [
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-30T06:45:19Z",
+      "ai_components": [
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 73,
+        "deletions": 29,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4105-20260911T230126Z",
       "timestamp": "2026-09-11T23:01:26Z",
       "pr_number": 4105,
