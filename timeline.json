@@ -2,6 +2,236 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4358-20260911T230316Z",
+      "timestamp": "2026-09-11T23:03:16Z",
+      "pr_number": 4358,
+      "pr_title": "chore: addition of new GQL subscription for `UserCollection` duplication",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4358",
+      "components": [
+        "realtime",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-26T17:24:44Z",
+      "ai_components": [
+        "realtime",
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 141,
+        "deletions": 3,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4334-20260911T230312Z",
+      "timestamp": "2026-09-11T23:03:12Z",
+      "pr_number": 4334,
+      "pr_title": "feat: duplicate global environment under team workspaces",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4334",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-25T12:44:55Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 135,
+        "deletions": 111,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4365-20260911T230307Z",
+      "timestamp": "2026-09-11T23:03:07Z",
+      "pr_number": 4365,
+      "pr_title": "fix(desktop): content security policy config preventing app launch",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4365",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-23T11:32:22Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4216-20260911T230300Z",
+      "timestamp": "2026-09-11T23:03:00Z",
+      "pr_number": 4216,
+      "pr_title": "refactor: make global environment a versioned entity",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4216",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "ipalakchopra",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-23T11:31:14Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 336,
+        "deletions": 137,
+        "changed_files": 17
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4217-20260911T230256Z",
+      "timestamp": "2026-09-11T23:02:56Z",
+      "pr_number": 4217,
+      "pr_title": "feat: add loading state for import actions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4217",
+      "components": [
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "HelixY2J",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-23T11:30:48Z",
+      "ai_components": [
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 194,
+        "deletions": 93,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4344-20260911T230250Z",
+      "timestamp": "2026-09-11T23:02:50Z",
+      "pr_number": 4344,
+      "pr_title": "fix: preemptly update pwa settings to avoid missing files in the service worker cache",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4344",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-19T13:39:15Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 132,
+        "deletions": 33,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4329-20260911T230246Z",
+      "timestamp": "2026-09-11T23:02:46Z",
+      "pr_number": 4329,
+      "pr_title": "feat(filename): added filename in download functional",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4329",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-19T12:53:40Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 56,
+        "deletions": 46,
+        "changed_files": 15
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4361-20260911T230241Z",
+      "timestamp": "2026-09-11T23:02:41Z",
+      "pr_number": 4361,
+      "pr_title": "fix: workspace environment list reset bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4361",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-19T12:47:07Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 31,
+        "deletions": 27,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4357-20260911T230237Z",
+      "timestamp": "2026-09-11T23:02:37Z",
+      "pr_number": 4357,
+      "pr_title": "feat(desktop): faster launch with resolved desktop app startup issues",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4357",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-18T12:54:27Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 490,
+        "deletions": 63,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4340-20260911T230228Z",
+      "timestamp": "2026-09-11T23:02:28Z",
+      "pr_number": 4340,
+      "pr_title": "fix: preserve description while toggling field enabled status",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4340",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jcgurango",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-09-11T13:36:49Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 14,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4325-20260911T230222Z",
       "timestamp": "2026-09-11T23:02:22Z",
       "pr_number": 4325,
