@@ -2,6 +2,226 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3905-20260911T225024Z",
+      "timestamp": "2026-09-11T22:50:24Z",
+      "pr_number": 3905,
+      "pr_title": "fix: can't import curl command with data-urlencode",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3905",
+      "components": [],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-25T07:42:48Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 53,
+        "deletions": 1,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3930-20260911T225020Z",
+      "timestamp": "2026-09-11T22:50:20Z",
+      "pr_number": 3930,
+      "pr_title": "chore: spotlight improvements for team requests search",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3930",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-25T07:11:18Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 29,
+        "deletions": 1,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3911-20260911T225015Z",
+      "timestamp": "2026-09-11T22:50:15Z",
+      "pr_number": 3911,
+      "pr_title": "feat: focus codemirror view when ImportCurl component launched",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3911",
+      "components": [],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T12:51:16Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 10,
+        "deletions": 1,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3922-20260911T225009Z",
+      "timestamp": "2026-09-11T22:50:09Z",
+      "pr_number": 3922,
+      "pr_title": "fix: request failing on change content type to multipart-formdata",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3922",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T12:41:16Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 3,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3925-20260911T225005Z",
+      "timestamp": "2026-09-11T22:50:05Z",
+      "pr_number": 3925,
+      "pr_title": "fix: workspace list section bugs",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3925",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T12:32:28Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 28,
+        "deletions": 7,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3926-20260911T225000Z",
+      "timestamp": "2026-09-11T22:50:00Z",
+      "pr_number": 3926,
+      "pr_title": "refactor(sh-admin): improvements to pending invites page in dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3926",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T12:24:41Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 7,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3927-20260911T224953Z",
+      "timestamp": "2026-09-11T22:49:53Z",
+      "pr_number": 3927,
+      "pr_title": "chore: split axios request options into platform",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3927",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T08:12:41Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 21,
+        "deletions": 3,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3924-20260911T224948Z",
+      "timestamp": "2026-09-11T22:49:48Z",
+      "pr_number": 3924,
+      "pr_title": "feat: added new mutation to update username in hopp app",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3924",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-22T06:37:38Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 52,
+        "deletions": 2,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3907-20260911T224943Z",
+      "timestamp": "2026-09-11T22:49:43Z",
+      "pr_number": 3907,
+      "pr_title": "chore: update copy for header inspection",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3907",
+      "components": [],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-21T16:45:23Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 4,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3923-20260911T224939Z",
+      "timestamp": "2026-09-11T22:49:39Z",
+      "pr_number": 3923,
+      "pr_title": "fix: fix typo in team search url",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3923",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-21T11:14:58Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3921-20260911T224933Z",
       "timestamp": "2026-09-11T22:49:33Z",
       "pr_number": 3921,
