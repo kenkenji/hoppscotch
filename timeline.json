@@ -2,6 +2,223 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3982-20260911T225115Z",
+      "timestamp": "2026-09-11T22:51:15Z",
+      "pr_number": 3982,
+      "pr_title": "refactor: infra-config code refactor",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3982",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-19T07:13:43Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 28,
+        "deletions": 15,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3555-20260911T225110Z",
+      "timestamp": "2026-09-11T22:51:10Z",
+      "pr_number": 3555,
+      "pr_title": "i18n(fr): Updating the `packages/hoppscotch-common/locales/fr.json` file.",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3555",
+      "components": [],
+      "source": "ai",
+      "author": "thomasbnt",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-16T12:45:38Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 188,
+        "deletions": 189,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3939-20260911T225106Z",
+      "timestamp": "2026-09-11T22:51:06Z",
+      "pr_number": 3939,
+      "pr_title": "fix(desktop): set window caption color if Windows version >= 11",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3939",
+      "components": [],
+      "source": "ai",
+      "author": "Timic3",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-16T12:21:27Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 29,
+        "deletions": 9,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3950-20260911T225058Z",
+      "timestamp": "2026-09-11T22:50:58Z",
+      "pr_number": 3950,
+      "pr_title": "fix: spanish lang translation messages",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3950",
+      "components": [],
+      "source": "ai",
+      "author": "sawa-ko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-16T12:17:10Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 233,
+        "deletions": 233,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3875-20260911T225053Z",
+      "timestamp": "2026-09-11T22:50:53Z",
+      "pr_number": 3875,
+      "pr_title": "update locale hu",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3875",
+      "components": [],
+      "source": "ai",
+      "author": "krisztianbarat",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-16T12:15:55Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 203,
+        "deletions": 203,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3966-20260911T225048Z",
+      "timestamp": "2026-09-11T22:50:48Z",
+      "pr_number": 3966,
+      "pr_title": "fix: use proper values for `addTo` field when auth type is `api-key`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3966",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-16T12:14:28Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 182,
+        "deletions": 30,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3934-20260911T225044Z",
+      "timestamp": "2026-09-11T22:50:44Z",
+      "pr_number": 3934,
+      "pr_title": "fix: lint errors removed by using `satisfies` or `as` for type",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3934",
+      "components": [],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-28T14:58:48Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 526,
+        "deletions": 83,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3937-20260911T225040Z",
+      "timestamp": "2026-09-11T22:50:40Z",
+      "pr_number": 3937,
+      "pr_title": "chore(sh-admin): alert the user while deleting users who are team owners",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3937",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-28T14:47:25Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 180,
+        "deletions": 63,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3931-20260911T225035Z",
+      "timestamp": "2026-09-11T22:50:35Z",
+      "pr_number": 3931,
+      "pr_title": "fix(common): ensure requests are translated to the latest version during import and search actions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3931",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-25T11:39:55Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 69,
+        "deletions": 20,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3929-20260911T225030Z",
+      "timestamp": "2026-09-11T22:50:30Z",
+      "pr_number": 3929,
+      "pr_title": "feat: added mutation and function to platform for updating user profile name",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3929",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-25T09:11:25Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 68,
+        "deletions": 18,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3905-20260911T225024Z",
       "timestamp": "2026-09-11T22:50:24Z",
       "pr_number": 3905,
