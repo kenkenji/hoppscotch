@@ -2,6 +2,231 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4033-20260911T225226Z",
+      "timestamp": "2026-09-11T22:52:26Z",
+      "pr_number": 4033,
+      "pr_title": "fix: code generate modal erroring out",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4033",
+      "components": [
+        "web-app",
+        "browser-extension"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-05-06T17:14:13Z",
+      "ai_components": [
+        "web-app",
+        "browser-extension"
+      ],
+      "diff_stats": {
+        "additions": 106,
+        "deletions": 83,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3971-20260911T225216Z",
+      "timestamp": "2026-09-11T22:52:16Z",
+      "pr_number": 3971,
+      "pr_title": "refactor(sh-admin): improved handling of server configurations in admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3971",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-05-06T16:20:31Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 303,
+        "deletions": 279,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4023-20260911T225210Z",
+      "timestamp": "2026-09-11T22:52:10Z",
+      "pr_number": 4023,
+      "pr_title": "chore: update placeholder text",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4023",
+      "components": [
+        "testing",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-30T11:19:32Z",
+      "ai_components": [
+        "testing",
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 9,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4009-20260911T225205Z",
+      "timestamp": "2026-09-11T22:52:05Z",
+      "pr_number": 4009,
+      "pr_title": "refactor: update to dioc v3",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4009",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-29T13:36:18Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 173,
+        "deletions": 170,
+        "changed_files": 46
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4000-20260911T225158Z",
+      "timestamp": "2026-09-11T22:51:58Z",
+      "pr_number": 4000,
+      "pr_title": "fix: resolved mailer module email issue",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4000",
+      "components": [],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-29T06:35:07Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4004-20260911T225153Z",
+      "timestamp": "2026-09-11T22:51:53Z",
+      "pr_number": 4004,
+      "pr_title": "fix(common): rest and graphql pages not being rendered when french is selected as app language",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4004",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-25T12:31:46Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 20,
+        "deletions": 20,
+        "changed_files": 1
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3977-20260911T225143Z",
+      "timestamp": "2026-09-11T22:51:43Z",
+      "pr_number": 3977,
+      "pr_title": "feat: first time user spotlight animation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3977",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-22T06:51:30Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 326,
+        "deletions": 77,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3978-20260911T225137Z",
+      "timestamp": "2026-09-11T22:51:37Z",
+      "pr_number": 3978,
+      "pr_title": "fix: use pressed key rather than its code",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3978",
+      "components": [],
+      "source": "ai",
+      "author": "posva",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-19T17:05:14Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 14857,
+        "deletions": 12786,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3986-20260911T225133Z",
+      "timestamp": "2026-09-11T22:51:33Z",
+      "pr_number": 3986,
+      "pr_title": "fix: french lang translation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3986",
+      "components": [],
+      "source": "ai",
+      "author": "jobartim44",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-19T15:51:15Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 12,
+        "deletions": 12,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3973-20260911T225129Z",
+      "timestamp": "2026-09-11T22:51:29Z",
+      "pr_number": 3973,
+      "pr_title": "chore: migrate `Node.js` implementation for `js-sandbox` to `isolated-vm`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3973",
+      "components": [
+        "cli",
+        "testing",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-04-19T15:38:46Z",
+      "ai_components": [
+        "cli",
+        "testing",
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 1029,
+        "deletions": 286,
+        "changed_files": 52
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3982-20260911T225115Z",
       "timestamp": "2026-09-11T22:51:15Z",
       "pr_number": 3982,
