@@ -2,6 +2,232 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3900-20260911T224846Z",
+      "timestamp": "2026-09-11T22:48:46Z",
+      "pr_number": 3900,
+      "pr_title": "refactor: use trigram search index instead of full text search",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3900",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-15T14:40:12Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 113,
+        "deletions": 52,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3895-20260911T224838Z",
+      "timestamp": "2026-09-11T22:48:38Z",
+      "pr_number": 3895,
+      "pr_title": "chore: fix some typos",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3895",
+      "components": [],
+      "source": "ai",
+      "author": "kaifulee",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-15T14:36:35Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 5,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3898-20260911T224834Z",
+      "timestamp": "2026-09-11T22:48:34Z",
+      "pr_number": 3898,
+      "pr_title": "hotfix: reset infra-config bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3898",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-14T16:16:34Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 17,
+        "deletions": 14,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3881-20260911T224829Z",
+      "timestamp": "2026-09-11T22:48:29Z",
+      "pr_number": 3881,
+      "pr_title": "fix: secret env bug in firebase due to undefined value",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3881",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-13T11:41:51Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 26,
+        "deletions": 24,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3894-20260911T224825Z",
+      "timestamp": "2026-09-11T22:48:25Z",
+      "pr_number": 3894,
+      "pr_title": "refactor(sh-admin): updated data sharing doc links + remove disabled property from all inputs in configurations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3894",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-13T10:48:27Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 6,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3814-20260911T224820Z",
+      "timestamp": "2026-09-11T22:48:20Z",
+      "pr_number": 3814,
+      "pr_title": "feat(sh-admin): enhanced user management in admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3814",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-13T09:15:13Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 2712,
+        "deletions": 2183,
+        "changed_files": 23
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3893-20260911T224816Z",
+      "timestamp": "2026-09-11T22:48:16Z",
+      "pr_number": 3893,
+      "pr_title": "refactor: personal workspace nomenclature update",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3893",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-13T08:51:23Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 33,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3889-20260911T224812Z",
+      "timestamp": "2026-09-11T22:48:12Z",
+      "pr_number": 3889,
+      "pr_title": "hotfix: request variable version syncing bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3889",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-12T06:12:06Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 47,
+        "deletions": 61,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3888-20260911T224807Z",
+      "timestamp": "2026-09-11T22:48:07Z",
+      "pr_number": 3888,
+      "pr_title": "chore: bump codemirror dependencies",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3888",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-11T08:51:39Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 95,
+        "deletions": 166,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3880-20260911T224801Z",
+      "timestamp": "2026-09-11T22:48:01Z",
+      "pr_number": 3880,
+      "pr_title": "refactor: update team nomenclature",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3880",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-08T18:24:32Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 91,
+        "deletions": 71,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3737-20260911T224755Z",
       "timestamp": "2026-09-11T22:47:55Z",
       "pr_number": 3737,
