@@ -2,6 +2,244 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4122-20260911T225508Z",
+      "timestamp": "2026-09-11T22:55:08Z",
+      "pr_number": 4122,
+      "pr_title": "fix: styling issue on selection in codemirror",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4122",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-24T06:45:04Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4099-20260911T225503Z",
+      "timestamp": "2026-09-11T22:55:03Z",
+      "pr_number": 4099,
+      "pr_title": "feat: added codegen tab in the sidbear",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4099",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-24T06:33:19Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 432,
+        "deletions": 377,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4076-20260911T225452Z",
+      "timestamp": "2026-09-11T22:54:52Z",
+      "pr_number": 4076,
+      "pr_title": "hotix: prevent unwanted variable wrapping during Insomnia import",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4076",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-24T06:16:50Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4094-20260911T225447Z",
+      "timestamp": "2026-09-11T22:54:47Z",
+      "pr_number": 4094,
+      "pr_title": "feat: introduce personal access tokens for authorization",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4094",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-24T06:15:31Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 857,
+        "deletions": 226,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4138-20260911T225442Z",
+      "timestamp": "2026-09-11T22:54:42Z",
+      "pr_number": 4138,
+      "pr_title": "fix: large content scroll bug in codemirror editor",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4138",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-21T17:57:22Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 4,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4113-20260911T225437Z",
+      "timestamp": "2026-09-11T22:54:37Z",
+      "pr_number": 4113,
+      "pr_title": "refactor(workspaces): personal workspace provider additions for REST environments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4113",
+      "components": [
+        "environments",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-21T12:10:01Z",
+      "ai_components": [
+        "environments",
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 1792,
+        "deletions": 564,
+        "changed_files": 35
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4121-20260911T225431Z",
+      "timestamp": "2026-09-11T22:54:31Z",
+      "pr_number": 4121,
+      "pr_title": "HSB-450 feature: user last active on",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4121",
+      "components": [
+        "shared-lib",
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-21T07:10:21Z",
+      "ai_components": [
+        "shared-lib",
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 100,
+        "deletions": 5,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4112-20260911T225426Z",
+      "timestamp": "2026-09-11T22:54:26Z",
+      "pr_number": 4112,
+      "pr_title": "fix: headers having different values with the same key are not shown",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4112",
+      "components": [
+        "testing",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-12T08:41:43Z",
+      "ai_components": [
+        "testing",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 34,
+        "deletions": 19,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4114-20260911T225421Z",
+      "timestamp": "2026-09-11T22:54:21Z",
+      "pr_number": 4114,
+      "pr_title": "fix: make client credential optional in authcode + pkce flow",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4114",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-12T08:40:55Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 140,
+        "deletions": 20,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4107-20260911T225416Z",
+      "timestamp": "2026-09-11T22:54:16Z",
+      "pr_number": 4107,
+      "pr_title": "chore: changed the returned status type for errors in the access-tokens",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4107",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-07T06:38:35Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 14,
+        "deletions": 12,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4097-20260911T225410Z",
       "timestamp": "2026-09-11T22:54:10Z",
       "pr_number": 4097,
