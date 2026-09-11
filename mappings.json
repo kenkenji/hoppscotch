@@ -2292,6 +2292,225 @@
         "changed_files": 2
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4048": {
+      "pr_number": 4048,
+      "pr_title": "feat: healthcheck for external services",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4048",
+      "merged_at": "2024-05-07T14:35:17Z",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:52:33Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "backend-api"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 142,
+        "deletions": 0,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4015": {
+      "pr_number": 4015,
+      "pr_title": "refactor: switch workspace after creation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4015",
+      "merged_at": "2024-05-09T14:58:24Z",
+      "components": [],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:52:37Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 112,
+        "deletions": 149,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3976": {
+      "pr_number": 3976,
+      "pr_title": "Added new button to save request modal",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3976",
+      "merged_at": "2024-05-09T15:22:22Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "timestamp": "2026-09-11T22:52:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 30,
+        "deletions": 7,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4005": {
+      "pr_number": 4005,
+      "pr_title": "locale: update ru locale",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4005",
+      "merged_at": "2024-05-10T08:21:25Z",
+      "components": [],
+      "source": "ai",
+      "author": "shipko",
+      "timestamp": "2026-09-11T22:52:46Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 226,
+        "deletions": 187,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4003": {
+      "pr_number": 4003,
+      "pr_title": "chore: update pt-br translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4003",
+      "merged_at": "2024-05-10T08:26:58Z",
+      "components": [],
+      "source": "ai",
+      "author": "stelardn",
+      "timestamp": "2026-09-11T22:52:51Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 293,
+        "deletions": 293,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4051": {
+      "pr_number": 4051,
+      "pr_title": "refactor: Set default interceptor to \"proxy\"",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4051",
+      "merged_at": "2024-05-10T08:31:43Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:52:59Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 59,
+        "deletions": 46,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4039": {
+      "pr_number": 4039,
+      "pr_title": "Update tr.json",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4039",
+      "merged_at": "2024-05-10T08:46:04Z",
+      "components": [],
+      "source": "ai",
+      "author": "islamzeki",
+      "timestamp": "2026-09-11T22:53:03Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 5,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4040": {
+      "pr_number": 4040,
+      "pr_title": "feat: update node version to node20-apline3.19",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4040",
+      "merged_at": "2024-05-10T08:54:34Z",
+      "components": [],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:53:08Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4053": {
+      "pr_number": 4053,
+      "pr_title": "chore: add workspace switcher login A/B testing flow",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4053",
+      "merged_at": "2024-05-10T11:05:43Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:53:12Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 49,
+        "deletions": 17,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4042": {
+      "pr_number": 4042,
+      "pr_title": "HSB-431 fix: email case sensitive in email provider",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4042",
+      "merged_at": "2024-05-15T07:07:35Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T22:53:17Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 34,
+        "deletions": 20,
+        "changed_files": 6
+      },
+      "auto_approved": true
     }
   }
 }
