@@ -2,6 +2,242 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4097-20260911T225410Z",
+      "timestamp": "2026-09-11T22:54:10Z",
+      "pr_number": 4097,
+      "pr_title": "fix(sh-desktop): add missing @hoppscotch/data to selfhost-desktop",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4097",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "xTudoS",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-06T15:02:50Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4044-20260911T225405Z",
+      "timestamp": "2026-09-11T22:54:05Z",
+      "pr_number": 4044,
+      "pr_title": "refactor(sh-admin): improved error handling and dynamic user actions in admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4044",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T11:47:46Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 154,
+        "deletions": 73,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4057-20260911T225400Z",
+      "timestamp": "2026-09-11T22:54:00Z",
+      "pr_number": 4057,
+      "pr_title": "locale: update tr i18n translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4057",
+      "components": [],
+      "source": "ai",
+      "author": "islamzeki",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T09:05:32Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 90,
+        "deletions": 36,
+        "changed_files": 1
+      },
+      "labels": [
+        "i18n"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4081-20260911T225355Z",
+      "timestamp": "2026-09-11T22:53:55Z",
+      "pr_number": 4081,
+      "pr_title": "fix(sh-admin): saving changes to server configurations post a failed attempt will require a page reload in dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4081",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T09:01:44Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 29,
+        "deletions": 14,
+        "changed_files": 4
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4086-20260911T225345Z",
+      "timestamp": "2026-09-11T22:53:45Z",
+      "pr_number": 4086,
+      "pr_title": "fix: precision lost when json is beautified",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4086",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T09:00:31Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4071-20260911T225341Z",
+      "timestamp": "2026-09-11T22:53:41Z",
+      "pr_number": 4071,
+      "pr_title": "fix: add previous value as optional in test schema env diff",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4071",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T08:59:48Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4060-20260911T225336Z",
+      "timestamp": "2026-09-11T22:53:36Z",
+      "pr_number": 4060,
+      "pr_title": "fix: persist interceptor state for logged out user",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4060",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-03T08:58:58Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 67,
+        "deletions": 117,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4079-20260911T225332Z",
+      "timestamp": "2026-09-11T22:53:32Z",
+      "pr_number": 4079,
+      "pr_title": "feat: adding support for `hopp-cli` in self-host Hoppscotch",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4079",
+      "components": [
+        "auth",
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-05-28T11:09:50Z",
+      "ai_components": [
+        "auth",
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 983,
+        "deletions": 24,
+        "changed_files": 20
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4074-20260911T225327Z",
+      "timestamp": "2026-09-11T22:53:27Z",
+      "pr_number": 4074,
+      "pr_title": "HSB-445 feature: storing user last login timestamp",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4074",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-05-27T16:19:42Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 123,
+        "deletions": 34,
+        "changed_files": 15
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3859-20260911T225323Z",
+      "timestamp": "2026-09-11T22:53:23Z",
+      "pr_number": 3859,
+      "pr_title": "refactor(workspaces): provider additions for collections under personal workspace",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3859",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-05-22T07:18:13Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 8207,
+        "deletions": 1263,
+        "changed_files": 40
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4042-20260911T225317Z",
       "timestamp": "2026-09-11T22:53:17Z",
       "pr_number": 4042,
