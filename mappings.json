@@ -1396,6 +1396,240 @@
         "changed_files": 3
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3899": {
+      "pr_number": 3899,
+      "pr_title": "fix: collection auth headers active tab update bug and type fix",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3899",
+      "merged_at": "2024-03-15T15:47:34Z",
+      "components": [
+        "auth",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:48:52Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth",
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 129,
+        "deletions": 120,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3908": {
+      "pr_number": 3908,
+      "pr_title": "refactor: collection search query",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3908",
+      "merged_at": "2024-03-19T11:42:35Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:48:56Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 25,
+        "deletions": 26,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3896": {
+      "pr_number": 3896,
+      "pr_title": "feat: team search in workspace search and spotlight",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3896",
+      "merged_at": "2024-03-19T13:20:35Z",
+      "components": [
+        "collections",
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T22:49:00Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections",
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 940,
+        "deletions": 20,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3885": {
+      "pr_number": 3885,
+      "pr_title": "feat: oauth revamp + support for multiple grant types in oauth ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3885",
+      "merged_at": "2024-03-19T18:48:03Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T22:49:05Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2728,
+        "deletions": 363,
+        "changed_files": 44
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3914": {
+      "pr_number": 3914,
+      "pr_title": "feat: github enterprise SSO provider addition",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3914",
+      "merged_at": "2024-03-20T14:31:56Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:49:09Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 40,
+        "deletions": 7,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3918": {
+      "pr_number": 3918,
+      "pr_title": "fix: fix direct import from url failing",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3918",
+      "merged_at": "2024-03-20T14:36:51Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T22:49:13Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3912": {
+      "pr_number": 3912,
+      "pr_title": "feat: add extended support for versioned entities in the CLI",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3912",
+      "merged_at": "2024-03-20T14:43:22Z",
+      "components": [
+        "cli",
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T22:49:20Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "cli",
+        "collections",
+        "environments"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 352,
+        "deletions": 159,
+        "changed_files": 14
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3917": {
+      "pr_number": 3917,
+      "pr_title": "fix(common): prevent exception with `ShortcodeListAdapter` initialization",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3917",
+      "merged_at": "2024-03-20T14:59:04Z",
+      "components": [
+        "realtime"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T22:49:25Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "realtime"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3920": {
+      "pr_number": 3920,
+      "pr_title": "refactor: AIO healthcheck bash script ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3920",
+      "merged_at": "2024-03-21T10:42:13Z",
+      "components": [],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:49:29Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3921": {
+      "pr_number": 3921,
+      "pr_title": "chore: added input validation to search query",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3921",
+      "merged_at": "2024-03-21T10:43:11Z",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:49:33Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "backend-api"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 23,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
     }
   }
 }
