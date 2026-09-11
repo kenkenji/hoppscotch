@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architecture Tracker</title>
+    <script>window.__AT_BASE_PATH__ = '/hoppscotch/';</script>
+    <script>
+      // GitHub PagesのSPAルーティング対応
+      // 存在しないパスへの直接アクセス時、パス情報をクエリパラメータに変換して
+      // ルートにリダイレクトし、index.html側で復元する
+      (function () {
+        var basePath = window.__AT_BASE_PATH__;
+        var pathWithinApp = location.pathname.slice(basePath.length);
+        if (pathWithinApp) {
+          location.replace(
+            basePath + '?__route=' + encodeURIComponent('/' + pathWithinApp + location.search + location.hash)
+          );
+        }
+      })();
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
