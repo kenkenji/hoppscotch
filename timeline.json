@@ -2,6 +2,240 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3719-20260911T224700Z",
+      "timestamp": "2026-09-11T22:47:00Z",
+      "pr_number": 3719,
+      "pr_title": "feat(common): support simultaneous imports of collections and environment files",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3719",
+      "components": [
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-03-05T12:19:01Z",
+      "ai_components": [
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 256,
+        "deletions": 130,
+        "changed_files": 16
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3852-20260911T224655Z",
+      "timestamp": "2026-09-11T22:46:55Z",
+      "pr_number": 3852,
+      "pr_title": "fix: collection level authorization inheritance issue",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3852",
+      "components": [
+        "collections",
+        "auth"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-23T14:03:08Z",
+      "ai_components": [
+        "collections",
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 48,
+        "deletions": 48,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3851-20260911T224651Z",
+      "timestamp": "2026-09-11T22:46:51Z",
+      "pr_number": 3851,
+      "pr_title": "refactor: possible links in email templates do not highlight",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3851",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-22T19:35:20Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 72,
+        "deletions": 60,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3844-20260911T224646Z",
+      "timestamp": "2026-09-11T22:46:46Z",
+      "pr_number": 3844,
+      "pr_title": "fix: use x-www-form-urlencoded for token exchange requests in oauth",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3844",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T19:12:03Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 13,
+        "deletions": 9,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3848-20260911T224642Z",
+      "timestamp": "2026-09-11T22:46:42Z",
+      "pr_number": 3848,
+      "pr_title": "fix: perfomance in safari",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3848",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T19:11:30Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 50,
+        "deletions": 36,
+        "changed_files": 18
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3835-20260911T224637Z",
+      "timestamp": "2026-09-11T22:46:37Z",
+      "pr_number": 3835,
+      "pr_title": "fix(common): prevent exceptions with open shared requests in new tab action",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3835",
+      "components": [
+        "realtime"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T19:06:45Z",
+      "ai_components": [
+        "realtime"
+      ],
+      "diff_stats": {
+        "additions": 10,
+        "deletions": 1,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3838-20260911T224633Z",
+      "timestamp": "2026-09-11T22:46:33Z",
+      "pr_number": 3838,
+      "pr_title": "feat: SH instance analytics data collection ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3838",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T19:05:12Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 10025,
+        "deletions": 4029,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3786-20260911T224627Z",
+      "timestamp": "2026-09-11T22:46:27Z",
+      "pr_number": 3786,
+      "pr_title": "HSB-358 feat: admin user management (backend)",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3786",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T16:05:08Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 4762,
+        "deletions": 10063,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3847-20260911T224623Z",
+      "timestamp": "2026-09-11T22:46:23Z",
+      "pr_number": 3847,
+      "pr_title": "feat: inital setup info route",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3847",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-21T15:45:48Z",
+      "ai_components": [
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 90,
+        "deletions": 6,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3832-20260911T224618Z",
+      "timestamp": "2026-09-11T22:46:18Z",
+      "pr_number": 3832,
+      "pr_title": "fix(persistence-service): add fallbacks for environments related schemas",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3832",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-15T18:08:56Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 18,
+        "deletions": 4,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3829-20260911T224613Z",
       "timestamp": "2026-09-11T22:46:13Z",
       "pr_number": 3829,
