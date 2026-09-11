@@ -2,6 +2,230 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4180-20260911T225658Z",
+      "timestamp": "2026-09-11T22:56:58Z",
+      "pr_number": 4180,
+      "pr_title": "fix: secret variables being populated as `undefined` on code snippets",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4180",
+      "components": [
+        "testing",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-18T09:14:37Z",
+      "ai_components": [
+        "testing",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 134,
+        "deletions": 87,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4196-20260911T225652Z",
+      "timestamp": "2026-09-11T22:56:52Z",
+      "pr_number": 4196,
+      "pr_title": "i18n: Add german translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4196",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "pavog",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-18T08:56:10Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 256,
+        "deletions": 256,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4195-20260911T225642Z",
+      "timestamp": "2026-09-11T22:56:42Z",
+      "pr_number": 4195,
+      "pr_title": "i18n: Fix existing german translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4195",
+      "components": [],
+      "source": "ai",
+      "author": "pavog",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-18T08:49:47Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 8,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4173-20260911T225638Z",
+      "timestamp": "2026-09-11T22:56:38Z",
+      "pr_number": 4173,
+      "pr_title": "fix: `<img>` is flex's immediate child therefore it stretch to its parent width",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4173",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-17T16:04:08Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4080-20260911T225633Z",
+      "timestamp": "2026-09-11T22:56:33Z",
+      "pr_number": 4080,
+      "pr_title": "feat: teams workspace refactor implementations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4080",
+      "components": [],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-12T10:50:24Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 6259,
+        "deletions": 50,
+        "changed_files": 15
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4166-20260911T225629Z",
+      "timestamp": "2026-09-11T22:56:29Z",
+      "pr_number": 4166,
+      "pr_title": "chore: cleanup i18n translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4166",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-05T14:52:50Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 3654,
+        "deletions": 419,
+        "changed_files": 30
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4108-20260911T225624Z",
+      "timestamp": "2026-09-11T22:56:24Z",
+      "pr_number": 4108,
+      "pr_title": "fix: ctrl+enter inserting newline in code",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4108",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "ajmalmohad",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-02T09:37:27Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 10,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4151-20260911T225619Z",
+      "timestamp": "2026-09-11T22:56:19Z",
+      "pr_number": 4151,
+      "pr_title": "fix: codemirror crashing due to cursor not updating",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4151",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-02T08:11:20Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 15,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4153-20260911T225611Z",
+      "timestamp": "2026-09-11T22:56:11Z",
+      "pr_number": 4153,
+      "pr_title": "feat: copyable invite links",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4153",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-28T15:48:10Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 119,
+        "deletions": 4,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4152-20260911T225606Z",
+      "timestamp": "2026-09-11T22:56:06Z",
+      "pr_number": 4152,
+      "pr_title": "refactor(sh-admin): improvements to invite links in dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4152",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-28T13:15:40Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 62,
+        "deletions": 38,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4150-20260911T225601Z",
       "timestamp": "2026-09-11T22:56:01Z",
       "pr_number": 4150,
