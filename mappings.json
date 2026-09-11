@@ -5025,6 +5025,244 @@
         "changed_files": 4
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4356": {
+      "pr_number": 4356,
+      "pr_title": "feat: add generate data schema option in spotlight searcher",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4356",
+      "merged_at": "2024-09-27T11:17:56Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:03:22Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 10,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4359": {
+      "pr_number": 4359,
+      "pr_title": "chore: export single User/Team Collection",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4359",
+      "merged_at": "2024-09-27T11:25:47Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T23:03:27Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 68,
+        "deletions": 3,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4363": {
+      "pr_number": 4363,
+      "pr_title": "chore: make client secret optional across grant types",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4363",
+      "merged_at": "2024-09-27T11:50:26Z",
+      "components": [
+        "auth",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:03:32Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth",
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 256,
+        "deletions": 42,
+        "changed_files": 16
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3886": {
+      "pr_number": 3886,
+      "pr_title": "feat: support for predefined variables",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3886",
+      "merged_at": "2024-09-30T08:47:34Z",
+      "components": [
+        "environments",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "kishannareshpal",
+      "timestamp": "2026-09-11T23:03:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "environments",
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 608,
+        "deletions": 17,
+        "changed_files": 14
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4377": {
+      "pr_number": 4377,
+      "pr_title": "feat: import to the current workspace from any team / personal workspace",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4377",
+      "merged_at": "2024-09-30T13:12:09Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:03:41Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 447,
+        "deletions": 77,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4382": {
+      "pr_number": 4382,
+      "pr_title": "feat: save api response",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4382",
+      "merged_at": "2024-09-30T13:36:53Z",
+      "components": [
+        "testing",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:03:45Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing",
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3074,
+        "deletions": 315,
+        "changed_files": 84
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4368": {
+      "pr_number": 4368,
+      "pr_title": "feat: extend duplicate collection to personal workspace in SH",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4368",
+      "merged_at": "2024-09-30T15:50:19Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T23:03:50Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 604,
+        "deletions": 275,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4386": {
+      "pr_number": 4386,
+      "pr_title": "feat: modify body with ai & feedback on ai requests hoppscotch-common bindings",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4386",
+      "merged_at": "2024-09-30T16:51:14Z",
+      "components": [
+        "web-app",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:03:55Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app",
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 791,
+        "deletions": 79,
+        "changed_files": 13
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4335": {
+      "pr_number": 4335,
+      "pr_title": "feat: support for comments on `application/json` request body",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4335",
+      "merged_at": "2024-10-01T08:38:01Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:04:00Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 537,
+        "deletions": 72,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4392": {
+      "pr_number": 4392,
+      "pr_title": "fix: request variable list item remove bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4392",
+      "merged_at": "2024-10-01T08:42:29Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:04:04Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 15,
+        "deletions": 35,
+        "changed_files": 4
+      },
+      "auto_approved": true
     }
   }
 }
