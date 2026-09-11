@@ -2,6 +2,228 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3677-20260911T224426Z",
+      "timestamp": "2026-09-11T22:44:26Z",
+      "pr_number": 3677,
+      "pr_title": "feat(js-sandbox): add `pw.env.unset` method",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3677",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "ajmalmohad",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T17:01:27Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 328,
+        "deletions": 51,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3704-20260911T224421Z",
+      "timestamp": "2026-09-11T22:44:21Z",
+      "pr_number": 3704,
+      "pr_title": "fix: bugs in shared request",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3704",
+      "components": [
+        "realtime",
+        "web-app",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:54:18Z",
+      "ai_components": [
+        "realtime",
+        "web-app",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 67,
+        "deletions": 35,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3754-20260911T224416Z",
+      "timestamp": "2026-09-11T22:44:16Z",
+      "pr_number": 3754,
+      "pr_title": "feat: press tab on current input field to focus the next input field",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3754",
+      "components": [],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:51:23Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 28,
+        "deletions": 32,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3742-20260911T224410Z",
+      "timestamp": "2026-09-11T22:44:10Z",
+      "pr_number": 3742,
+      "pr_title": "refactor: persist running requests while switching tabs",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3742",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:43:58Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 19,
+        "deletions": 8,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3717-20260911T224406Z",
+      "timestamp": "2026-09-11T22:44:06Z",
+      "pr_number": 3717,
+      "pr_title": "refactor: add option to disable context menu",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3717",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:35:06Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 32,
+        "deletions": 7,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3730-20260911T224400Z",
+      "timestamp": "2026-09-11T22:44:00Z",
+      "pr_number": 3730,
+      "pr_title": "fix: documentation is not being generated on GQL",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3730",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:30:41Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 16,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3709-20260911T224355Z",
+      "timestamp": "2026-09-11T22:43:55Z",
+      "pr_number": 3709,
+      "pr_title": "refactor: improvements to the dashboard sidebar",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3709",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:25:43Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 42,
+        "deletions": 117,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3705-20260911T224351Z",
+      "timestamp": "2026-09-11T22:43:51Z",
+      "pr_number": 3705,
+      "pr_title": "fix(selfhost-web): perform logout if the silent refresh attempt fails",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3705",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:24:00Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 18,
+        "deletions": 13,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3745-20260911T224346Z",
+      "timestamp": "2026-09-11T22:43:46Z",
+      "pr_number": 3745,
+      "pr_title": "fix: fix unwanted double slashes when importing from openapi",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3745",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-23T16:19:34Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 12,
+        "deletions": 6,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3660-20260911T224341Z",
+      "timestamp": "2026-09-11T22:43:41Z",
+      "pr_number": 3660,
+      "pr_title": "build: update node alpine version",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3660",
+      "components": [],
+      "source": "ai",
+      "author": "jordibeen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-03T11:19:52Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#123-20260911T223847Z",
       "timestamp": "2026-09-11T22:38:47Z",
       "pr_number": 123,
