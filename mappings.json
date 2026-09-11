@@ -7062,6 +7062,100 @@
         "changed_files": 3
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4637": {
+      "pr_number": 4637,
+      "pr_title": "feat: UI for test scripts generation under AI experiments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4637",
+      "merged_at": "2024-12-20T12:47:31Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "Govind-S-B",
+      "timestamp": "2026-09-11T23:11:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 549,
+        "deletions": 3,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4636": {
+      "pr_number": 4636,
+      "pr_title": "refactor: move AI request naming style to settings",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4636",
+      "merged_at": "2024-12-20T15:09:12Z",
+      "components": [
+        "auth",
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "Govind-S-B",
+      "timestamp": "2026-09-11T23:11:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth",
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 110,
+        "deletions": 2,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4638": {
+      "pr_number": 4638,
+      "pr_title": "fix: do not show an empty body element when bulk editing",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4638",
+      "merged_at": "2024-12-23T06:48:07Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:11:46Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 3,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4639": {
+      "pr_number": 4639,
+      "pr_title": "chore: add missing `i18n` string entry",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4639",
+      "merged_at": "2024-12-23T08:08:49Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:11:50Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
     }
   }
 }

@@ -2,6 +2,100 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4639-20260911T231150Z",
+      "timestamp": "2026-09-11T23:11:50Z",
+      "pr_number": 4639,
+      "pr_title": "chore: add missing `i18n` string entry",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4639",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-23T08:08:49Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4638-20260911T231146Z",
+      "timestamp": "2026-09-11T23:11:46Z",
+      "pr_number": 4638,
+      "pr_title": "fix: do not show an empty body element when bulk editing",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4638",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-23T06:48:07Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 3,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4636-20260911T231142Z",
+      "timestamp": "2026-09-11T23:11:42Z",
+      "pr_number": 4636,
+      "pr_title": "refactor: move AI request naming style to settings",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4636",
+      "components": [
+        "auth",
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "Govind-S-B",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-20T15:09:12Z",
+      "ai_components": [
+        "auth",
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 110,
+        "deletions": 2,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4637-20260911T231136Z",
+      "timestamp": "2026-09-11T23:11:36Z",
+      "pr_number": 4637,
+      "pr_title": "feat: UI for test scripts generation under AI experiments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4637",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "Govind-S-B",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-20T12:47:31Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 549,
+        "deletions": 3,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4634-20260911T231131Z",
       "timestamp": "2026-09-11T23:11:31Z",
       "pr_number": 4634,
