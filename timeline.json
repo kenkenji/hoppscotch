@@ -2,6 +2,236 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4537-20260911T230853Z",
+      "timestamp": "2026-09-11T23:08:53Z",
+      "pr_number": 4537,
+      "pr_title": "fix: resolve GraphQL collection tree and tab dissociation issues",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4537",
+      "components": [
+        "collections",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-22T17:01:00Z",
+      "ai_components": [
+        "collections",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 78,
+        "deletions": 24,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4548-20260911T230847Z",
+      "timestamp": "2026-09-11T23:08:47Z",
+      "pr_number": 4548,
+      "pr_title": "feat(sh-admin): introducing user guidance and error management helpers in admin dashboard ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4548",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-22T16:52:34Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 209,
+        "deletions": 106,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4431-20260911T230834Z",
+      "timestamp": "2026-09-11T23:08:34Z",
+      "pr_number": 4431,
+      "pr_title": "feat: show login dialogue for features behind login",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4431",
+      "components": [
+        "auth",
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-13T07:11:39Z",
+      "ai_components": [
+        "auth",
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 43,
+        "deletions": 17,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4523-20260911T230828Z",
+      "timestamp": "2026-09-11T23:08:28Z",
+      "pr_number": 4523,
+      "pr_title": "hotfix: graphql connection error handler",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4523",
+      "components": [
+        "realtime"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-12T15:45:48Z",
+      "ai_components": [
+        "realtime"
+      ],
+      "diff_stats": {
+        "additions": 55,
+        "deletions": 15,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4518-20260911T230823Z",
+      "timestamp": "2026-09-11T23:08:23Z",
+      "pr_number": 4518,
+      "pr_title": "fix(cli): use os-specific invalid paths for tests",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4518",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-07T07:56:24Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4516-20260911T230818Z",
+      "timestamp": "2026-09-11T23:08:18Z",
+      "pr_number": 4516,
+      "pr_title": "fix: clicking on run query without connecting connects without docs polling",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4516",
+      "components": [
+        "realtime"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-07T06:58:04Z",
+      "ai_components": [
+        "realtime"
+      ],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 7,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4511-20260911T230814Z",
+      "timestamp": "2026-09-11T23:08:14Z",
+      "pr_number": 4511,
+      "pr_title": "fix(agent): propagate default values to persistent store",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4511",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-06T09:30:52Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 151,
+        "deletions": 108,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4505-20260911T230809Z",
+      "timestamp": "2026-09-11T23:08:09Z",
+      "pr_number": 4505,
+      "pr_title": "fix(selfhost-desktop): specify `Digest Auth` support for `Proxy` interceptor",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4505",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-06T06:16:38Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 4,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4508-20260911T230805Z",
+      "timestamp": "2026-09-11T23:08:05Z",
+      "pr_number": 4508,
+      "pr_title": "HSB-497 chore: user deletetion if not solo team owner",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4508",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-05T15:48:23Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 32,
+        "deletions": 19,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4514-20260911T230801Z",
+      "timestamp": "2026-09-11T23:08:01Z",
+      "pr_number": 4514,
+      "pr_title": "fix: correct broken codemirror-lang-graphql in node 22",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4514",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-05T10:36:39Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 75,
+        "deletions": 291,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4498-20260911T230752Z",
       "timestamp": "2026-09-11T23:07:52Z",
       "pr_number": 4498,
