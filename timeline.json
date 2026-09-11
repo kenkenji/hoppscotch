@@ -2,6 +2,240 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4210-20260911T225748Z",
+      "timestamp": "2026-09-11T22:57:48Z",
+      "pr_number": 4210,
+      "pr_title": "fix: auth bug when value is a secret environment",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4210",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-27T15:24:16Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 54,
+        "deletions": 13,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4189-20260911T225743Z",
+      "timestamp": "2026-09-11T22:57:43Z",
+      "pr_number": 4189,
+      "pr_title": "feat(cli): add support for JUnit reporter",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4189",
+      "components": [
+        "cli",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-26T17:26:58Z",
+      "ai_components": [
+        "cli",
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 1197,
+        "deletions": 64,
+        "changed_files": 15
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4176-20260911T225738Z",
+      "timestamp": "2026-09-11T22:57:38Z",
+      "pr_number": 4176,
+      "pr_title": "refactor(sh-admin): updated invite flow for the admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4176",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-26T14:44:41Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 96,
+        "deletions": 19,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4207-20260911T225733Z",
+      "timestamp": "2026-09-11T22:57:33Z",
+      "pr_number": 4207,
+      "pr_title": "feat: duplicate team and user collections",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4207",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-24T16:25:08Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 122,
+        "deletions": 0,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4194-20260911T225728Z",
+      "timestamp": "2026-09-11T22:57:28Z",
+      "pr_number": 4194,
+      "pr_title": "feat: Ability to toggle cookies to work in HTTP",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4194",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-24T16:14:39Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4172-20260911T225723Z",
+      "timestamp": "2026-09-11T22:57:23Z",
+      "pr_number": 4172,
+      "pr_title": "fix: fix issue for multipart/form-data and cookie header (#4162)",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4172",
+      "components": [
+        "testing",
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-22T13:03:38Z",
+      "ai_components": [
+        "testing",
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 24,
+        "deletions": 9,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4203-20260911T225718Z",
+      "timestamp": "2026-09-11T22:57:18Z",
+      "pr_number": 4203,
+      "pr_title": "fix: codemirror search bar misaligned",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4203",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-22T11:34:54Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 50,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4177-20260911T225714Z",
+      "timestamp": "2026-09-11T22:57:14Z",
+      "pr_number": 4177,
+      "pr_title": "feat: persist HTML response preview preference",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4177",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-19T10:48:55Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 75,
+        "deletions": 38,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4188-20260911T225709Z",
+      "timestamp": "2026-09-11T22:57:09Z",
+      "pr_number": 4188,
+      "pr_title": "fix: wrap line button showing inconsistency bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4188",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-18T09:50:58Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 2,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4181-20260911T225705Z",
+      "timestamp": "2026-09-11T22:57:05Z",
+      "pr_number": 4181,
+      "pr_title": "fix: embeds response and request option section getting hidden bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4181",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-18T09:43:43Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 251,
+        "deletions": 196,
+        "changed_files": 13
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4180-20260911T225658Z",
       "timestamp": "2026-09-11T22:56:58Z",
       "pr_number": 4180,
