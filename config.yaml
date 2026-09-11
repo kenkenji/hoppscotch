@@ -1,0 +1,5 @@
+spa:
+  url: https://hoppscotch.github.io/hoppscotch
+llm:
+  model: claude-sonnet-5
+auto_approve: false
