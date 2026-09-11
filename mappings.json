@@ -1,1 +1,31 @@
-{"version":"1.0","mappings":{}}
+{
+  "version": "1.0",
+  "mappings": {
+    "hoppscotch/hoppscotch#123": {
+      "pr_number": 123,
+      "pr_title": "⌨️Add autocomplete widget with command line completion",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/123",
+      "merged_at": "2019-08-31T16:48:08Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "NBTX",
+      "timestamp": "2026-09-11T22:38:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 791,
+        "deletions": 564,
+        "changed_files": 5
+      },
+      "labels": [
+        "feature"
+      ],
+      "auto_approved": true
+    }
+  }
+}
