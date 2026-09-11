@@ -2,6 +2,246 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4231-20260911T225839Z",
+      "timestamp": "2026-09-11T22:58:39Z",
+      "pr_number": 4231,
+      "pr_title": "chore: user management api additions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4231",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-05T10:01:59Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 46,
+        "deletions": 1,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4229-20260911T225835Z",
+      "timestamp": "2026-09-11T22:58:35Z",
+      "pr_number": 4229,
+      "pr_title": "fix(cli): remove `postinstall` script",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4229",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-31T13:40:11Z",
+      "ai_components": [
+        "cli"
+      ],
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 5,
+        "changed_files": 1
+      },
+      "labels": [
+        "bug fix",
+        "cli"
+      ],
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4224-20260911T225830Z",
+      "timestamp": "2026-09-11T22:58:30Z",
+      "pr_number": 4224,
+      "pr_title": "chore: add analytics event for ai experiments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4224",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-30T13:25:09Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 14,
+        "deletions": 0,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4223-20260911T225825Z",
+      "timestamp": "2026-09-11T22:58:25Z",
+      "pr_number": 4223,
+      "pr_title": "chore: enable ai experiments by default in settings",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4223",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-30T13:02:32Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4222-20260911T225820Z",
+      "timestamp": "2026-09-11T22:58:20Z",
+      "pr_number": 4222,
+      "pr_title": "feat: hoppscotch-common & platform additions for ai experiments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4222",
+      "components": [
+        "auth",
+        "collections",
+        "testing",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-30T06:46:44Z",
+      "ai_components": [
+        "auth",
+        "collections",
+        "testing",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 208,
+        "deletions": 18,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4221-20260911T225814Z",
+      "timestamp": "2026-09-11T22:58:14Z",
+      "pr_number": 4221,
+      "pr_title": "fix(sh-admin): resolved issue while rendering images",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4221",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-29T17:29:03Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 4,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4219-20260911T225810Z",
+      "timestamp": "2026-09-11T22:58:10Z",
+      "pr_number": 4219,
+      "pr_title": "fix: infra token expriry check on guard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4219",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-29T14:08:17Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4211-20260911T225805Z",
+      "timestamp": "2026-09-11T22:58:05Z",
+      "pr_number": 4211,
+      "pr_title": "feat: duplicate REST/GraphQL collections",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4211",
+      "components": [
+        "collections",
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-29T13:07:34Z",
+      "ai_components": [
+        "collections",
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 726,
+        "deletions": 97,
+        "changed_files": 26
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4202-20260911T225759Z",
+      "timestamp": "2026-09-11T22:57:59Z",
+      "pr_number": 4202,
+      "pr_title": "feat(sh-admin): introducing infra-tokens to admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4202",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-29T12:20:06Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 753,
+        "deletions": 74,
+        "changed_files": 18
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4191-20260911T225754Z",
+      "timestamp": "2026-09-11T22:57:54Z",
+      "pr_number": 4191,
+      "pr_title": "HSB-462 feat: infra token module and sh apis",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4191",
+      "components": [
+        "auth",
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-07-29T07:06:18Z",
+      "ai_components": [
+        "auth",
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 1075,
+        "deletions": 126,
+        "changed_files": 21
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4210-20260911T225748Z",
       "timestamp": "2026-09-11T22:57:48Z",
       "pr_number": 4210,
