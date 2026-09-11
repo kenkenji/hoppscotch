@@ -1,0 +1,537 @@
+name: Architecture Tracker
+
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request:
+    types: [closed]
+  issue_comment:
+    types: [edited]
+  workflow_dispatch:
+    inputs:
+      pr-number:
+        description: "検出対象のPR番号（手動実行時）"
+        required: true
+  repository_dispatch:
+    types: [regenerate-comment]
+
+concurrency:
+  group: architecture-tracker-${{ github.event_name == 'repository_dispatch' && 'regenerate' || 'data' }}
+  cancel-in-progress: false
+
+jobs:
+  post-processing-comment:
+    if: >-
+      (github.event_name == 'pull_request_review'
+       && github.event.review.state == 'approved')
+      || (github.event_name == 'pull_request'
+       && github.event.pull_request.merged == true)
+      || github.event_name == 'workflow_dispatch'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    outputs:
+      comment-id: ${{ steps.processing.outputs.comment_id }}
+    steps:
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Check for existing comment
+        id: check
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.inputs.pr-number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          MARKER="## 🏗 Architecture Tracker"
+          comment_id=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+            --paginate \
+            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" \
+            | head -1)
+
+          if [ -n "$comment_id" ]; then
+            comment_body=$(gh api "repos/${REPO}/issues/comments/${comment_id}" --jq '.body')
+            if echo "$comment_body" | grep -q "⏳ 処理中"; then
+              echo "🔄 Found stale processing comment ${comment_id}, will re-process"
+              echo "already_posted=false" >> "$GITHUB_OUTPUT"
+              echo "comment_id=${comment_id}" >> "$GITHUB_OUTPUT"
+            else
+              echo "✅ Architecture Tracker comment already exists on PR #${PR_NUMBER}, skipping."
+              echo "already_posted=true" >> "$GITHUB_OUTPUT"
+              echo "comment_id=" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "already_posted=false" >> "$GITHUB_OUTPUT"
+            echo "comment_id=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post processing status
+        id: processing
+        if: steps.check.outputs.already_posted != 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.inputs.pr-number }}
+          REPO: ${{ github.repository }}
+          COMMENT_ID: ${{ steps.check.outputs.comment_id }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          HAS_LLM_KEY=false
+          if [ -n "$ANTHROPIC_API_KEY" ] || [ -n "$OPENAI_API_KEY" ] || [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+            HAS_LLM_KEY=true
+          fi
+
+          if [ "$HAS_LLM_KEY" = "false" ]; then
+            echo "📝 No LLM key configured, skipping processing status"
+            echo "comment_id=${COMMENT_ID}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROCESSING_BODY=$(cat <<'BODY_EOF'
+          ## 🏗 Architecture Tracker
+
+          ⏳ 処理中... LLMによるコンポーネント解析を実行しています。しばらくお待ちください。
+          BODY_EOF
+          )
+
+          if [ -n "$COMMENT_ID" ]; then
+            gh api "repos/${REPO}/issues/comments/${COMMENT_ID}" \
+              --method PATCH \
+              --field body="$PROCESSING_BODY"
+            echo "comment_id=${COMMENT_ID}" >> "$GITHUB_OUTPUT"
+            echo "⏳ Updated existing comment ${COMMENT_ID} to processing status"
+          else
+            new_comment_id=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+              --method POST \
+              --field body="$PROCESSING_BODY" \
+              --jq '.id')
+            echo "comment_id=${new_comment_id}" >> "$GITHUB_OUTPUT"
+            echo "⏳ Posted processing comment ${new_comment_id} on PR #${PR_NUMBER}"
+          fi
+
+  detect-changes:
+    if: >-
+      !failure() && !cancelled()
+      && ((github.event_name == 'pull_request'
+       && github.event.pull_request.merged == true)
+      || github.event_name == 'workflow_dispatch'
+      || github.event_name == 'repository_dispatch')
+    needs: post-processing-comment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      proposals: ${{ steps.detect-action.outputs.proposals || steps.passthrough.outputs.proposals }}
+      proposal-count: ${{ steps.detect-action.outputs.proposal-count || steps.passthrough.outputs.proposal-count }}
+      detection-method: ${{ steps.detect-action.outputs.detection-method || steps.passthrough.outputs.detection-method }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Validate PR (repository_dispatch)
+        if: github.event_name == 'repository_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PR_NUMBER" ] || ! echo "$PR_NUMBER" | grep -qE '^[0-9]+$'; then
+            echo "::error::Invalid pr_number in client_payload: '${PR_NUMBER}'"
+            exit 1
+          fi
+          merged=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.merged')
+          if [ "$merged" != "true" ]; then
+            echo "::error::PR #${PR_NUMBER} is not merged"
+            exit 1
+          fi
+          echo "✅ PR #${PR_NUMBER} is merged, proceeding with regeneration"
+
+      - name: Read existing proposals (repository_dispatch passthrough)
+        id: passthrough
+        if: github.event_name == 'repository_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: |
+          set -euo pipefail
+
+          proposals_json=$(gh api "repos/${REPO}/contents/proposals/pr-${PR_NUMBER}.json?ref=_architecture-tracker" \
+            --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+
+          if [ -z "$proposals_json" ]; then
+            echo "📋 proposals/pr-${PR_NUMBER}.json not found — proceeding without proposals"
+            proposals="[]"
+            proposal_count=0
+            detection_method="none"
+          else
+            # resolved_at 確認付きリトライ（設計ドキュメント準拠: 最大3回、5秒間隔）
+            resolved_at=$(echo "$proposals_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('resolved_at', ''))")
+            if [ -z "$resolved_at" ]; then
+              for retry in 1 2; do
+                echo "⏳ resolved_at not yet set (retry ${retry}/2), retrying in 5s..."
+                sleep 5
+                proposals_json=$(gh api "repos/${REPO}/contents/proposals/pr-${PR_NUMBER}.json?ref=_architecture-tracker" \
+                  --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+                if [ -z "$proposals_json" ]; then
+                  echo "⚠️ proposals file became unavailable during retry, skipping"
+                  continue
+                fi
+                resolved_at=$(echo "$proposals_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('resolved_at', ''))")
+                if [ -n "$resolved_at" ]; then
+                  break
+                fi
+              done
+              if [ -z "$resolved_at" ]; then
+                echo "::warning::proposals/pr-${PR_NUMBER}.json has no resolved_at after retries, proceeding anyway"
+              fi
+            fi
+
+            if [ -z "$proposals_json" ]; then
+              echo "⚠️ proposals file became unavailable — falling back to empty proposals"
+              proposals="[]"
+              proposal_count=0
+              detection_method="none"
+            else
+              proposals=$(echo "$proposals_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(d.get('proposals', [])))")
+              proposal_count=$(echo "$proposals" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))")
+              detection_method=$(echo "$proposals_json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('detection_method', 'none'))")
+            fi
+          fi
+
+          delimiter="GHEOF_$(openssl rand -hex 8)"
+          {
+            echo "proposals<<${delimiter}"
+            echo "${proposals}"
+            echo "${delimiter}"
+          } >> "$GITHUB_OUTPUT"
+          echo "proposal-count=${proposal_count}" >> "$GITHUB_OUTPUT"
+          echo "detection-method=${detection_method}" >> "$GITHUB_OUTPUT"
+
+          echo "📋 Passthrough: ${proposal_count} existing proposal(s) (method: ${detection_method})"
+
+      - name: Fetch config from data branch
+        id: config
+        if: github.event_name != 'repository_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          config_yaml=$(gh api "repos/${REPO}/contents/config.yaml?ref=_architecture-tracker" \
+            --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+          if [ -n "$config_yaml" ]; then
+            model=$(echo "$config_yaml" | grep -A1 '^llm:' | grep 'model:' | sed 's/.*model:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+            echo "model=${model}" >> "$GITHUB_OUTPUT"
+          else
+            echo "model=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect model changes
+        id: detect-action
+        if: github.event_name != 'repository_dispatch'
+        uses: ./.github/actions/detect-model-changes
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          pr-number: ${{ github.event.pull_request.number || github.event.inputs.pr-number }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          model: ${{ steps.config.outputs.model }}
+
+      - name: Save proposals to data branch
+        if: >-
+          github.event_name != 'repository_dispatch'
+          && steps.detect-action.outputs.proposals != ''
+          && steps.detect-action.outputs.proposals != '[]'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.inputs.pr-number }}
+          PROPOSALS: ${{ steps.detect-action.outputs.proposals }}
+          DETECTION_METHOD: ${{ steps.detect-action.outputs.detection-method }}
+        run: |
+          set -euo pipefail
+
+          proposals_json_file=$(mktemp --suffix=.json)
+          export OUT_FILE="$proposals_json_file"
+          python3 -c "
+          import json, os
+          from datetime import datetime, timezone
+          data = {
+              'schema_version': 1,
+              'pr_number': int(os.environ['PR_NUMBER']),
+              'detection_method': os.environ['DETECTION_METHOD'],
+              'detected_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'proposals': json.loads(os.environ['PROPOSALS'])
+          }
+          with open(os.environ['OUT_FILE'], 'w') as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          " || { echo "::error::Failed to build proposals JSON"; exit 1; }
+
+          encoded=$(base64 -w 0 < "$proposals_json_file")
+          rm -f "$proposals_json_file"
+
+          file_path="proposals/pr-${PR_NUMBER}.json"
+
+          existing_sha=""
+          if sha_result=$(gh api "repos/${REPO}/contents/${file_path}?ref=_architecture-tracker" \
+            --jq '.sha' 2>&1); then
+            existing_sha="$sha_result"
+          elif echo "$sha_result" | grep -q "404"; then
+            existing_sha=""
+          else
+            echo "::warning::Unexpected error checking ${file_path}: ${sha_result}"
+            existing_sha=""
+          fi
+
+          if [ -n "$existing_sha" ]; then
+            gh api "repos/${REPO}/contents/${file_path}" \
+              --method PUT \
+              -f message="Save proposals for PR #${PR_NUMBER}" \
+              -f content="${encoded}" \
+              -f branch="_architecture-tracker" \
+              -f sha="${existing_sha}" \
+              --silent
+          else
+            gh api "repos/${REPO}/contents/${file_path}" \
+              --method PUT \
+              -f message="Save proposals for PR #${PR_NUMBER}" \
+              -f content="${encoded}" \
+              -f branch="_architecture-tracker" \
+              --silent
+          fi
+
+          echo "✅ Saved ${file_path} to _architecture-tracker branch"
+
+  post-comment:
+    if: >-
+      !failure() && !cancelled()
+      && ((github.event_name == 'pull_request_review'
+       && github.event.review.state == 'approved')
+      || (github.event_name == 'pull_request'
+       && github.event.pull_request.merged == true)
+      || github.event_name == 'workflow_dispatch'
+      || github.event_name == 'repository_dispatch')
+    needs: [post-processing-comment, detect-changes]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Fetch config from data branch
+        id: config
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          config_yaml=$(gh api "repos/${REPO}/contents/config.yaml?ref=_architecture-tracker" \
+            --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+          if [ -n "$config_yaml" ]; then
+            model=$(echo "$config_yaml" | grep -A1 '^llm:' | grep 'model:' | sed 's/.*model:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+            echo "model=${model}" >> "$GITHUB_OUTPUT"
+            spa_url=$(echo "$config_yaml" | grep -A1 '^spa:' | grep 'url:' | sed 's/.*url:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\(.*\)'$/\1/" || true)
+            echo "spa_url=${spa_url}" >> "$GITHUB_OUTPUT"
+            auto_approve=$(echo "$config_yaml" | grep '^auto_approve:' | sed 's/.*auto_approve:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+            echo "auto_approve=${auto_approve}" >> "$GITHUB_OUTPUT"
+          else
+            echo "model=" >> "$GITHUB_OUTPUT"
+            echo "spa_url=" >> "$GITHUB_OUTPUT"
+            echo "auto_approve=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fetch PR info for workflow_dispatch
+        id: pr-info
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.inputs.pr-number }}
+        run: |
+          set -euo pipefail
+          pr_title=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.title')
+          echo "pr_title=${pr_title}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch PR info for repository_dispatch
+        id: pr-info-dispatch
+        if: github.event_name == 'repository_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: |
+          set -euo pipefail
+          pr_title=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.title')
+          echo "pr_title=${pr_title}" >> "$GITHUB_OUTPUT"
+
+      - name: Track architecture
+        uses: ./.github/actions/track-architecture
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          model: ${{ steps.config.outputs.model }}
+          proposals: ${{ needs.detect-changes.outputs.proposals }}
+          detection-method: ${{ needs.detect-changes.outputs.detection-method }}
+          spa-url: ${{ steps.config.outputs.spa_url }}
+          pr-number: ${{ github.event.inputs.pr-number || github.event.client_payload.pr_number }}
+          pr-title: ${{ steps.pr-info.outputs.pr_title || steps.pr-info-dispatch.outputs.pr_title }}
+          mode: ${{ github.event_name == 'repository_dispatch' && 'regenerate' || 'new' }}
+          comment-id: ${{ needs.post-processing-comment.outputs.comment-id }}
+          auto-approve: ${{ steps.config.outputs.auto_approve }}
+
+  regenerate-catchup:
+    if: >-
+      !failure() && !cancelled()
+      && needs.post-comment.result == 'success'
+      && github.event_name == 'repository_dispatch'
+    needs: post-comment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Fetch PR info
+        id: pr-info
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${REPO}/pulls/${PR_NUMBER}" \
+            --jq '"pr_title=\(.title)\npr_url=\(.html_url)\nmerged_at=\(.merged_at)\nauthor=\(.user.login)"' \
+            >> "$GITHUB_OUTPUT"
+
+      - name: Update mapping from comment
+        id: catchup
+        uses: ./.github/actions/catch-up-mapping
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          pr-number: ${{ github.event.client_payload.pr_number }}
+          pr-title: ${{ steps.pr-info.outputs.pr_title }}
+          pr-url: ${{ steps.pr-info.outputs.pr_url }}
+          merged-at: ${{ steps.pr-info.outputs.merged_at }}
+          author: ${{ steps.pr-info.outputs.author }}
+
+  merge-catchup:
+    if: >-
+      !failure() && !cancelled()
+      && github.event_name == 'pull_request'
+      && github.event.pull_request.merged == true
+    needs: post-comment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Catch up pre-merge selections
+        id: catchup
+        uses: ./.github/actions/catch-up-mapping
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+
+  record-mapping:
+    if: >-
+      github.event_name == 'issue_comment'
+      && github.event.action == 'edited'
+      && github.event.issue.pull_request
+      && contains(github.event.comment.body, '🏗 Architecture Tracker')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Record mapping
+        id: record
+        uses: ./.github/actions/record-mapping
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker

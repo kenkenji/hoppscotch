@@ -1,0 +1,173 @@
+name: "Detect Model Changes"
+description: "PRの変更ファイルからアーキテクチャモデルの変更を検出し、提案コメントを投稿する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  pr-number:
+    description: "PR number to analyze"
+    required: true
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based analysis"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name (default: provider's standard model)"
+    required: false
+    default: ""
+
+outputs:
+  proposals:
+    description: "Detected change proposals as JSON array"
+    value: ${{ steps.detect.outputs.proposals }}
+  proposal-count:
+    description: "Number of proposals detected"
+    value: ${{ steps.detect.outputs.proposal_count }}
+  detection-method:
+    description: "Detection method used (llm, none, or skip)"
+    value: ${{ steps.detect.outputs.detection_method }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ -n "$ANTHROPIC_API_KEY" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ -n "$OPENAI_API_KEY" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Fetch components.yaml
+      id: fetch-components
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+
+        echo "Fetching components.yaml from branch: ${DATA_BRANCH}"
+        components_yaml=$(gh api "repos/${REPO}/contents/components.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' | base64 -d)
+
+        if [ -z "$components_yaml" ]; then
+          echo "::error::components.yaml not found on branch ${DATA_BRANCH}"
+          exit 1
+        fi
+
+        components_file=$(mktemp --suffix=.yaml)
+        echo "$components_yaml" > "$components_file"
+        echo "components_file=${components_file}" >> "$GITHUB_OUTPUT"
+
+    - name: Fetch PR changed files
+      id: fetch-files
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+      run: |
+        set -euo pipefail
+
+        pr_files_file=$(mktemp --suffix=.json)
+        gh api "repos/${REPO}/pulls/${PR_NUMBER}/files" --paginate \
+          --jq '[.[] | {filename, status, additions, deletions, changes}]' \
+          > "$pr_files_file"
+
+        file_count=$(python3 -c "import json; print(len(json.load(open('$pr_files_file'))))")
+        echo "Fetched ${file_count} changed files for PR #${PR_NUMBER}"
+        echo "pr_files_file=${pr_files_file}" >> "$GITHUB_OUTPUT"
+
+    - name: Fetch PR body
+      id: fetch-body
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        PR_BODY_EVENT: ${{ github.event.pull_request.body }}
+      run: |
+        set -euo pipefail
+        pr_body_file=$(mktemp --suffix=.txt)
+        if [ -n "$PR_BODY_EVENT" ]; then
+          printf '%s' "$PR_BODY_EVENT" > "$pr_body_file"
+        else
+          gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.body // ""' > "$pr_body_file"
+        fi
+        echo "pr_body_file=${pr_body_file}" >> "$GITHUB_OUTPUT"
+
+    - name: Detect model changes
+      id: detect
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        MODEL: ${{ inputs.model }}
+        COMPONENTS_FILE: ${{ steps.fetch-components.outputs.components_file }}
+        PR_FILES_FILE: ${{ steps.fetch-files.outputs.pr_files_file }}
+        PR_BODY_FILE: ${{ steps.fetch-body.outputs.pr_body_file }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        model_args=()
+        if [ -n "$MODEL" ]; then
+          model_args=(--model "$MODEL")
+        fi
+
+        result=$(python3 "${ACTION_PATH}/detect_changes.py" \
+          --pr-files "$PR_FILES_FILE" \
+          --pr-body-file "$PR_BODY_FILE" \
+          --components-file "$COMPONENTS_FILE" \
+          --prompt-template "${ACTION_PATH}/prompt.txt" \
+          --mode full \
+          "${model_args[@]}")
+
+        proposals=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(json.dumps(d.get('proposals', [])))")
+        proposal_count=$(echo "$proposals" | python3 -c "import sys, json; print(len(json.load(sys.stdin)))")
+        detection_method=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('detection_method', 'none'))")
+
+        {
+          echo "proposals<<GHEOF_DETECT_END"
+          echo "${proposals}"
+          echo "GHEOF_DETECT_END"
+        } >> "$GITHUB_OUTPUT"
+        echo "proposal_count=${proposal_count}" >> "$GITHUB_OUTPUT"
+        echo "detection_method=${detection_method}" >> "$GITHUB_OUTPUT"
+
+        echo "✅ Detection complete: ${proposal_count} proposal(s) found (method: ${detection_method})"
+
+    - name: Cleanup
+      if: always()
+      shell: bash
+      env:
+        COMPONENTS_FILE: ${{ steps.fetch-components.outputs.components_file }}
+        PR_FILES_FILE: ${{ steps.fetch-files.outputs.pr_files_file }}
+        PR_BODY_FILE: ${{ steps.fetch-body.outputs.pr_body_file }}
+      run: rm -f "$COMPONENTS_FILE" "$PR_FILES_FILE" "$PR_BODY_FILE"

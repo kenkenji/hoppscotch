@@ -1,0 +1,54 @@
+name: Impact Analysis
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: impact-analysis-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    if: >-
+      (
+        github.event_name == 'issues'
+        && contains(github.event.issue.body, '@architecture-tracker')
+      )
+      || (
+        github.event_name == 'issue_comment'
+        && !github.event.issue.pull_request
+        && github.event.comment.user.type != 'Bot'
+        && github.actor != 'github-actions[bot]'
+        && contains(github.event.comment.body, '@architecture-tracker')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Analyze impact
+        uses: ./.github/actions/analyze-impact
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          issue-title: ${{ github.event.issue.title }}
+          issue-body: ${{ github.event.issue.body }}
+          issue-comment-body: ${{ github.event.comment.body || '' }}

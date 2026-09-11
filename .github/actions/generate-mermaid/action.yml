@@ -1,0 +1,76 @@
+name: "Generate Mermaid"
+description: "PRの影響コンポーネントをMermaid図でPRコメントに投稿する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  pr-number:
+    description: "PR number for impact diagram"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      run: pip install pyyaml
+
+    - name: Generate Mermaid diagrams
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        if [ -z "$PR_NUMBER" ]; then
+          echo "No PR number specified, nothing to do"
+          exit 0
+        fi
+
+        # データブランチをクローン
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+        work_dir=$(mktemp -d)
+        git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+          clone --branch "${DATA_BRANCH}" --single-branch \
+          "https://github.com/${REPO}.git" "$work_dir"
+
+        comment_file=$(mktemp --suffix=.md)
+
+        # PRコメント用Mermaid図を生成
+        python3 "${ACTION_PATH}/generate_mermaid.py" \
+          --components-file "${work_dir}/components.yaml" \
+          --mappings-file "${work_dir}/mappings.json" \
+          --pr-number "${PR_NUMBER}" \
+          --output-comment "${comment_file}"
+
+        # PRコメントを投稿（既存コメントがあれば更新、なければ新規投稿）
+        if [ -s "$comment_file" ]; then
+          MARKER="## 📊 Architecture Impact"
+          existing_comment_id=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+            --paginate \
+            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" \
+            | tail -1)
+
+          if [ -n "$existing_comment_id" ]; then
+            gh api "repos/${REPO}/issues/comments/${existing_comment_id}" \
+              -X PATCH -F "body=@${comment_file}"
+            echo "✅ Updated impact diagram comment on PR #${PR_NUMBER}"
+          else
+            gh pr comment "$PR_NUMBER" --body-file "$comment_file" --repo "$REPO"
+            echo "✅ Posted impact diagram to PR #${PR_NUMBER}"
+          fi
+        fi
+
+        rm -rf "$work_dir"
+        rm -f "$comment_file"

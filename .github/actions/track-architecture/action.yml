@@ -1,0 +1,599 @@
+name: "Track Architecture"
+description: "PRのApprove時またはマージ時にコンポーネント一覧のチェックボックス付きコメントを投稿し、トラッキングIssueを作成する。LLM APIキーが設定されている場合はAI提案コメントを投稿する。"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude (optional)"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT (optional)"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based extraction"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name (default: provider's standard model)"
+    required: false
+    default: ""
+  proposals:
+    description: "JSON array of structural change proposals (from detect-changes)"
+    required: false
+    default: ""
+  detection-method:
+    description: "Detection method used (static / static+llm)"
+    required: false
+    default: ""
+  spa-url:
+    description: "SPA base URL for editor link"
+    required: false
+    default: ""
+  pr-number:
+    description: "PR number (override for workflow_dispatch)"
+    required: false
+    default: ""
+  pr-title:
+    description: "PR title (override for workflow_dispatch)"
+    required: false
+    default: ""
+  mode:
+    description: "Operation mode: 'new' for initial post, 'regenerate' for updating existing comment"
+    required: false
+    default: "new"
+  comment-id:
+    description: "Pre-posted processing comment ID (from post-processing-comment job)"
+    required: false
+    default: ""
+  auto-approve:
+    description: "Enable auto-approve mode (record mapping immediately without user action)"
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      run: pip install pyyaml
+
+    - name: Check for existing comment
+      id: check
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        REPO: ${{ github.repository }}
+        MODE: ${{ inputs.mode }}
+        INPUT_COMMENT_ID: ${{ inputs.comment-id }}
+      run: |
+        set -euo pipefail
+
+        if [ -n "$INPUT_COMMENT_ID" ]; then
+          echo "already_posted=false" >> "$GITHUB_OUTPUT"
+          echo "comment_id=${INPUT_COMMENT_ID}" >> "$GITHUB_OUTPUT"
+          echo "existing_body_file=" >> "$GITHUB_OUTPUT"
+          echo "📋 Using pre-provided comment ID: ${INPUT_COMMENT_ID}"
+          exit 0
+        fi
+
+        MARKER="## 🏗 Architecture Tracker"
+        comment_id=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+          --paginate \
+          --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" \
+          | head -1)
+
+        if [ "$MODE" = "regenerate" ]; then
+          if [ -z "$comment_id" ]; then
+            echo "::error::Regenerate mode but no existing Architecture Tracker comment found on PR #${PR_NUMBER}"
+            exit 1
+          fi
+          echo "comment_id=${comment_id}" >> "$GITHUB_OUTPUT"
+          echo "already_posted=false" >> "$GITHUB_OUTPUT"
+
+          body_file=$(mktemp --suffix=.txt)
+          gh api "repos/${REPO}/issues/comments/${comment_id}" --jq '.body' > "$body_file"
+          echo "existing_body_file=${body_file}" >> "$GITHUB_OUTPUT"
+
+          echo "🔄 Regenerate mode: found existing comment ${comment_id} on PR #${PR_NUMBER}"
+        else
+          if [ -n "$comment_id" ]; then
+            # 処理中コメントが残っている場合は再処理対象とする（クラッシュリカバリ）
+            comment_body=$(gh api "repos/${REPO}/issues/comments/${comment_id}" --jq '.body')
+            if echo "$comment_body" | grep -q "⏳ 処理中"; then
+              echo "🔄 Found stale processing comment ${comment_id}, will re-process"
+              echo "already_posted=false" >> "$GITHUB_OUTPUT"
+              echo "comment_id=${comment_id}" >> "$GITHUB_OUTPUT"
+            else
+              echo "✅ Architecture Tracker comment already exists on PR #${PR_NUMBER}, skipping."
+              echo "already_posted=true" >> "$GITHUB_OUTPUT"
+              echo "comment_id=" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "already_posted=false" >> "$GITHUB_OUTPUT"
+            echo "comment_id=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "existing_body_file=" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Post processing status
+      id: processing
+      if: inputs.comment-id == '' && steps.check.outputs.already_posted != 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        REPO: ${{ github.repository }}
+        COMMENT_ID: ${{ steps.check.outputs.comment_id }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+      run: |
+        set -euo pipefail
+
+        HAS_LLM_KEY=false
+        if [ -n "$ANTHROPIC_API_KEY" ] || [ -n "$OPENAI_API_KEY" ] || [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+          HAS_LLM_KEY=true
+        fi
+
+        if [ "$HAS_LLM_KEY" = "false" ]; then
+          echo "📝 No LLM key configured, skipping processing status"
+          echo "comment_id=${COMMENT_ID}" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        PROCESSING_BODY=$(cat <<'BODY_EOF'
+        ## 🏗 Architecture Tracker
+
+        ⏳ 処理中... LLMによるコンポーネント解析を実行しています。しばらくお待ちください。
+        BODY_EOF
+        )
+
+        if [ -n "$COMMENT_ID" ]; then
+          # 既存コメントを「処理中」に更新（再生成 or クラッシュリカバリ）
+          gh api "repos/${REPO}/issues/comments/${COMMENT_ID}" \
+            --method PATCH \
+            --field body="$PROCESSING_BODY"
+          echo "comment_id=${COMMENT_ID}" >> "$GITHUB_OUTPUT"
+          echo "⏳ Updated existing comment ${COMMENT_ID} to processing status"
+        else
+          # 新規コメントを gh api で投稿しコメントIDを取得
+          new_comment_id=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+            --method POST \
+            --field body="$PROCESSING_BODY" \
+            --jq '.id')
+          echo "comment_id=${new_comment_id}" >> "$GITHUB_OUTPUT"
+          echo "⏳ Posted processing comment ${new_comment_id} on PR #${PR_NUMBER}"
+        fi
+
+    - name: Extract existing comment state (regenerate mode)
+      id: extract-existing
+      if: inputs.mode == 'regenerate'
+      shell: bash
+      env:
+        EXISTING_BODY_FILE: ${{ steps.check.outputs.existing_body_file }}
+        ACTION_PATH: ${{ github.action_path }}
+        PARSE_CHECKBOXES_PATH: ${{ github.workspace }}/.github/actions/record-mapping
+      run: |
+        set -euo pipefail
+
+        result=$(COMMENT_BODY="$(cat "$EXISTING_BODY_FILE")" \
+          python3 "${PARSE_CHECKBOXES_PATH}/parse_checkboxes.py")
+
+        checked=$(echo "$result" | python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['components']))")
+        source=$(echo "$result" | python3 -c "import sys,json; print(json.load(sys.stdin)['source'])")
+        ai_components=$(echo "$result" | python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['ai_components']))")
+        no_impact=$(echo "$result" | python3 -c "import sys,json; print('true' if json.load(sys.stdin)['no_impact'] else 'false')")
+
+        echo "checked_components=${checked}" >> "$GITHUB_OUTPUT"
+        echo "source=${source}" >> "$GITHUB_OUTPUT"
+        echo "ai_components=${ai_components}" >> "$GITHUB_OUTPUT"
+        echo "no_impact=${no_impact}" >> "$GITHUB_OUTPUT"
+
+        rm -f "$EXISTING_BODY_FILE"
+        echo "📋 Extracted existing state: source=${source}, checked=$(echo "$checked" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" ) components, no_impact=${no_impact}"
+
+    - name: Fetch PR body for regenerate mode
+      id: fetch-pr-body
+      if: steps.check.outputs.already_posted != 'true' && inputs.mode == 'regenerate'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        pr_body=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.body // ""')
+        delimiter="GHEOF_$(openssl rand -hex 8)"
+        {
+          echo "pr_body<<${delimiter}"
+          echo "${pr_body}"
+          echo "${delimiter}"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: Extract components via LLM
+      id: extract
+      if: steps.check.outputs.already_posted != 'true' && steps.fetch-pr-body.outcome != 'failure'
+      continue-on-error: true
+      uses: ./.github/actions/extract-components
+      with:
+        github-token: ${{ inputs.github-token }}
+        data-branch: ${{ inputs.data-branch }}
+        anthropic-api-key: ${{ inputs.anthropic-api-key }}
+        openai-api-key: ${{ inputs.openai-api-key }}
+        claude-code-oauth-token: ${{ inputs.claude-code-oauth-token }}
+        model: ${{ inputs.model }}
+        pr-body: ${{ steps.fetch-pr-body.outputs.pr_body }}
+
+    - name: Fetch components and build comment
+      if: steps.check.outputs.already_posted != 'true'
+      id: build
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        PR_TITLE: ${{ inputs.pr-title || github.event.pull_request.title }}
+        REPO: ${{ github.repository }}
+        ACTION_PATH: ${{ github.action_path }}
+        MODE: ${{ inputs.mode }}
+        AI_COMPONENTS: ${{ steps.extract.outputs.components }}
+        AI_SKIPPED: ${{ steps.extract.outputs.skipped }}
+        AI_PROVIDER: ${{ steps.extract.outputs.provider }}
+        AI_OUTCOME: ${{ steps.extract.outcome }}
+        PROPOSALS: ${{ inputs.proposals }}
+        DETECTION_METHOD: ${{ inputs.detection-method }}
+        SPA_URL: ${{ inputs.spa-url }}
+        EXISTING_CHECKED: ${{ steps.extract-existing.outputs.checked_components }}
+        EXISTING_SOURCE: ${{ steps.extract-existing.outputs.source }}
+        EXISTING_AI_COMPONENTS: ${{ steps.extract-existing.outputs.ai_components }}
+        EXISTING_NO_IMPACT: ${{ steps.extract-existing.outputs.no_impact }}
+        AUTO_APPROVE: ${{ inputs.auto-approve }}
+      run: |
+        set -euo pipefail
+
+        echo "Fetching components.yaml from branch: ${DATA_BRANCH}"
+        components_yaml=$(gh api "repos/${REPO}/contents/components.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' | base64 -d)
+
+        if [ -z "$components_yaml" ]; then
+          echo "::error::components.yaml not found on branch ${DATA_BRANCH}"
+          exit 1
+        fi
+
+        components_file=$(mktemp --suffix=.yaml)
+        echo "$components_yaml" > "$components_file"
+
+        extra_args=()
+        ai_notice=""
+
+        if [ "$MODE" = "regenerate" ]; then
+          # 再生成: LLM再抽出が成功した場合は新しい結果を使用、失敗/スキップ時は既存状態を復元
+          if [ "$AI_OUTCOME" = "success" ] && [ "$AI_SKIPPED" != "true" ]; then
+            if [ -n "$AI_COMPONENTS" ] && [ "$AI_COMPONENTS" != "[]" ]; then
+              extra_args=(--ai-components "$AI_COMPONENTS")
+              echo "🔄 Regenerating with re-extracted AI components (provider: ${AI_PROVIDER})"
+            else
+              extra_args=(--no-impact-default)
+              echo "🔄 Re-extraction found no matching components (provider: ${AI_PROVIDER})"
+            fi
+          else
+            if [ -n "$EXISTING_AI_COMPONENTS" ] && [ "$EXISTING_AI_COMPONENTS" != "[]" ]; then
+              extra_args=(--ai-components "$EXISTING_AI_COMPONENTS")
+            fi
+            if [ -n "$EXISTING_CHECKED" ] && [ "$EXISTING_CHECKED" != "[]" ]; then
+              extra_args+=(--checked-components "$EXISTING_CHECKED")
+            fi
+            if [ "$EXISTING_NO_IMPACT" = "true" ]; then
+              extra_args+=(--no-impact-checked)
+            fi
+            if [ "$AI_SKIPPED" = "true" ]; then
+              echo "🔄 LLM API key not configured, regenerating with existing state"
+            else
+              echo "🔄 LLM re-extraction failed, regenerating with existing state (source: ${EXISTING_SOURCE})"
+            fi
+          fi
+        else
+          # 新規: LLM抽出結果を使用
+          should_auto_record="false"
+          if [ "$AI_OUTCOME" = "success" ] && [ "$AI_SKIPPED" != "true" ] && [ -n "$AI_COMPONENTS" ] && [ "$AI_COMPONENTS" != "[]" ]; then
+            extra_args=(--ai-components "$AI_COMPONENTS")
+            echo "🤖 AI extraction succeeded (provider: ${AI_PROVIDER}), posting AI proposal comment"
+            if [ "$AUTO_APPROVE" = "true" ]; then
+              extra_args+=(--auto-approve)
+              should_auto_record="true"
+              echo "🤖 Auto-approve mode: will auto-record after posting"
+            fi
+          else
+            if [ "$AI_OUTCOME" != "success" ]; then
+              echo "⚠️ AI extraction failed, falling back to manual mapping comment"
+              echo "::warning::AI抽出に失敗しました。手動モードでコメントを投稿します。モデルIDの廃止やAPIキー設定を確認してください。"
+              ai_notice=$'\n\n> ⚠️ AI抽出に失敗しました（手動モードで投稿）。モデルIDの廃止やAPIキー設定を確認してください。'
+            elif [ "$AI_SKIPPED" != "true" ]; then
+              echo "🤖 AI extraction succeeded but found no matching components (provider: ${AI_PROVIDER})"
+              extra_args=(--no-impact-default)
+              ai_notice=$'\n\n> ℹ️ AI抽出の結果、影響コンポーネントは検出されませんでした。該当がある場合は手動で選択してください。'
+              if [ "$AUTO_APPROVE" = "true" ]; then
+                extra_args+=(--auto-approve)
+                should_auto_record="true"
+                echo "🤖 Auto-approve mode: will auto-record no_impact after posting"
+              fi
+            else
+              echo "📝 No AI extraction available, posting manual mapping comment"
+            fi
+          fi
+        fi
+
+        # 構造変更提案がある場合はbuild_comment.pyに渡す
+        has_proposals="false"
+        if [ -n "$PROPOSALS" ] && [ "$PROPOSALS" != "[]" ]; then
+          has_proposals="true"
+          extra_args+=(--proposals "$PROPOSALS")
+          extra_args+=(--detection-method "$DETECTION_METHOD")
+          echo "📋 Including structural change proposals in comment"
+        fi
+
+        # SPA URLは常に渡す（提案の有無に関わらずエディタリンクを表示するため）
+        if [ -n "$SPA_URL" ]; then
+          extra_args+=(--spa-url "$SPA_URL")
+        fi
+
+        comment_file=$(mktemp --suffix=.md)
+        python3 "${ACTION_PATH}/build_comment.py" \
+          --pr-number "$PR_NUMBER" \
+          --pr-title "$PR_TITLE" \
+          --components-file "$components_file" \
+          "${extra_args[@]}" \
+          > "$comment_file"
+
+        if [ -n "$ai_notice" ]; then
+          echo "$ai_notice" >> "$comment_file"
+        fi
+
+        rm -f "$components_file"
+        echo "comment_file=${comment_file}" >> "$GITHUB_OUTPUT"
+        echo "should_auto_record=${should_auto_record:-false}" >> "$GITHUB_OUTPUT"
+
+        # トラッキングIssue作成が必要か判定
+        # - AI抽出が失敗/利用不可 → ユーザー対応が必要
+        # - auto_approve=false かつ構造変更提案あり → ユーザー判断が必要
+        # ※ auto-record失敗はbuild時点で未知のためYAML側で判定
+        should_create_issue="false"
+        if [ "$AI_OUTCOME" != "success" ] || [ "$AI_SKIPPED" = "true" ]; then
+          should_create_issue="true"
+        elif [ "$AUTO_APPROVE" != "true" ] && [ "$has_proposals" = "true" ]; then
+          should_create_issue="true"
+        fi
+        echo "should_create_issue=${should_create_issue}" >> "$GITHUB_OUTPUT"
+
+    - name: Post or update comment with result
+      if: steps.check.outputs.already_posted != 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        REPO: ${{ github.repository }}
+        COMMENT_ID: ${{ steps.processing.outputs.comment_id || steps.check.outputs.comment_id }}
+        COMMENT_FILE: ${{ steps.build.outputs.comment_file }}
+      run: |
+        set -euo pipefail
+        if [ -n "$COMMENT_ID" ]; then
+          echo "Updating comment ${COMMENT_ID} with result"
+          gh api "repos/${REPO}/issues/comments/${COMMENT_ID}" \
+            --method PATCH \
+            --field body=@"$COMMENT_FILE"
+        else
+          echo "Posting new comment to PR #${PR_NUMBER}"
+          gh pr comment "$PR_NUMBER" --body-file "$COMMENT_FILE" --repo "$REPO"
+        fi
+        rm -f "$COMMENT_FILE"
+        echo "✅ Architecture tracking comment posted successfully"
+
+    - name: Auto-record mapping
+      id: auto-record
+      if: >-
+        steps.check.outputs.already_posted != 'true'
+        && steps.build.outputs.should_auto_record == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        PR_TITLE: ${{ inputs.pr-title || github.event.pull_request.title }}
+        AI_COMPONENTS: ${{ steps.extract.outputs.components }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        RECORD_MAPPING_DIR="${ACTION_PATH}/../record-mapping"
+
+        # PR情報を取得
+        pr_json=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" \
+          --jq '{url: .html_url, merged_at: .merged_at, author: .user.login, additions: .additions, deletions: .deletions, changed_files: .changed_files, labels: [.labels[].name]}')
+
+        PR_URL=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['url'])")
+        MERGED_AT=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['merged_at'] or '')")
+        AUTHOR=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['author'])")
+        ADDITIONS=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['additions'])")
+        DELETIONS=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['deletions'])")
+        CHANGED_FILES=$(echo "$pr_json" | python3 -c "import sys,json; print(json.load(sys.stdin)['changed_files'])")
+        LABELS=$(echo "$pr_json" | python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['labels']))")
+
+        # merged_atが空の場合（未マージ）は現在時刻を使用
+        if [ -z "$MERGED_AT" ] || [ "$MERGED_AT" = "None" ]; then
+          MERGED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        fi
+
+        # AI抽出結果からコンポーネントとno_impactを判定
+        no_impact_args=()
+        if [ -n "$AI_COMPONENTS" ] && [ "$AI_COMPONENTS" != "[]" ]; then
+          COMPONENTS="$AI_COMPONENTS"
+        else
+          COMPONENTS="[]"
+          no_impact_args=(--no-impact)
+        fi
+
+        max_retries=3
+        retry=0
+
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        while [ $retry -lt $max_retries ]; do
+          work_dir=$(mktemp -d)
+          git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+            clone --branch "${DATA_BRANCH}" --single-branch \
+            "https://github.com/${REPO}.git" "$work_dir"
+          git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+
+          model_version=$(cd "${RECORD_MAPPING_DIR}" && python3 -c "from update_data import read_model_version; print(read_model_version('${work_dir}/components.yaml'))" 2>/dev/null || echo "")
+
+          model_version_args=()
+          if [ -n "$model_version" ]; then
+            model_version_args=(--model-version "$model_version")
+          fi
+
+          diff_stats_args=()
+          if [ -n "$ADDITIONS" ] && [ -n "$DELETIONS" ] && [ -n "$CHANGED_FILES" ]; then
+            diff_stats_args=(--additions "$ADDITIONS" --deletions "$DELETIONS" --changed-files "$CHANGED_FILES")
+          fi
+
+          labels_args=()
+          if [ -n "$LABELS" ] && [ "$LABELS" != "[]" ]; then
+            labels_args=(--labels "$LABELS")
+          fi
+
+          python3 "${RECORD_MAPPING_DIR}/update_data.py" \
+            --mappings-file "${work_dir}/mappings.json" \
+            --timeline-file "${work_dir}/timeline.json" \
+            --pr-number "$PR_NUMBER" \
+            --pr-title "$PR_TITLE" \
+            --pr-url "$PR_URL" \
+            --merged-at "$MERGED_AT" \
+            --components "$COMPONENTS" \
+            --author "$AUTHOR" \
+            --source "ai" \
+            --ai-components "$AI_COMPONENTS" \
+            --auto-approved \
+            "${no_impact_args[@]}" \
+            "${model_version_args[@]}" \
+            "${diff_stats_args[@]}" \
+            "${labels_args[@]}"
+
+          cd "$work_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mappings.json timeline.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          git commit -m "Auto-approve mapping for PR #${PR_NUMBER}"
+
+          if git push origin "${DATA_BRANCH}"; then
+            echo "✅ Auto-approved mapping recorded for PR #${PR_NUMBER}"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          echo "⚠️ Push failed (attempt $((retry + 1))/${max_retries}), retrying..."
+          retry=$((retry + 1))
+          cd /tmp
+          rm -rf "$work_dir"
+          sleep $((retry * 2))
+        done
+
+        echo "::error::Failed to push auto-approved mapping after ${max_retries} retries"
+        exit 1
+
+    - name: Notify visualize-impact (auto-record)
+      if: >-
+        steps.build.outputs.should_auto_record == 'true'
+        && steps.auto-record.outputs.pushed == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        gh api "repos/${REPO}/dispatches" \
+          --method POST \
+          -f event_type=visualize-impact \
+          -f "client_payload[pr_number]=${PR_NUMBER}"
+        echo "📤 Dispatched visualize-impact for PR #${PR_NUMBER}"
+
+    - name: Warn auto-record failure
+      if: >-
+        steps.auto-record.outcome == 'failure'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        gh pr comment "$PR_NUMBER" \
+          --repo "$REPO" \
+          --body "⚠️ **Architecture Tracker**: 自動記録に失敗しました。トラッキングIssueを作成します。PRコメントのチェックボックスで手動選択してください。"
+
+    - name: Create tracking issue
+      if: >-
+        steps.check.outputs.already_posted != 'true'
+        && inputs.mode != 'regenerate'
+        && (steps.build.outputs.should_create_issue == 'true'
+            || steps.auto-record.outcome == 'failure')
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        PR_TITLE: ${{ inputs.pr-title || github.event.pull_request.title }}
+        REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+
+        # ラベルがなければ作成（既に存在すればスキップ）
+        gh label create "architecture-tracking" \
+          --description "Architecture Tracker自動作成のトラッキングIssue" \
+          --color "1d76db" \
+          --repo "$REPO" 2>/dev/null || true
+
+        issue_body_file=$(mktemp --suffix=.md)
+        {
+          echo "PRのアーキテクチャコンポーネント紐付けが未完了です。"
+          echo ""
+          printf "**対象PR**: #%s — %s\n" "$PR_NUMBER" "$PR_TITLE"
+          echo ""
+          printf "PR上の [Architecture Trackerコメント](https://github.com/%s/pull/%s) でコンポーネントを選択してください。\n" "$REPO" "$PR_NUMBER"
+          echo "選択が完了すると、このIssueは自動的にクローズされます。"
+          echo ""
+          echo "---"
+          echo '<sub>🤖 このIssueは <a href="https://github.com/kenkenji/architecture-tracker">Architecture Tracker</a> が自動作成しました</sub>'
+        } > "$issue_body_file"
+
+        printf -v issue_title "🏗 Architecture Tracking: PR #%s — %s" "$PR_NUMBER" "$PR_TITLE"
+
+        gh issue create \
+          --title "$issue_title" \
+          --body-file "$issue_body_file" \
+          --label "architecture-tracking" \
+          --repo "$REPO"
+
+        rm -f "$issue_body_file"
+        echo "✅ Tracking issue created for PR #${PR_NUMBER}"

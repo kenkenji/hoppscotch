@@ -1,0 +1,117 @@
+name: "Deploy SPA"
+description: "SPAをビルドしてgh-pagesブランチにデプロイする"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  repository-name:
+    description: "Repository name (e.g. 'architecture-tracker')"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+
+    - name: Install dependencies and build SPA
+      shell: bash
+      working-directory: spa
+      run: |
+        set -euo pipefail
+        npm ci
+        npm run build
+
+    - name: Inject base path and repo info into built SPA
+      shell: bash
+      env:
+        REPO: ${{ github.repository }}
+        REPO_NAME: ${{ inputs.repository-name }}
+      run: |
+        set -euo pipefail
+        dist_dir="${GITHUB_WORKSPACE}/spa/dist"
+        owner="${REPO%%/*}"
+        for f in "${dist_dir}/index.html" "${dist_dir}/404.html"; do
+          if [ -f "$f" ]; then
+            sed -i "s|__AT_BASE_PATH__ = '/'|__AT_BASE_PATH__ = '/${REPO_NAME}/'|" "$f"
+            sed -i "s|__AT_REPO_OWNER__ = ''|__AT_REPO_OWNER__ = '${owner}'|" "$f"
+            sed -i "s|__AT_REPO_NAME__ = ''|__AT_REPO_NAME__ = '${REPO_NAME}'|" "$f"
+          fi
+        done
+
+    - name: Deploy to gh-pages branch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        REPO_NAME: ${{ inputs.repository-name }}
+      run: |
+        set -euo pipefail
+
+        dist_dir="${GITHUB_WORKSPACE}/spa/dist"
+
+        if [ ! -d "$dist_dir" ] || [ -z "$(ls -A "$dist_dir")" ]; then
+          echo "::error::Build output not found in spa/dist"
+          exit 1
+        fi
+
+        work_dir=$(mktemp -d)
+        repo_url="https://github.com/${REPO}.git"
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        # gh-pagesブランチの存在確認
+        if git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+          ls-remote --heads "$repo_url" gh-pages | grep -q gh-pages; then
+          git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+            clone --branch gh-pages --single-branch "$repo_url" "$work_dir"
+        else
+          # gh-pagesブランチが存在しない場合は新規作成（orphanブランチ）
+          git init "$work_dir"
+          cd "$work_dir"
+          git checkout --orphan gh-pages
+          git remote add origin "$repo_url"
+          cd - > /dev/null
+        fi
+        git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+
+        # 既存ファイルを削除してビルド成果物をコピー
+        find "$work_dir" -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+        cp -r "$dist_dir"/. "$work_dir/"
+
+        # Jekyll処理を無効化（アンダースコア接頭辞ファイルの無視を防止）
+        touch "$work_dir/.nojekyll"
+
+        cd "$work_dir"
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add -A
+
+        if git diff --cached --quiet; then
+          echo "✅ No changes to deploy"
+        else
+          git commit -m "Deploy SPA to GitHub Pages"
+          max_retries=3
+          retry=0
+          while [ $retry -lt $max_retries ]; do
+            if git push origin gh-pages; then
+              echo "✅ Deployed SPA to gh-pages branch"
+              break
+            fi
+            retry=$((retry + 1))
+            echo "⚠️ Push failed (attempt ${retry}/${max_retries}), retrying..."
+            sleep $((retry * 2))
+            git pull --rebase origin gh-pages || true
+          done
+
+          if [ $retry -eq $max_retries ]; then
+            echo "::error::Failed to push to gh-pages after ${max_retries} retries"
+            exit 1
+          fi
+        fi
+
+        cd - > /dev/null
+        rm -rf "$work_dir"

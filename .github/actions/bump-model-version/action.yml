@@ -1,0 +1,128 @@
+name: "Bump Model Version"
+description: "components.yamlのバージョンをインクリメントし、changelogを更新、gitタグを付与する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  changes:
+    description: "JSON array of change objects for changelog"
+    required: false
+    default: "[]"
+  trigger-type:
+    description: "Trigger type: pr, manual, or auto"
+    required: false
+    default: "manual"
+  trigger-pr-number:
+    description: "PR number that triggered the change"
+    required: false
+    default: ""
+  trigger-pr-url:
+    description: "PR URL that triggered the change"
+    required: false
+    default: ""
+  author:
+    description: "Author of the change"
+    required: false
+    default: "github-actions[bot]"
+
+outputs:
+  new-version:
+    description: "New model version number"
+    value: ${{ steps.bump.outputs.new_version }}
+  previous-version:
+    description: "Previous model version number"
+    value: ${{ steps.bump.outputs.previous_version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python dependencies
+      shell: bash
+      run: pip install pyyaml
+
+    - name: Bump version and update changelog
+      id: bump
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        CHANGES: ${{ inputs.changes }}
+        TRIGGER_TYPE: ${{ inputs.trigger-type }}
+        TRIGGER_PR_NUMBER: ${{ inputs.trigger-pr-number }}
+        TRIGGER_PR_URL: ${{ inputs.trigger-pr-url }}
+        AUTHOR: ${{ inputs.author }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        max_retries=3
+        retry=0
+
+        trigger_args=()
+        if [ -n "$TRIGGER_PR_NUMBER" ]; then
+          trigger_args+=(--trigger-pr-number "$TRIGGER_PR_NUMBER")
+        fi
+        if [ -n "$TRIGGER_PR_URL" ]; then
+          trigger_args+=(--trigger-pr-url "$TRIGGER_PR_URL")
+        fi
+
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        while [ $retry -lt $max_retries ]; do
+          work_dir=$(mktemp -d)
+          git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+            clone --branch "${DATA_BRANCH}" --single-branch \
+            "https://github.com/${REPO}.git" "$work_dir"
+          git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+
+          output=$(python3 "${ACTION_PATH}/bump_version.py" \
+            --components-file "${work_dir}/components.yaml" \
+            --changelog-file "${work_dir}/model-changelog.json" \
+            --changes "$CHANGES" \
+            --trigger-type "$TRIGGER_TYPE" \
+            --author "$AUTHOR" \
+            "${trigger_args[@]}")
+
+          previous_version=$(echo "$output" | grep "^previous_version=" | cut -d= -f2)
+          new_version=$(echo "$output" | grep "^new_version=" | cut -d= -f2)
+
+          cd "$work_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add components.yaml model-changelog.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            echo "previous_version=${previous_version}" >> "$GITHUB_OUTPUT"
+            echo "new_version=${new_version}" >> "$GITHUB_OUTPUT"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          git commit -m "Bump model version to v${new_version}"
+          git tag "model-v${new_version}"
+
+          if git push --tags origin "${DATA_BRANCH}"; then
+            echo "✅ Bumped model version: v${previous_version} → v${new_version}"
+            echo "previous_version=${previous_version}" >> "$GITHUB_OUTPUT"
+            echo "new_version=${new_version}" >> "$GITHUB_OUTPUT"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          echo "⚠️ Push failed (attempt $((retry + 1))/${max_retries}), retrying..."
+          retry=$((retry + 1))
+          cd /tmp
+          rm -rf "$work_dir"
+          sleep $((retry * 2))
+        done
+
+        echo "::error::Failed to push after ${max_retries} retries"
+        exit 1

@@ -1,0 +1,190 @@
+name: "Catch-up Bulk"
+description: "過去のマージ済みPRを一括でLLM抽出→データ記録するキャッチアップエンジン"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: false
+    default: "_architecture-tracker"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based extraction"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name"
+    required: false
+    default: ""
+  since:
+    description: "開始日 (ISO 8601)"
+    required: false
+    default: ""
+  until:
+    description: "終了日 (ISO 8601)"
+    required: false
+    default: ""
+  pr-numbers:
+    description: "対象PR番号 (カンマ区切り)"
+    required: false
+    default: ""
+  source-repo:
+    description: "外部リポジトリ (OWNER/REPO形式)"
+    required: false
+    default: ""
+  batch-size:
+    description: "バッチサイズ"
+    required: false
+    default: "10"
+  dry-run:
+    description: "プレビューモード"
+    required: false
+    default: "false"
+
+outputs:
+  processed:
+    description: "処理したPR数"
+    value: ${{ steps.run.outputs.processed }}
+  succeeded:
+    description: "成功したPR数"
+    value: ${{ steps.run.outputs.succeeded }}
+  failed:
+    description: "失敗したPR数"
+    value: ${{ steps.run.outputs.failed }}
+  skipped:
+    description: "スキップしたPR数（既記録）"
+    value: ${{ steps.run.outputs.skipped }}
+  summary-json:
+    description: "サマリーJSON"
+    value: ${{ steps.read-summary.outputs.json }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ -n "$ANTHROPIC_API_KEY" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ -n "$OPENAI_API_KEY" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Clone data branch
+      id: clone
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+      run: |
+        set -euo pipefail
+
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        work_dir=$(mktemp -d)
+        git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+          clone --branch "${DATA_BRANCH}" --single-branch \
+          "https://github.com/${REPO}.git" "$work_dir"
+        git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+        git -C "$work_dir" config user.name "github-actions[bot]"
+        git -C "$work_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+        echo "work_dir=${work_dir}" >> "$GITHUB_OUTPUT"
+
+    - name: Run catch-up bulk
+      id: run
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        MODEL: ${{ inputs.model }}
+        SINCE: ${{ inputs.since }}
+        UNTIL: ${{ inputs.until }}
+        PR_NUMBERS: ${{ inputs.pr-numbers }}
+        SOURCE_REPO: ${{ inputs.source-repo }}
+        BATCH_SIZE: ${{ inputs.batch-size }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        WORK_DIR: ${{ steps.clone.outputs.work_dir }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        args=(
+          --repo "$REPO"
+          --data-branch "$DATA_BRANCH"
+          --work-dir "$WORK_DIR"
+          --prompt-template "${ACTION_PATH}/../extract-components/prompt.txt"
+          --batch-size "$BATCH_SIZE"
+        )
+
+        if [ -n "$MODEL" ]; then
+          args+=(--model "$MODEL")
+        fi
+        if [ -n "$SINCE" ]; then
+          args+=(--since "$SINCE")
+        fi
+        if [ -n "$UNTIL" ]; then
+          args+=(--until "$UNTIL")
+        fi
+        if [ -n "$PR_NUMBERS" ]; then
+          args+=(--pr-numbers "$PR_NUMBERS")
+        fi
+        if [ -n "$SOURCE_REPO" ]; then
+          args+=(--source-repo "$SOURCE_REPO")
+        fi
+        if [ "$DRY_RUN" = "true" ]; then
+          args+=(--dry-run)
+        fi
+
+        args+=(--summary-file "${WORK_DIR}/catch_up_summary.json")
+
+        python3 "${ACTION_PATH}/catch_up.py" "${args[@]}"
+
+    - name: Read summary
+      id: read-summary
+      if: always() && steps.run.conclusion != 'skipped'
+      shell: bash
+      env:
+        SUMMARY_FILE: ${{ steps.clone.outputs.work_dir }}/catch_up_summary.json
+      run: |
+        if [ -f "$SUMMARY_FILE" ]; then
+          {
+            echo "json<<SUMMARY_EOF"
+            cat "$SUMMARY_FILE"
+            echo "SUMMARY_EOF"
+          } >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Cleanup
+      if: always()
+      shell: bash
+      env:
+        WORK_DIR: ${{ steps.clone.outputs.work_dir }}
+      run: |
+        if [ -n "$WORK_DIR" ] && [ -d "$WORK_DIR" ]; then
+          rm -rf "$WORK_DIR"
+        fi

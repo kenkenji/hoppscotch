@@ -1,0 +1,228 @@
+name: "Catch-up (Bulk Import)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "開始日（YYYY-MM-DD形式、この日以降にマージされたPR）"
+        required: false
+      until:
+        description: "終了日（YYYY-MM-DD形式、この日以前にマージされたPR）"
+        required: false
+      pr-numbers:
+        description: "対象PR番号（カンマ区切り、例: 1,2,3）"
+        required: false
+      source-repo:
+        description: "外部リポジトリ（OWNER/REPO形式）"
+        required: false
+      batch-size:
+        description: "バッチサイズ"
+        required: false
+        default: "10"
+      dry-run:
+        description: "プレビューモード"
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: architecture-tracker-catch-up
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  catch-up:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate filter inputs
+        shell: bash
+        env:
+          SINCE: ${{ inputs.since }}
+          UNTIL: ${{ inputs.until }}
+          PR_NUMBERS: ${{ inputs.pr-numbers }}
+        run: |
+          if [ -z "$SINCE" ] && [ -z "$UNTIL" ] && [ -z "$PR_NUMBERS" ]; then
+            echo "::error::フィルタが1つも指定されていません。since, until, pr-numbers のいずれかを指定してください。"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Fetch config from data branch
+        id: config
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          config_yaml=$(gh api "repos/${REPO}/contents/config.yaml?ref=_architecture-tracker" \
+            --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+          if [ -n "$config_yaml" ]; then
+            model=$(echo "$config_yaml" | grep -A1 '^llm:' | grep 'model:' | sed 's/.*model:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+            echo "model=${model}" >> "$GITHUB_OUTPUT"
+          else
+            echo "model=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run catch-up bulk
+        id: catch-up
+        uses: ./.github/actions/catch-up-bulk
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          model: ${{ steps.config.outputs.model }}
+          since: ${{ inputs.since }}
+          until: ${{ inputs.until }}
+          pr-numbers: ${{ inputs.pr-numbers }}
+          source-repo: ${{ inputs.source-repo }}
+          batch-size: ${{ inputs.batch-size }}
+          dry-run: ${{ inputs.dry-run }}
+
+      - name: Job Summary
+        if: always() && steps.catch-up.conclusion != 'skipped'
+        shell: bash
+        env:
+          CATCH_UP_CONCLUSION: ${{ steps.catch-up.conclusion }}
+          DRY_RUN: ${{ inputs.dry-run }}
+          PROCESSED: ${{ steps.catch-up.outputs.processed }}
+          SUCCEEDED: ${{ steps.catch-up.outputs.succeeded }}
+          FAILED: ${{ steps.catch-up.outputs.failed }}
+          SKIPPED: ${{ steps.catch-up.outputs.skipped }}
+          SUMMARY_JSON: ${{ steps.catch-up.outputs.summary-json }}
+          SINCE: ${{ inputs.since }}
+          UNTIL: ${{ inputs.until }}
+          PR_NUMBERS: ${{ inputs.pr-numbers }}
+          SOURCE_REPO: ${{ inputs.source-repo }}
+          BATCH_SIZE: ${{ inputs.batch-size }}
+        run: |
+          set -euo pipefail
+
+          if [ "$CATCH_UP_CONCLUSION" = "failure" ]; then
+            echo "## ❌ Catch-up 失敗" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "catch-up-bulk ステップがエラーで終了しました。上記のログを確認してください。" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$DRY_RUN" = "true" ]; then
+            echo "## 🔍 Catch-up (Dry Run)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## 🏗 Catch-up Summary" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### パラメータ" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| パラメータ | 値 |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "$SINCE" ]; then
+            echo "| 開始日 | ${SINCE} |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$UNTIL" ]; then
+            echo "| 終了日 | ${UNTIL} |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$PR_NUMBERS" ]; then
+            echo "| 対象PR | ${PR_NUMBERS} |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$SOURCE_REPO" ]; then
+            echo "| 外部リポジトリ | ${SOURCE_REPO} |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "| バッチサイズ | ${BATCH_SIZE} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| dry-run | ${DRY_RUN} |" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$CATCH_UP_CONCLUSION" != "failure" ]; then
+            # 処理時間をサマリーJSONから取得（フォーマット済み文字列）
+            elapsed_display=""
+            if [ -n "$SUMMARY_JSON" ]; then
+              elapsed_display=$(printf '%s\n' "$SUMMARY_JSON" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          print(data.get('elapsed_display', ''))
+          " 2>&1) || {
+                echo "::warning::サマリーJSONからの処理時間取得に失敗: ${elapsed_display}"
+                elapsed_display=""
+              }
+            fi
+
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### 結果" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "| 項目 | 件数 |" >> "$GITHUB_STEP_SUMMARY"
+            echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+            echo "| 処理対象 | ${PROCESSED:-0} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| 成功 | ${SUCCEEDED:-0} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| 失敗 | ${FAILED:-0} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| スキップ（既記録） | ${SKIPPED:-0} |" >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "$elapsed_display" ]; then
+              echo "| 処理時間 | ${elapsed_display} |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+
+            # 失敗PRの詳細テーブル
+            if [ -n "$SUMMARY_JSON" ]; then
+              failed_table=$(printf '%s\n' "$SUMMARY_JSON" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          details = data.get('failed_details', [])
+          if details:
+              print('')
+              print('### 失敗したPR')
+              print('')
+              print('| PR | タイトル | エラー |')
+              print('|----|---------|--------|')
+              for d in details:
+                  nr = d.get('pr_number', '')
+                  title = d.get('title', '').replace('|', '\\\\|')
+                  err = d.get('error', '').replace('|', '\\\\|')
+                  print(f'| #{nr} | {title} | {err} |')
+          " 2>&1) || {
+                echo "::warning::失敗PR詳細テーブルの生成に失敗: ${failed_table}"
+                failed_table=""
+              }
+              if [ -n "$failed_table" ]; then
+                echo "$failed_table" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            fi
+
+            # dry-run時のPR一覧
+            if [ "$DRY_RUN" = "true" ] && [ -n "$SUMMARY_JSON" ]; then
+              dryrun_table=$(printf '%s\n' "$SUMMARY_JSON" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          prs = data.get('dry_run_prs', [])
+          if prs:
+              print('')
+              print('### 処理対象PR一覧')
+              print('')
+              print('| PR | タイトル | マージ日 |')
+              print('|----|---------|----------|')
+              for p in prs:
+                  nr = p.get('number', '')
+                  title = p.get('title', '').replace('|', '\\\\|')
+                  merged = p.get('merged_at', '')[:10]
+                  print(f'| #{nr} | {title} | {merged} |')
+              cost = data.get('estimated_cost', 0)
+              label = data.get('cost_label', 'default')
+              print('')
+              print(f'推定LLMコスト: ~\${cost:.2f} ({label})')
+          " 2>&1) || {
+                echo "::warning::dry-run PR一覧の生成に失敗: ${dryrun_table}"
+                dryrun_table=""
+              }
+              if [ -n "$dryrun_table" ]; then
+                echo "$dryrun_table" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            fi
+          fi

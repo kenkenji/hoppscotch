@@ -1,0 +1,165 @@
+name: "Analyze Impact"
+description: "Issueの内容からアーキテクチャモデルを参照し、影響範囲を分析してIssueにコメントを投稿する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based analysis"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name (default: provider's standard model)"
+    required: false
+    default: ""
+  issue-number:
+    description: "Issue number to analyze"
+    required: true
+  issue-title:
+    description: "Issue title"
+    required: true
+  issue-body:
+    description: "Issue body text"
+    required: false
+    default: ""
+  issue-comment-body:
+    description: "Trigger comment body text (for re-analysis via issue_comment)"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ -n "$ANTHROPIC_API_KEY" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ -n "$OPENAI_API_KEY" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Fetch architecture data
+      id: fetch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+
+        echo "Fetching architecture data from branch: ${DATA_BRANCH}"
+
+        components_yaml=$(gh api "repos/${REPO}/contents/components.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+        if [ -z "$components_yaml" ]; then
+          echo "::error::components.yaml not found on branch ${DATA_BRANCH}"
+          exit 1
+        fi
+        components_file=$(mktemp --suffix=.yaml)
+        echo "$components_yaml" > "$components_file"
+        echo "components_file=${components_file}" >> "$GITHUB_OUTPUT"
+
+        mappings_json=$(gh api "repos/${REPO}/contents/mappings.json?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "{}")
+        mappings_file=$(mktemp --suffix=.json)
+        echo "$mappings_json" > "$mappings_file"
+        echo "mappings_file=${mappings_file}" >> "$GITHUB_OUTPUT"
+
+        timeline_json=$(gh api "repos/${REPO}/contents/timeline.json?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "{}")
+        timeline_file=$(mktemp --suffix=.json)
+        echo "$timeline_json" > "$timeline_file"
+        echo "timeline_file=${timeline_file}" >> "$GITHUB_OUTPUT"
+
+        config_yaml=$(gh api "repos/${REPO}/contents/config.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+        if [ -n "$config_yaml" ]; then
+          model=$(echo "$config_yaml" | grep -A1 '^llm:' | grep 'model:' | sed 's/.*model:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+          echo "model=${model}" >> "$GITHUB_OUTPUT"
+        else
+          echo "model=" >> "$GITHUB_OUTPUT"
+        fi
+
+        echo "✅ Architecture data fetched successfully"
+
+    - name: Analyze impact via LLM
+      id: analyze
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        MODEL: ${{ inputs.model || steps.fetch.outputs.model }}
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+        MAPPINGS_FILE: ${{ steps.fetch.outputs.mappings_file }}
+        TIMELINE_FILE: ${{ steps.fetch.outputs.timeline_file }}
+        ISSUE_TITLE: ${{ inputs.issue-title }}
+        ISSUE_BODY: ${{ inputs.issue-body }}
+        ISSUE_COMMENT_BODY: ${{ inputs.issue-comment-body }}
+        ISSUE_NUMBER: ${{ inputs.issue-number }}
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        issue_file=$(mktemp --suffix=.txt)
+        printf '%s\n\n%s' "$ISSUE_TITLE" "$ISSUE_BODY" > "$issue_file"
+
+        model_args=()
+        if [ -n "$MODEL" ]; then
+          model_args=(--model "$MODEL")
+        fi
+
+        comment_args=()
+        if [ -n "$ISSUE_COMMENT_BODY" ]; then
+          comment_file=$(mktemp --suffix=.txt)
+          printf '%s' "$ISSUE_COMMENT_BODY" > "$comment_file"
+          comment_args=(--issue-comment-file "$comment_file")
+        fi
+
+        python3 "${ACTION_PATH}/analyze_impact.py" \
+          --components-file "$COMPONENTS_FILE" \
+          --mappings-file "$MAPPINGS_FILE" \
+          --timeline-file "$TIMELINE_FILE" \
+          --issue-file "$issue_file" \
+          --issue-number "$ISSUE_NUMBER" \
+          --prompt-template "${ACTION_PATH}/prompt.txt" \
+          --repo "$REPO" \
+          "${model_args[@]}" \
+          "${comment_args[@]}"
+
+        rm -f "$issue_file" ${comment_file:-}
+
+    - name: Cleanup
+      if: always()
+      shell: bash
+      env:
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+        MAPPINGS_FILE: ${{ steps.fetch.outputs.mappings_file }}
+        TIMELINE_FILE: ${{ steps.fetch.outputs.timeline_file }}
+      run: rm -f "$COMPONENTS_FILE" "$MAPPINGS_FILE" "$TIMELINE_FILE"

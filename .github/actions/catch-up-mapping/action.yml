@@ -1,0 +1,279 @@
+name: "Catch-up Mapping"
+description: "マージ時にApprove後のチェックボックス選択を拾い上げ、マッピングデータを記録する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  pr-number:
+    description: "PR number (override for non-pull_request events)"
+    required: false
+    default: ""
+  pr-title:
+    description: "PR title (override for non-pull_request events)"
+    required: false
+    default: ""
+  pr-url:
+    description: "PR URL (override for non-pull_request events)"
+    required: false
+    default: ""
+  merged-at:
+    description: "PR merged_at timestamp (override for non-pull_request events)"
+    required: false
+    default: ""
+  author:
+    description: "PR author login (override for non-pull_request events)"
+    required: false
+    default: ""
+
+outputs:
+  recorded:
+    description: "Whether mapping data was recorded"
+    value: ${{ steps.result.outputs.recorded }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch existing comment and parse checkboxes
+      id: parse
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        MARKER="## 🏗 Architecture Tracker"
+        comment_body=$(gh api "repos/${REPO}/issues/${PR_NUMBER}/comments" \
+          --paginate \
+          --jq "[.[] | select(.body | startswith(\"${MARKER}\"))] | .[0].body // empty")
+
+        if [ -z "$comment_body" ]; then
+          echo "No Architecture Tracker comment found, skipping."
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        RECORD_MAPPING_DIR="${ACTION_PATH}/../record-mapping"
+        export COMMENT_BODY="$comment_body"
+        result=$(python3 "${RECORD_MAPPING_DIR}/parse_checkboxes.py")
+
+        if [ "$result" = "not-tracker-comment" ]; then
+          echo "No Architecture Tracker comment, skipping."
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        components=$(echo "$result" | jq -c '.components')
+        source=$(echo "$result" | jq -r '.source')
+        ai_components=$(echo "$result" | jq -c '.ai_components')
+        no_impact=$(echo "$result" | jq -r '.no_impact')
+
+        # コンポーネント選択がある場合は no_impact を無視（コンポーネント選択を優先）
+        if [ "$components" != "[]" ]; then
+          no_impact="false"
+        fi
+
+        if [ "$components" = "[]" ] && [ "$no_impact" != "true" ]; then
+          echo "No components selected and no_impact not checked, skipping."
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        echo "skip=false" >> "$GITHUB_OUTPUT"
+        echo "components=${components}" >> "$GITHUB_OUTPUT"
+        echo "source=${source}" >> "$GITHUB_OUTPUT"
+        echo "ai_components=${ai_components}" >> "$GITHUB_OUTPUT"
+        echo "no_impact=${no_impact}" >> "$GITHUB_OUTPUT"
+        echo "Checked components (catch-up): ${components} (source: ${source}, no_impact: ${no_impact})"
+
+    - name: Fetch PR diff stats and labels
+      id: pr-stats
+      if: steps.parse.outputs.skip != 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+
+        gh api "repos/${REPO}/pulls/${PR_NUMBER}" \
+          --jq '"additions=\(.additions)\ndeletions=\(.deletions)\nchanged_files=\(.changed_files)\nlabels=\([.labels[].name])"' \
+          >> "$GITHUB_OUTPUT"
+
+    - name: Check existing mapping
+      id: check-existing
+      if: steps.parse.outputs.skip != 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+
+        mappings_json=$(gh api "repos/${REPO}/contents/mappings.json?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+
+        if [ -n "$mappings_json" ]; then
+          has_entry=$(echo "$mappings_json" | python3 -c "
+        import sys, json, os
+        data = json.load(sys.stdin)
+        print('true' if os.environ['PR_NUMBER'] in data.get('mappings', {}) else 'false')
+        ")
+          if [ "$has_entry" = "true" ]; then
+            echo "✅ PR #${PR_NUMBER} already has a mapping entry, skipping catch-up"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+        fi
+        echo "skip=false" >> "$GITHUB_OUTPUT"
+
+    - name: Update data branch
+      id: update
+      if: steps.parse.outputs.skip != 'true' && steps.check-existing.outputs.skip != 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        PR_TITLE: ${{ inputs.pr-title || github.event.pull_request.title }}
+        PR_URL: ${{ inputs.pr-url || github.event.pull_request.html_url }}
+        MERGED_AT: ${{ inputs.merged-at || github.event.pull_request.merged_at }}
+        ADDITIONS: ${{ steps.pr-stats.outputs.additions }}
+        DELETIONS: ${{ steps.pr-stats.outputs.deletions }}
+        CHANGED_FILES: ${{ steps.pr-stats.outputs.changed_files }}
+        LABELS: ${{ steps.pr-stats.outputs.labels }}
+        COMPONENTS: ${{ steps.parse.outputs.components }}
+        SOURCE: ${{ steps.parse.outputs.source }}
+        AI_COMPONENTS: ${{ steps.parse.outputs.ai_components }}
+        NO_IMPACT: ${{ steps.parse.outputs.no_impact }}
+        AUTHOR: ${{ inputs.author || github.event.pull_request.user.login }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        RECORD_MAPPING_DIR="${ACTION_PATH}/../record-mapping"
+        max_retries=3
+        retry=0
+
+        ai_args=()
+        if [ "$SOURCE" = "ai" ] && [ "$AI_COMPONENTS" != "[]" ] && [ -n "$AI_COMPONENTS" ]; then
+          ai_args=(--ai-components "$AI_COMPONENTS")
+        fi
+
+        if [ "$NO_IMPACT" = "true" ]; then
+          ai_args+=(--no-impact)
+        fi
+
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        while [ $retry -lt $max_retries ]; do
+          work_dir=$(mktemp -d)
+          git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+            clone --branch "${DATA_BRANCH}" --single-branch \
+            "https://github.com/${REPO}.git" "$work_dir"
+          git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+
+          # components.yamlから現在のモデルバージョンを取得
+          model_version=$(cd "${RECORD_MAPPING_DIR}" && python3 -c "from update_data import read_model_version; print(read_model_version('${work_dir}/components.yaml'))" 2>/dev/null || echo "")
+
+          model_version_args=()
+          if [ -n "$model_version" ]; then
+            model_version_args=(--model-version "$model_version")
+          fi
+
+          diff_stats_args=()
+          if [ -n "$ADDITIONS" ] && [ -n "$DELETIONS" ] && [ -n "$CHANGED_FILES" ]; then
+            diff_stats_args=(--additions "$ADDITIONS" --deletions "$DELETIONS" --changed-files "$CHANGED_FILES")
+          fi
+
+          labels_args=()
+          if [ -n "$LABELS" ] && [ "$LABELS" != "[]" ]; then
+            labels_args=(--labels "$LABELS")
+          fi
+
+          python3 "${RECORD_MAPPING_DIR}/update_data.py" \
+            --mappings-file "${work_dir}/mappings.json" \
+            --timeline-file "${work_dir}/timeline.json" \
+            --pr-number "$PR_NUMBER" \
+            --pr-title "$PR_TITLE" \
+            --pr-url "$PR_URL" \
+            --merged-at "$MERGED_AT" \
+            --components "$COMPONENTS" \
+            --author "$AUTHOR" \
+            --source "$SOURCE" \
+            "${ai_args[@]}" \
+            "${model_version_args[@]}" \
+            "${diff_stats_args[@]}" \
+            "${labels_args[@]}"
+
+          cd "$work_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mappings.json timeline.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          git commit -m "Update mapping for PR #${PR_NUMBER} (catch-up)"
+
+          if git push origin "${DATA_BRANCH}"; then
+            echo "✅ Successfully updated data branch (catch-up)."
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          echo "⚠️ Push failed (attempt $((retry + 1))/${max_retries}), retrying..."
+          retry=$((retry + 1))
+          cd /tmp
+          rm -rf "$work_dir"
+          sleep $((retry * 2))
+        done
+
+        echo "::error::Failed to push after ${max_retries} retries"
+        exit 1
+
+    - name: Notify visualize-impact
+      if: steps.update.outputs.pushed == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        gh api "repos/${REPO}/dispatches" \
+          --method POST \
+          -f event_type=visualize-impact \
+          -f "client_payload[pr_number]=${PR_NUMBER}"
+        echo "📤 Dispatched visualize-impact for PR #${PR_NUMBER}"
+
+    - name: Set result
+      id: result
+      shell: bash
+      env:
+        PARSE_SKIP: ${{ steps.parse.outputs.skip }}
+        EXISTING_SKIP: ${{ steps.check-existing.outputs.skip }}
+      run: |
+        if [ "$PARSE_SKIP" = "true" ] || [ "$EXISTING_SKIP" = "true" ]; then
+          echo "recorded=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "recorded=true" >> "$GITHUB_OUTPUT"
+        fi

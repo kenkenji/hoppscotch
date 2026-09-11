@@ -1,0 +1,151 @@
+name: "Extract Components"
+description: "LLM APIを呼び出してPR Descriptionから影響コンポーネントを自動抽出する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based extraction"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name (default: provider's standard model)"
+    required: false
+    default: ""
+  pr-body:
+    description: "PR description text (override for github.event.pull_request.body)"
+    required: false
+    default: ""
+
+outputs:
+  components:
+    description: "Extracted component IDs as JSON array"
+    value: ${{ steps.extract.outputs.components }}
+  reasoning:
+    description: "LLM's reasoning for the extraction"
+    value: ${{ steps.extract.outputs.reasoning }}
+  provider:
+    description: "LLM provider used (anthropic or openai)"
+    value: ${{ steps.extract.outputs.provider }}
+  skipped:
+    description: "Whether extraction was skipped (no API key)"
+    value: ${{ steps.extract.outputs.skipped }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ -n "$ANTHROPIC_API_KEY" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ -n "$OPENAI_API_KEY" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Fetch components.yaml
+      id: fetch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+
+        echo "Fetching components.yaml from branch: ${DATA_BRANCH}"
+        components_yaml=$(gh api "repos/${REPO}/contents/components.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' | base64 -d)
+
+        if [ -z "$components_yaml" ]; then
+          echo "::error::components.yaml not found on branch ${DATA_BRANCH}"
+          exit 1
+        fi
+
+        components_file=$(mktemp --suffix=.yaml)
+        echo "$components_yaml" > "$components_file"
+        echo "components_file=${components_file}" >> "$GITHUB_OUTPUT"
+
+    - name: Extract components via LLM
+      id: extract
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        MODEL: ${{ inputs.model }}
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+        PR_BODY: ${{ inputs.pr-body || github.event.pull_request.body }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        pr_body_file=$(mktemp --suffix=.txt)
+        printf '%s' "$PR_BODY" > "$pr_body_file"
+
+        model_args=()
+        if [ -n "$MODEL" ]; then
+          model_args=(--model "$MODEL")
+        fi
+
+        result=$(python3 "${ACTION_PATH}/extract_components.py" \
+          --components-file "$COMPONENTS_FILE" \
+          --pr-body-file "$pr_body_file" \
+          --prompt-template "${ACTION_PATH}/prompt.txt" \
+          "${model_args[@]}")
+
+        rm -f "$pr_body_file"
+
+        components=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(json.dumps(d['components']))")
+        reasoning=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('reasoning', ''))")
+        provider=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('provider', ''))")
+        skipped=$(echo "$result" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d.get('skipped', 'false'))")
+
+        {
+          echo "components<<GHEOF"
+          echo "${components}"
+          echo "GHEOF"
+        } >> "$GITHUB_OUTPUT"
+        {
+          echo "reasoning<<GHEOF"
+          echo "${reasoning}"
+          echo "GHEOF"
+        } >> "$GITHUB_OUTPUT"
+        echo "provider=${provider}" >> "$GITHUB_OUTPUT"
+        echo "skipped=${skipped}" >> "$GITHUB_OUTPUT"
+
+        if [ "$skipped" = "true" ]; then
+          echo "⚠️ LLM extraction skipped: no API key configured"
+        else
+          echo "✅ LLM extraction complete (provider: ${provider})"
+          echo "   Components: ${components}"
+        fi
+
+    - name: Cleanup
+      if: always()
+      shell: bash
+      env:
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+      run: rm -f "$COMPONENTS_FILE"
