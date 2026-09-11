@@ -4335,6 +4335,230 @@
         "changed_files": 2
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4275": {
+      "pr_number": 4275,
+      "pr_title": "feat(cli): add support for request variables",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4275",
+      "merged_at": "2024-08-26T13:51:30Z",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T23:00:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "cli"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 449,
+        "deletions": 45,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4187": {
+      "pr_number": 4187,
+      "pr_title": "feat: description field for request parameters and headers",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4187",
+      "merged_at": "2024-08-27T09:00:12Z",
+      "components": [
+        "collections",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:00:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections",
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1347,
+        "deletions": 1073,
+        "changed_files": 29
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4280": {
+      "pr_number": 4280,
+      "pr_title": "feat: sort environments alphabetically",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4280",
+      "merged_at": "2024-08-28T07:46:10Z",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:00:46Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "environments"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 146,
+        "deletions": 31,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4298": {
+      "pr_number": 4298,
+      "pr_title": "chore(lang): update ru locale #2",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4298",
+      "merged_at": "2024-08-28T08:28:34Z",
+      "components": [],
+      "source": "ai",
+      "author": "shipko",
+      "timestamp": "2026-09-11T23:00:51Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4304": {
+      "pr_number": 4304,
+      "pr_title": "fix: colour mode bug in profile page ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4304",
+      "merged_at": "2024-08-28T13:18:59Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:00:58Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4302": {
+      "pr_number": 4302,
+      "pr_title": "feat: ability to refresh tokens for oauth flows",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4302",
+      "merged_at": "2024-08-29T07:57:31Z",
+      "components": [
+        "auth",
+        "testing",
+        "cli"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:01:03Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth",
+        "testing",
+        "cli"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 488,
+        "deletions": 68,
+        "changed_files": 20
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4300": {
+      "pr_number": 4300,
+      "pr_title": "changeing healthcheck bc bash is not exists, container is false marke…",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4300",
+      "merged_at": "2024-08-29T08:23:59Z",
+      "components": [],
+      "source": "ai",
+      "author": "pthoelken",
+      "timestamp": "2026-09-11T23:01:11Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 3,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4269": {
+      "pr_number": 4269,
+      "pr_title": "Add Open Containers Initiative (OCI) labels",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4269",
+      "merged_at": "2024-08-29T08:34:00Z",
+      "components": [],
+      "source": "ai",
+      "author": "DevSecNinja",
+      "timestamp": "2026-09-11T23:01:16Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4307": {
+      "pr_number": 4307,
+      "pr_title": "feat: support importing HAR ( Http Archive Format ) files",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4307",
+      "merged_at": "2024-08-29T09:03:07Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:01:22Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 287,
+        "deletions": 0,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4105": {
+      "pr_number": 4105,
+      "pr_title": "feat: new ui for response interface generation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4105",
+      "merged_at": "2024-08-30T06:40:52Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:01:26Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 467,
+        "deletions": 251,
+        "changed_files": 8
+      },
+      "auto_approved": true
     }
   }
 }
