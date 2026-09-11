@@ -5263,6 +5263,234 @@
         "changed_files": 4
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4393": {
+      "pr_number": 4393,
+      "pr_title": "fix: update copy + improve ux on ai experiments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4393",
+      "merged_at": "2024-10-01T10:47:31Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:04:12Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 59,
+        "deletions": 13,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4398": {
+      "pr_number": 4398,
+      "pr_title": "fix: add fallback for `type` field in `restTabState` schema",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4398",
+      "merged_at": "2024-10-03T12:54:08Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:04:17Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4399": {
+      "pr_number": 4399,
+      "pr_title": "fix: prettier for json with comments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4399",
+      "merged_at": "2024-10-03T13:26:01Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:04:24Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 413,
+        "deletions": 52,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4397": {
+      "pr_number": 4397,
+      "pr_title": "fix: correct SVG rendering issue by adjusting blob type (#3565)",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4397",
+      "merged_at": "2024-10-03T13:34:45Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "shuaixr",
+      "timestamp": "2026-09-11T23:04:28Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4396": {
+      "pr_number": 4396,
+      "pr_title": "feat: hoppscotch agent and agent interceptor ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4396",
+      "merged_at": "2024-10-03T14:56:30Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "timestamp": "2026-09-11T23:04:33Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 14622,
+        "deletions": 595,
+        "changed_files": 106
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4402": {
+      "pr_number": 4402,
+      "pr_title": "fix: comments being stripped out of json request body",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4402",
+      "merged_at": "2024-10-04T18:11:40Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "timestamp": "2026-09-11T23:04:38Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 13,
+        "deletions": 17,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4384": {
+      "pr_number": 4384,
+      "pr_title": "fix: resolve personal environments correctly while editing via quick peek",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4384",
+      "merged_at": "2024-10-10T11:45:54Z",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "timestamp": "2026-09-11T23:04:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "environments"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 6,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4422": {
+      "pr_number": 4422,
+      "pr_title": "fix: add full request as request context",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4422",
+      "merged_at": "2024-10-10T12:41:58Z",
+      "components": [
+        "collections",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:04:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections",
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 9,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4429": {
+      "pr_number": 4429,
+      "pr_title": "fix(sh-admin): resolve i18n strings correctly on error toast with remove member action",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4429",
+      "merged_at": "2024-10-11T15:17:10Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "timestamp": "2026-09-11T23:04:52Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 55,
+        "deletions": 59,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4426": {
+      "pr_number": 4426,
+      "pr_title": "HSB-489 feat: hoppscotch-backend dependency update",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4426",
+      "merged_at": "2024-10-16T21:46:54Z",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T23:04:57Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 6108,
+        "deletions": 4691,
+        "changed_files": 7
+      },
+      "auto_approved": true
     }
   }
 }
