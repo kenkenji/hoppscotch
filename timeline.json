@@ -2,6 +2,240 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4545-20260911T230943Z",
+      "timestamp": "2026-09-11T23:09:43Z",
+      "pr_number": 4545,
+      "pr_title": "HSB-499 feat: env file sync with infra config",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4545",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-26T14:22:51Z",
+      "ai_components": [
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 210,
+        "deletions": 59,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4466-20260911T230939Z",
+      "timestamp": "2026-09-11T23:09:39Z",
+      "pr_number": 4466,
+      "pr_title": "feat: support for binary body",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4466",
+      "components": [
+        "cli",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-26T14:18:01Z",
+      "ai_components": [
+        "cli",
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 261,
+        "deletions": 22,
+        "changed_files": 16
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4560-20260911T230933Z",
+      "timestamp": "2026-09-11T23:09:33Z",
+      "pr_number": 4560,
+      "pr_title": "refactor(sh-admin): updated documentation links in dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4560",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-26T13:43:08Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 16,
+        "deletions": 7,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3600-20260911T230927Z",
+      "timestamp": "2026-09-11T23:09:27Z",
+      "pr_number": 3600,
+      "pr_title": "feat: collection runner",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3600",
+      "components": [
+        "testing",
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-26T10:26:09Z",
+      "ai_components": [
+        "testing",
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 3194,
+        "deletions": 483,
+        "changed_files": 66
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4549-20260911T230923Z",
+      "timestamp": "2026-09-11T23:09:23Z",
+      "pr_number": 4549,
+      "pr_title": "HSB-500 fix: returning introspection complexity to 0",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4549",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-25T13:55:40Z",
+      "ai_components": [
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 9,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4555-20260911T230918Z",
+      "timestamp": "2026-09-11T23:09:18Z",
+      "pr_number": 4555,
+      "pr_title": "chore: update response original request version ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4555",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-25T13:04:03Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 85,
+        "deletions": 15,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4535-20260911T230913Z",
+      "timestamp": "2026-09-11T23:09:13Z",
+      "pr_number": 4535,
+      "pr_title": "chore: continue openapi imports on error with a partial import",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4535",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-25T07:20:20Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 69,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4489-20260911T230909Z",
+      "timestamp": "2026-09-11T23:09:09Z",
+      "pr_number": 4489,
+      "pr_title": "feat: import summaries",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4489",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-25T06:12:26Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 450,
+        "deletions": 43,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4550-20260911T230904Z",
+      "timestamp": "2026-09-11T23:09:04Z",
+      "pr_number": 4550,
+      "pr_title": "feat: add individual content types for formadata",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4550",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-24T14:06:10Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 161,
+        "deletions": 10,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4475-20260911T230859Z",
+      "timestamp": "2026-09-11T23:08:59Z",
+      "pr_number": 4475,
+      "pr_title": "feat: collection CLI runner with iterations and data feed",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4475",
+      "components": [
+        "testing",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "shobanrajm",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-22T17:08:52Z",
+      "ai_components": [
+        "testing",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 626,
+        "deletions": 241,
+        "changed_files": 16
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4537-20260911T230853Z",
       "timestamp": "2026-09-11T23:08:53Z",
       "pr_number": 4537,
