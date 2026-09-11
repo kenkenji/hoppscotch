@@ -3,5 +3,53 @@
 version: "1"
 model:
   type: "c4"
-components: []
-relations: []
+components:
+  - id: web-app
+    name: Web App
+    description: メインのWebアプリケーション（Nuxt.js）
+    level: container
+
+  - id: backend-api
+    name: Backend API
+    description: REST/GraphQL バックエンドサービス
+    level: container
+
+  - id: cli
+    name: CLI
+    description: コマンドラインインターフェース
+    level: container
+
+  - id: browser-extension
+    name: Browser Extension
+    description: ブラウザ拡張機能
+    level: container
+
+  - id: auth
+    name: Authentication
+    description: 認証・認可モジュール
+    level: component
+
+  - id: realtime
+    name: Realtime Engine
+    description: WebSocket によるリアルタイム通信
+    level: component
+
+  - id: collections
+    name: Collections Manager
+    description: APIコレクションの管理
+    level: component
+
+  - id: environments
+    name: Environments
+    description: 環境変数の管理
+    level: component
+
+  - id: testing
+    name: Test Runner
+    description: APIテストの実行エンジン
+    level: component
+
+  - id: shared-lib
+    name: Shared Libraries
+    description: 共有ライブラリ・ユーティリティ
+    level: component
