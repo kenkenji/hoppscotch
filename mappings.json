@@ -938,6 +938,238 @@
         "changed_files": 16
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3857": {
+      "pr_number": 3857,
+      "pr_title": "feat: full text search for `TeamCollections` and `TeamRequests`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3857",
+      "merged_at": "2024-03-05T12:35:59Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "balub",
+      "timestamp": "2026-09-11T22:47:06Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 474,
+        "deletions": 45,
+        "changed_files": 19
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3867": {
+      "pr_number": 3867,
+      "pr_title": "refactor: remove restore tab popup and its functionalities",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3867",
+      "merged_at": "2024-03-05T12:44:41Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:47:16Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 21,
+        "deletions": 341,
+        "changed_files": 13
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3845": {
+      "pr_number": 3845,
+      "pr_title": "feat(sh-admin): introducing data analytics and newsletter configurations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3845",
+      "merged_at": "2024-03-06T14:36:48Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "timestamp": "2026-09-11T22:47:21Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 573,
+        "deletions": 154,
+        "changed_files": 18
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3718": {
+      "pr_number": 3718,
+      "pr_title": "HBE-345 feature: sso callback url and scope added in infra-config",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3718",
+      "merged_at": "2024-03-07T06:37:51Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T22:47:26Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 394,
+        "deletions": 144,
+        "changed_files": 14
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3825": {
+      "pr_number": 3825,
+      "pr_title": "feat: request variables",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3825",
+      "merged_at": "2024-03-07T07:20:45Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:47:30Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1273,
+        "deletions": 506,
+        "changed_files": 54
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3874": {
+      "pr_number": 3874,
+      "pr_title": "fix: context menu bug and incorrect position",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3874",
+      "merged_at": "2024-03-07T12:29:06Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T22:47:35Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 27,
+        "deletions": 19,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3846": {
+      "pr_number": 3846,
+      "pr_title": "feat: use tags as folders when importing from openapi",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3846",
+      "merged_at": "2024-03-07T14:25:46Z",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T22:47:40Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 67,
+        "deletions": 25,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3876": {
+      "pr_number": 3876,
+      "pr_title": "chore: pin dependencies across packages",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3876",
+      "merged_at": "2024-03-07T18:07:48Z",
+      "components": [
+        "cli",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T22:47:45Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "cli",
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2942,
+        "deletions": 6181,
+        "changed_files": 13
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3878": {
+      "pr_number": 3878,
+      "pr_title": "feat: common changes for site protection",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3878",
+      "merged_at": "2024-03-07T18:13:20Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T22:47:51Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 16,
+        "deletions": 4,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#3737": {
+      "pr_number": 3737,
+      "pr_title": "feat(sh-admin): introducing additional SSO related server configurations to dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3737",
+      "merged_at": "2024-03-08T09:48:54Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "timestamp": "2026-09-11T22:47:55Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 153,
+        "deletions": 69,
+        "changed_files": 5
+      },
+      "auto_approved": true
     }
   }
 }
