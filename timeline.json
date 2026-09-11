@@ -2,6 +2,222 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4444-20260911T230559Z",
+      "timestamp": "2026-09-11T23:05:59Z",
+      "pr_number": 4444,
+      "pr_title": "chore: bump dependencies",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4444",
+      "components": [],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T21:55:55Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 4826,
+        "deletions": 6305,
+        "changed_files": 22
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4443-20260911T230554Z",
+      "timestamp": "2026-09-11T23:05:54Z",
+      "pr_number": 4443,
+      "pr_title": "chore(desktop): major version dependency bumps",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4443",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T16:29:18Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 45,
+        "deletions": 63,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4446-20260911T230549Z",
+      "timestamp": "2026-09-11T23:05:49Z",
+      "pr_number": 4446,
+      "pr_title": "chore(agent): major version dependency bump",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4446",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T15:52:19Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 856,
+        "deletions": 946,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4433-20260911T230542Z",
+      "timestamp": "2026-09-11T23:05:42Z",
+      "pr_number": 4433,
+      "pr_title": "chore(sh-admin): bump dependencies",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4433",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T13:21:01Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 2781,
+        "deletions": 4290,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4412-20260911T230533Z",
+      "timestamp": "2026-09-11T23:05:33Z",
+      "pr_number": 4412,
+      "pr_title": "feat: add the ability to configure query params encoding for requests",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4412",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "Pranay-Pandey",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T13:14:21Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 187,
+        "deletions": 108,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4440-20260911T230523Z",
+      "timestamp": "2026-09-11T23:05:23Z",
+      "pr_number": 4440,
+      "pr_title": "feat(common): introducing ability to set custom collection import size limit",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4440",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-23T13:04:40Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 32,
+        "deletions": 14,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4456-20260911T230519Z",
+      "timestamp": "2026-09-11T23:05:19Z",
+      "pr_number": 4456,
+      "pr_title": "fix: resolve empty state image correctly in profile page",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4456",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-22T16:34:18Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4462-20260911T230514Z",
+      "timestamp": "2026-09-11T23:05:14Z",
+      "pr_number": 4462,
+      "pr_title": "fix: prevent keypress actions in the loading state",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4462",
+      "components": [
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "xLansang",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-22T16:30:30Z",
+      "ai_components": [
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 34,
+        "deletions": 0,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4447-20260911T230510Z",
+      "timestamp": "2026-09-11T23:05:10Z",
+      "pr_number": 4447,
+      "pr_title": "fix: i18n strings not falling back correctly",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4447",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-17T10:57:17Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 8,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4445-20260911T230503Z",
+      "timestamp": "2026-09-11T23:05:03Z",
+      "pr_number": 4445,
+      "pr_title": "HSB-494 fix: downgrade eslint related package",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4445",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-10-17T10:29:02Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 192,
+        "deletions": 169,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4426-20260911T230457Z",
       "timestamp": "2026-09-11T23:04:57Z",
       "pr_number": 4426,
