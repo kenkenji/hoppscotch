@@ -5707,6 +5707,214 @@
         "changed_files": 22
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4442": {
+      "pr_number": 4442,
+      "pr_title": "feat: `openssl` based `hoppscotch-relay` for request forwarding",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4442",
+      "merged_at": "2024-10-24T08:50:51Z",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:06:06Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 2285,
+        "deletions": 860,
+        "changed_files": 28
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4468": {
+      "pr_number": 4468,
+      "pr_title": "feat: portable version of `hoppscotch-agent`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4468",
+      "merged_at": "2024-10-24T10:16:20Z",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:06:12Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "cli"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 1009,
+        "deletions": 139,
+        "changed_files": 14
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4472": {
+      "pr_number": 4472,
+      "pr_title": "feat(ci): portable and installer build workflow for `hoppscotch-agent`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4472",
+      "merged_at": "2024-10-24T19:59:10Z",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:06:17Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 251,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4471": {
+      "pr_number": 4471,
+      "pr_title": "feat: `hoppscotch-relay` for request forwarding",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4471",
+      "merged_at": "2024-10-24T20:06:15Z",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:06:22Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 789,
+        "deletions": 623,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4464": {
+      "pr_number": 4464,
+      "pr_title": "chore: environment highlight colour schema update",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4464",
+      "merged_at": "2024-10-25T07:31:38Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:06:27Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 88,
+        "deletions": 29,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4455": {
+      "pr_number": 4455,
+      "pr_title": "fix(i18n/es): fixed translation errors and translated missing keys",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4455",
+      "merged_at": "2024-10-25T08:20:26Z",
+      "components": [],
+      "source": "ai",
+      "author": "sawa-ko",
+      "timestamp": "2026-09-11T23:06:32Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 156,
+        "deletions": 156,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4457": {
+      "pr_number": 4457,
+      "pr_title": "feat(i18n/cn): update CN translation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4457",
+      "merged_at": "2024-10-25T08:39:49Z",
+      "components": [],
+      "source": "ai",
+      "author": "subframe7536",
+      "timestamp": "2026-09-11T23:06:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 198,
+        "deletions": 198,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4461": {
+      "pr_number": 4461,
+      "pr_title": "chore: improve `German` translation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4461",
+      "merged_at": "2024-10-25T08:47:22Z",
+      "components": [],
+      "source": "ai",
+      "author": "RaHehl",
+      "timestamp": "2026-09-11T23:06:40Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 211,
+        "deletions": 137,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4478": {
+      "pr_number": 4478,
+      "pr_title": "fix: codegen breaking in example tab and minor UI updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4478",
+      "merged_at": "2024-10-28T10:39:40Z",
+      "components": [
+        "testing",
+        "auth"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:06:46Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing",
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 36,
+        "deletions": 14,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4474": {
+      "pr_number": 4474,
+      "pr_title": "fix: postman env variables are to be imported as secrets",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4474",
+      "merged_at": "2024-10-28T11:28:12Z",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "shobanrajm",
+      "timestamp": "2026-09-11T23:06:52Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "environments"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 53,
+        "deletions": 12,
+        "changed_files": 5
+      },
+      "auto_approved": true
     }
   }
 }
