@@ -2,6 +2,222 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4150-20260911T225601Z",
+      "timestamp": "2026-09-11T22:56:01Z",
+      "pr_number": 4150,
+      "pr_title": "HSB-453 hotfix: remove !! operator",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4150",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-28T09:02:24Z",
+      "ai_components": [
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4087-20260911T225556Z",
+      "timestamp": "2026-09-11T22:55:56Z",
+      "pr_number": 4087,
+      "pr_title": "feat(sh-admin): introducing advanced SMTP configurations and invite links to dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4087",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-27T19:15:50Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 406,
+        "deletions": 98,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4098-20260911T225550Z",
+      "timestamp": "2026-09-11T22:55:50Z",
+      "pr_number": 4098,
+      "pr_title": "feat: added change log prompt for PWA updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4098",
+      "components": [],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-27T16:03:33Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 236,
+        "deletions": 73,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4141-20260911T225544Z",
+      "timestamp": "2026-09-11T22:55:44Z",
+      "pr_number": 4141,
+      "pr_title": "feat: CLI collection runner command generation UI flow",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4141",
+      "components": [
+        "collections",
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-27T13:47:56Z",
+      "ai_components": [
+        "collections",
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 584,
+        "deletions": 97,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4095-20260911T225539Z",
+      "timestamp": "2026-09-11T22:55:39Z",
+      "pr_number": 4095,
+      "pr_title": "feat(cli): access team workspace collections and environments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4095",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-27T12:41:29Z",
+      "ai_components": [
+        "cli"
+      ],
+      "diff_stats": {
+        "additions": 17364,
+        "deletions": 13197,
+        "changed_files": 48
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4078-20260911T225534Z",
+      "timestamp": "2026-09-11T22:55:34Z",
+      "pr_number": 4078,
+      "pr_title": "HSB-439 feature: invite link with SMTP optional",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4078",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-27T12:23:40Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 12773,
+        "deletions": 14642,
+        "changed_files": 22
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4077-20260911T225529Z",
+      "timestamp": "2026-09-11T22:55:29Z",
+      "pr_number": 4077,
+      "pr_title": "feat(sh-admin): introducing last active status to users table and individual user's page in dashboard ",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4077",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-26T07:00:40Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 23,
+        "deletions": 19,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4146-20260911T225525Z",
+      "timestamp": "2026-09-11T22:55:25Z",
+      "pr_number": 4146,
+      "pr_title": "HSB-452 hotfix: storing user in local variable",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4146",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-25T11:45:04Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 5762,
+        "deletions": 5431,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4111-20260911T225519Z",
+      "timestamp": "2026-09-11T22:55:19Z",
+      "pr_number": 4111,
+      "pr_title": "feat: client certificates and ability to skip ssl cert verification in desktop app",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4111",
+      "components": [],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-25T10:05:43Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 2223,
+        "deletions": 829,
+        "changed_files": 15
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4123-20260911T225514Z",
+      "timestamp": "2026-09-11T22:55:14Z",
+      "pr_number": 4123,
+      "pr_title": "refactor(common): improvements to banner handling logic",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4123",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-06-25T09:44:53Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 25,
+        "deletions": 18,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4122-20260911T225508Z",
       "timestamp": "2026-09-11T22:55:08Z",
       "pr_number": 4122,
