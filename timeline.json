@@ -2,6 +2,236 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4587-20260911T231031Z",
+      "timestamp": "2026-09-11T23:10:31Z",
+      "pr_number": 4587,
+      "pr_title": "fix: add tab id while opening tab",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4587",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-16T08:48:21Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 17,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4605-20260911T231026Z",
+      "timestamp": "2026-09-11T23:10:26Z",
+      "pr_number": 4605,
+      "pr_title": "refactor(sh-admin): updated dates format displayed in admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4605",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-16T08:43:21Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 4,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4594-20260911T231021Z",
+      "timestamp": "2026-09-11T23:10:21Z",
+      "pr_number": 4594,
+      "pr_title": "HSB-505 feat: user history disabling",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4594",
+      "components": [
+        "auth",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-16T08:33:09Z",
+      "ai_components": [
+        "auth",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 301,
+        "deletions": 20,
+        "changed_files": 18
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4604-20260911T231016Z",
+      "timestamp": "2026-09-11T23:10:16Z",
+      "pr_number": 4604,
+      "pr_title": "feat(backend): update Microsoft strategy to handle multiple scopes",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4604",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "RaHehl",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-12T10:40:52Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4583-20260911T231012Z",
+      "timestamp": "2026-09-11T23:10:12Z",
+      "pr_number": 4583,
+      "pr_title": "chore(cli): drop Node.js `v18` support",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4583",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-12-02T16:19:46Z",
+      "ai_components": [
+        "cli"
+      ],
+      "diff_stats": {
+        "additions": 129,
+        "deletions": 74,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4564-20260911T231007Z",
+      "timestamp": "2026-09-11T23:10:07Z",
+      "pr_number": 4564,
+      "pr_title": "chore: collection runner enhancements and ui clean up",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4564",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-28T12:25:00Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 215,
+        "deletions": 51,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4569-20260911T231002Z",
+      "timestamp": "2026-09-11T23:10:02Z",
+      "pr_number": 4569,
+      "pr_title": "chore: add inspection warning for proxy interceptor with binary data",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4569",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-28T07:51:29Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4566-20260911T230958Z",
+      "timestamp": "2026-09-11T23:09:58Z",
+      "pr_number": 4566,
+      "pr_title": "chore: show warning for interceptors not supporting binary data",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4566",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-27T11:23:30Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 26,
+        "deletions": 16,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4565-20260911T230954Z",
+      "timestamp": "2026-09-11T23:09:54Z",
+      "pr_number": 4565,
+      "pr_title": "feat: add autocomplete for multipart/formdata individual content types",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4565",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-27T09:50:28Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 58,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4562-20260911T230949Z",
+      "timestamp": "2026-09-11T23:09:49Z",
+      "pr_number": 4562,
+      "pr_title": "fix: show file chip for the selected file in binary body",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4562",
+      "components": [
+        "collections",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-11-27T09:35:36Z",
+      "ai_components": [
+        "collections",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 781,
+        "deletions": 68,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4545-20260911T230943Z",
       "timestamp": "2026-09-11T23:09:43Z",
       "pr_number": 4545,
