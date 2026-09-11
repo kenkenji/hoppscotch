@@ -6836,6 +6836,232 @@
         "changed_files": 2
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4607": {
+      "pr_number": 4607,
+      "pr_title": "feat: disable tracking request history",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4607",
+      "merged_at": "2024-12-16T10:52:59Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:10:37Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 477,
+        "deletions": 6,
+        "changed_files": 24
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4625": {
+      "pr_number": 4625,
+      "pr_title": "build: enable the use of external DB for internal test deployments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4625",
+      "merged_at": "2024-12-18T10:03:18Z",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T23:10:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4618": {
+      "pr_number": 4618,
+      "pr_title": "chore: update collection runner modal UI",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4618",
+      "merged_at": "2024-12-18T11:59:14Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:10:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 20,
+        "deletions": 11,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4482": {
+      "pr_number": 4482,
+      "pr_title": "fix: inherited headers and auth included in code generation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4482",
+      "merged_at": "2024-12-18T13:43:09Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "Loznerol",
+      "timestamp": "2026-09-11T23:10:54Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 60,
+        "deletions": 13,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4623": {
+      "pr_number": 4623,
+      "pr_title": "fix: read data from DB for latest value",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4623",
+      "merged_at": "2024-12-18T17:23:09Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T23:10:58Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4633": {
+      "pr_number": 4633,
+      "pr_title": "chore: run collection modal updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4633",
+      "merged_at": "2024-12-19T09:52:30Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-09-11T23:11:03Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 36,
+        "deletions": 31,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4630": {
+      "pr_number": 4630,
+      "pr_title": "feat: add bulk edit to multipart/form data and fix url encoded form bulk edit",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4630",
+      "merged_at": "2024-12-19T13:22:05Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "timestamp": "2026-09-11T23:11:07Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 271,
+        "deletions": 72,
+        "changed_files": 6
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4609": {
+      "pr_number": 4609,
+      "pr_title": "feat: enhance collection runner functionality",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4609",
+      "merged_at": "2024-12-19T14:36:52Z",
+      "components": [
+        "collections",
+        "environments",
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:11:16Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "collections",
+        "environments",
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 244,
+        "deletions": 49,
+        "changed_files": 19
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4624": {
+      "pr_number": 4624,
+      "pr_title": "fix(sh-admin): resolve record retrieval limits in pending invites section by implementing pagination",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4624",
+      "merged_at": "2024-12-19T17:18:14Z",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "joeljstephen",
+      "timestamp": "2026-09-11T23:11:27Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "web-app"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 59,
+        "deletions": 19,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4634": {
+      "pr_number": 4634,
+      "pr_title": "chore: resolve Docker image vulnerabilities associated with `cross-spawn`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4634",
+      "merged_at": "2024-12-20T06:44:46Z",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T23:11:31Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3675,
+        "deletions": 4287,
+        "changed_files": 3
+      },
+      "auto_approved": true
     }
   }
 }
