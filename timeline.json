@@ -2,6 +2,230 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4260-20260911T225930Z",
+      "timestamp": "2026-09-11T22:59:30Z",
+      "pr_number": 4260,
+      "pr_title": "fix: update Arabic translations",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4260",
+      "components": [],
+      "source": "ai",
+      "author": "tasnim0tantawi",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-19T10:10:14Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 624,
+        "deletions": 624,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4212-20260911T225926Z",
+      "timestamp": "2026-09-11T22:59:26Z",
+      "pr_number": 4212,
+      "pr_title": "HSB-473 feat: encrypt sensitive data before storing in db",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4212",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-14T07:34:12Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 213,
+        "deletions": 26,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4233-20260911T225921Z",
+      "timestamp": "2026-09-11T22:59:21Z",
+      "pr_number": 4233,
+      "pr_title": "refactor: slim down the backend containers",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4233",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-08T06:01:13Z",
+      "ai_components": [
+        "backend-api"
+      ],
+      "diff_stats": {
+        "additions": 1256,
+        "deletions": 442,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4240-20260911T225916Z",
+      "timestamp": "2026-09-11T22:59:16Z",
+      "pr_number": 4240,
+      "pr_title": "i18n: Fix german translation for \"label\"",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4240",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "pavog",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-07T16:17:32Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4242-20260911T225910Z",
+      "timestamp": "2026-09-11T22:59:10Z",
+      "pr_number": 4242,
+      "pr_title": "fix: ensure `Content-Type` header priority in the CLI",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4242",
+      "components": [
+        "cli",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-07T16:16:27Z",
+      "ai_components": [
+        "cli",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 290,
+        "deletions": 32,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4244-20260911T225905Z",
+      "timestamp": "2026-09-11T22:59:05Z",
+      "pr_number": 4244,
+      "pr_title": "chore: add ai renames at more places",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4244",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-07T16:13:32Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 221,
+        "deletions": 144,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4245-20260911T225900Z",
+      "timestamp": "2026-09-11T22:59:00Z",
+      "pr_number": 4245,
+      "pr_title": "chore: hide duplicate `Global environment` action for a team workspace",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4245",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-07T16:12:37Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 39,
+        "deletions": 25,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4241-20260911T225856Z",
+      "timestamp": "2026-09-11T22:58:56Z",
+      "pr_number": 4241,
+      "pr_title": "i18n: Add german translations for section \"access token\"",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4241",
+      "components": [],
+      "source": "ai",
+      "author": "pavog",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-06T12:09:54Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 19,
+        "deletions": 19,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4226-20260911T225850Z",
+      "timestamp": "2026-09-11T22:58:50Z",
+      "pr_number": 4226,
+      "pr_title": "fix: path not taken into account for socket.io connection without token auth",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4226",
+      "components": [
+        "realtime"
+      ],
+      "source": "ai",
+      "author": "artu-ole",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-06T12:05:50Z",
+      "ai_components": [
+        "realtime"
+      ],
+      "diff_stats": {
+        "additions": 2,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4238-20260911T225845Z",
+      "timestamp": "2026-09-11T22:58:45Z",
+      "pr_number": 4238,
+      "pr_title": "fix: add to parameters regex",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4238",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "ajmalmohad",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-06T09:48:14Z",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4231-20260911T225839Z",
       "timestamp": "2026-09-11T22:58:39Z",
       "pr_number": 4231,
