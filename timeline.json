@@ -2,6 +2,218 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#4282-20260911T230030Z",
+      "timestamp": "2026-09-11T23:00:30Z",
+      "pr_number": 4282,
+      "pr_title": "HSB-482 fix: add env missing checks",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4282",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-26T11:06:16Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 11,
+        "deletions": 0,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4290-20260911T230025Z",
+      "timestamp": "2026-09-11T23:00:25Z",
+      "pr_number": 4290,
+      "pr_title": "chore: updated and corrected Danish translations.",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4290",
+      "components": [],
+      "source": "ai",
+      "author": "ch99q",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-26T07:13:14Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 714,
+        "deletions": 724,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4295-20260911T230019Z",
+      "timestamp": "2026-09-11T23:00:19Z",
+      "pr_number": 4295,
+      "pr_title": "chore(lang): update ru locale",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4295",
+      "components": [],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-26T06:52:46Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 130,
+        "deletions": 130,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4296-20260911T230015Z",
+      "timestamp": "2026-09-11T23:00:15Z",
+      "pr_number": 4296,
+      "pr_title": "bug: .env.example fix comments formatting",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4296",
+      "components": [],
+      "source": "ai",
+      "author": "lwp2070809",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-26T05:55:13Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4284-20260911T230010Z",
+      "timestamp": "2026-09-11T23:00:10Z",
+      "pr_number": 4284,
+      "pr_title": "fix: persist request execution context between tabs",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4284",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-22T17:10:21Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 18,
+        "deletions": 7,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4279-20260911T230005Z",
+      "timestamp": "2026-09-11T23:00:05Z",
+      "pr_number": 4279,
+      "pr_title": "fix: issues with port binding in different container runtimes",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4279",
+      "components": [],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-21T13:37:53Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 57,
+        "deletions": 32,
+        "changed_files": 9
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4263-20260911T225959Z",
+      "timestamp": "2026-09-11T22:59:59Z",
+      "pr_number": 4263,
+      "pr_title": "fix: sync all settings actions in SH",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4263",
+      "components": [
+        "realtime",
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-19T19:52:10Z",
+      "ai_components": [
+        "realtime",
+        "shared-lib"
+      ],
+      "diff_stats": {
+        "additions": 22,
+        "deletions": 4,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4252-20260911T225946Z",
+      "timestamp": "2026-09-11T22:59:46Z",
+      "pr_number": 4252,
+      "pr_title": "chore: update WhatsNewDialog UI and position",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4252",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-19T19:51:34Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 65,
+        "deletions": 16,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4255-20260911T225941Z",
+      "timestamp": "2026-09-11T22:59:41Z",
+      "pr_number": 4255,
+      "pr_title": "fix: reset currentEnv if there is a shared workspace change",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4255",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-19T10:13:32Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 19,
+        "deletions": 9,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#4273-20260911T225936Z",
+      "timestamp": "2026-09-11T22:59:36Z",
+      "pr_number": 4273,
+      "pr_title": "fix: improvement for body tab and RawBody empty string bug",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4273",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "shipko",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-08-19T10:12:35Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 6,
+        "deletions": 1,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#4260-20260911T225930Z",
       "timestamp": "2026-09-11T22:59:30Z",
       "pr_number": 4260,
