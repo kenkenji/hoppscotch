@@ -2,6 +2,224 @@
   "version": "1.0",
   "entries": [
     {
+      "id": "pr-hoppscotch/hoppscotch#3792-20260911T224517Z",
+      "timestamp": "2026-09-11T22:45:17Z",
+      "pr_number": 3792,
+      "pr_title": "chore: Oauth temporary ux improvements",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3792",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "amk-dev",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-06T15:05:29Z",
+      "ai_components": [
+        "auth"
+      ],
+      "diff_stats": {
+        "additions": 73,
+        "deletions": 45,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3805-20260911T224512Z",
+      "timestamp": "2026-09-11T22:45:12Z",
+      "pr_number": 3805,
+      "pr_title": "refactor: update share request flow",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3805",
+      "components": [
+        "collections"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-05T18:20:15Z",
+      "ai_components": [
+        "collections"
+      ],
+      "diff_stats": {
+        "additions": 66,
+        "deletions": 16,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3724-20260911T224507Z",
+      "timestamp": "2026-09-11T22:45:07Z",
+      "pr_number": 3724,
+      "pr_title": "feat(js-sandbox): expose `atob` & `btoa` functions for Node.js",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3724",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "Timeraa",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-05T17:42:55Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 95,
+        "deletions": 0,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3804-20260911T224502Z",
+      "timestamp": "2026-09-11T22:45:02Z",
+      "pr_number": 3804,
+      "pr_title": "fix: request endpoint heading",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3804",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-05T17:38:17Z",
+      "ai_components": [
+        "testing"
+      ],
+      "diff_stats": {
+        "additions": 6,
+        "deletions": 9,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3777-20260911T224456Z",
+      "timestamp": "2026-09-11T22:44:56Z",
+      "pr_number": 3777,
+      "pr_title": "chore(cli): emit bundle in ESM format",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3777",
+      "components": [
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-05T17:25:05Z",
+      "ai_components": [
+        "cli"
+      ],
+      "diff_stats": {
+        "additions": 232,
+        "deletions": 188,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3727-20260911T224452Z",
+      "timestamp": "2026-09-11T22:44:52Z",
+      "pr_number": 3727,
+      "pr_title": "chore(common): analytics on spotlight",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3727",
+      "components": [
+        "web-app"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-02T10:02:06Z",
+      "ai_components": [
+        "web-app"
+      ],
+      "diff_stats": {
+        "additions": 267,
+        "deletions": 76,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3790-20260911T224446Z",
+      "timestamp": "2026-09-11T22:44:46Z",
+      "pr_number": 3790,
+      "pr_title": "refactor: consolidated admin dashboard improvements",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3790",
+      "components": [],
+      "source": "ai",
+      "author": "joeljstephen",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-02-02T09:47:25Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 768,
+        "deletions": 721,
+        "changed_files": 20
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3700-20260911T224441Z",
+      "timestamp": "2026-09-11T22:44:41Z",
+      "pr_number": 3700,
+      "pr_title": "feat: team environment search and switch",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3700",
+      "components": [
+        "environments"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-30T14:19:05Z",
+      "ai_components": [
+        "environments"
+      ],
+      "diff_stats": {
+        "additions": 120,
+        "deletions": 16,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3783-20260911T224437Z",
+      "timestamp": "2026-09-11T22:44:37Z",
+      "pr_number": 3783,
+      "pr_title": "chore: added micro interactions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3783",
+      "components": [],
+      "source": "ai",
+      "author": "liyasthomas",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-30T13:12:42Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 1286,
+        "deletions": 1128,
+        "changed_files": 51
+      },
+      "auto_approved": true
+    },
+    {
+      "id": "pr-hoppscotch/hoppscotch#3787-20260911T224432Z",
+      "timestamp": "2026-09-11T22:44:32Z",
+      "pr_number": 3787,
+      "pr_title": "feat: upgraded prisma version to v5.8.0",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/3787",
+      "components": [],
+      "source": "ai",
+      "author": "balub",
+      "source_repo": "hoppscotch/hoppscotch",
+      "merged_at": "2024-01-30T12:46:28Z",
+      "ai_components": [],
+      "diff_stats": {
+        "additions": 1877,
+        "deletions": 672,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    {
       "id": "pr-hoppscotch/hoppscotch#3677-20260911T224426Z",
       "timestamp": "2026-09-11T22:44:26Z",
       "pr_number": 3677,
