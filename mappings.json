@@ -5915,6 +5915,233 @@
         "changed_files": 5
       },
       "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4416": {
+      "pr_number": 4416,
+      "pr_title": "fix: trailing comma makes json invalid",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4416",
+      "merged_at": "2024-10-28T15:34:08Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:06:58Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 93,
+        "deletions": 266,
+        "changed_files": 5
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4419": {
+      "pr_number": 4419,
+      "pr_title": "feat: add button to export test results as json",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4419",
+      "merged_at": "2024-10-28T15:53:21Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "Pranay-Pandey",
+      "timestamp": "2026-09-11T23:07:02Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 51,
+        "deletions": 6,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4467": {
+      "pr_number": 4467,
+      "pr_title": "HSB-495 feat: user workspace stats api added",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4467",
+      "merged_at": "2024-10-28T18:23:53Z",
+      "components": [
+        "backend-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-09-11T23:07:07Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "backend-api"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 109,
+        "deletions": 3,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4480": {
+      "pr_number": 4480,
+      "pr_title": "feat: ability for aio in sub-path access configurations to specify alternate ports",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4480",
+      "merged_at": "2024-10-28T18:35:52Z",
+      "components": [],
+      "source": "ai",
+      "author": "AndrewBastin",
+      "timestamp": "2026-09-11T23:07:12Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 17,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4339": {
+      "pr_number": 4339,
+      "pr_title": "feat: add support for `Digest` authorization",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4339",
+      "merged_at": "2024-10-29T07:04:40Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:07:16Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 964,
+        "deletions": 49,
+        "changed_files": 29
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4491": {
+      "pr_number": 4491,
+      "pr_title": "feat(desktop): add CA cert and HTTP proxy support for native interceptor",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4491",
+      "merged_at": "2024-10-29T11:43:32Z",
+      "components": [
+        "shared-lib"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:07:30Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "shared-lib"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 91,
+        "deletions": 13,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4492": {
+      "pr_number": 4492,
+      "pr_title": "fix: scrollbar appearing on digest auth input fields and other improvements",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4492",
+      "merged_at": "2024-10-29T15:05:14Z",
+      "components": [
+        "testing"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-09-11T23:07:35Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "testing"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 9,
+        "deletions": 12,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4494": {
+      "pr_number": 4494,
+      "pr_title": "fix: process headers correctly in Digest Auth and other updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4494",
+      "merged_at": "2024-10-30T11:42:20Z",
+      "components": [
+        "auth",
+        "cli"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T23:07:41Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth",
+        "cli"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 105,
+        "deletions": 85,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4497": {
+      "pr_number": 4497,
+      "pr_title": "chore(agent): bump version to `0.1.2`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4497",
+      "merged_at": "2024-10-30T15:41:32Z",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-09-11T23:07:46Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 6,
+        "deletions": 6,
+        "changed_files": 5
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4498": {
+      "pr_number": 4498,
+      "pr_title": "chore: introduce `supportsDigestAuth` field at the interceptor service level",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4498",
+      "merged_at": "2024-10-30T16:14:14Z",
+      "components": [
+        "auth"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-09-11T23:07:52Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "auth"
+      ],
+      "model_version": "1",
+      "diff_stats": {
+        "additions": 14,
+        "deletions": 17,
+        "changed_files": 7
+      },
+      "auto_approved": true
     }
   }
 }
