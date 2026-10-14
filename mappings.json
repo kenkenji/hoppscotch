@@ -1,1 +1,1243 @@
-{"version":"1.0","mappings":{}}
+{
+  "version": "1.0",
+  "mappings": {
+    "hoppscotch/hoppscotch#4760": {
+      "pr_number": 4760,
+      "pr_title": "feat: visual enhancement for inactive fields",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4760",
+      "merged_at": "2025-02-19T07:06:16Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:23:29Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 10,
+        "deletions": 0,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4724": {
+      "pr_number": 4724,
+      "pr_title": "fix: cURL header imports without trailing space",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4724",
+      "merged_at": "2025-02-19T07:48:02Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "stelardn",
+      "timestamp": "2026-10-14T02:23:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 43,
+        "deletions": 0,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4684": {
+      "pr_number": 4684,
+      "pr_title": "feat: platform independent core and the new desktop app",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4684",
+      "merged_at": "2025-02-27T18:31:26Z",
+      "components": [
+        "kernel-integration",
+        "protocol-clients",
+        "platform-abstraction",
+        "ui-component-library",
+        "app-module-system",
+        "kernel-desktop-bindings",
+        "native-relay-bridge",
+        "desktop-shell-ui",
+        "registration-ui",
+        "http-relay-server",
+        "auth-module",
+        "bundle-builder",
+        "signed-delivery-server"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:24:16Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-integration",
+        "protocol-clients",
+        "platform-abstraction",
+        "ui-component-library",
+        "app-module-system",
+        "kernel-desktop-bindings",
+        "native-relay-bridge",
+        "desktop-shell-ui",
+        "registration-ui",
+        "http-relay-server",
+        "auth-module",
+        "bundle-builder",
+        "signed-delivery-server"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 53981,
+        "deletions": 4017,
+        "changed_files": 465
+      },
+      "labels": [
+        "feature",
+        "desktop"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4834": {
+      "pr_number": 4834,
+      "pr_title": "fix(common): make `cursorPosition` field optional in `HoppGQLDocument` type",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4834",
+      "merged_at": "2025-03-05T14:25:07Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:24:22Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 3,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4910": {
+      "pr_number": 4910,
+      "pr_title": "fix(common): pre-process proxy response to base type",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4910",
+      "merged_at": "2025-03-19T07:42:32Z",
+      "components": [
+        "kernel-integration"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:24:26Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-integration"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 4,
+        "deletions": 4,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4888": {
+      "pr_number": 4888,
+      "pr_title": "fix(desktop): fix missing ca certs when client certs are not present",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4888",
+      "merged_at": "2025-03-19T09:07:55Z",
+      "components": [
+        "kernel-integration"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:24:31Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-integration"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 22,
+        "deletions": 24,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4906": {
+      "pr_number": 4906,
+      "pr_title": "fix: resolve issues around import via URL",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4906",
+      "merged_at": "2025-03-19T09:40:20Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:24:37Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 4,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4818": {
+      "pr_number": 4818,
+      "pr_title": "fix(common): improve authorization header handling",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4818",
+      "merged_at": "2025-03-26T11:42:41Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:24:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 30,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#4977": {
+      "pr_number": 4977,
+      "pr_title": "feat(common): enhanced cookie parsing from curl arguments",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/4977",
+      "merged_at": "2025-04-10T07:26:05Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:24:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 69,
+        "deletions": 17,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5010": {
+      "pr_number": 5010,
+      "pr_title": "fix(desktop): add win version checks for DWM attr api",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5010",
+      "merged_at": "2025-04-25T11:18:43Z",
+      "components": [
+        "kernel-desktop-bindings"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:24:52Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-desktop-bindings"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 34,
+        "deletions": 19,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5053": {
+      "pr_number": 5053,
+      "pr_title": "refactor: rename enum `TeamMemberRole` to `TeamAccessRole`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5053",
+      "merged_at": "2025-05-07T12:26:10Z",
+      "components": [
+        "graphql-api",
+        "prisma-data-layer"
+      ],
+      "source": "ai",
+      "author": "g3Bg2",
+      "timestamp": "2026-10-14T02:24:56Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api",
+        "prisma-data-layer"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 329,
+        "deletions": 327,
+        "changed_files": 43
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5059": {
+      "pr_number": 5059,
+      "pr_title": "hotfix: pin `xmldom` to `v0.8.10` addressing breaking change",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5059",
+      "merged_at": "2025-05-08T10:07:49Z",
+      "components": [],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:25:02Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 7,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5074": {
+      "pr_number": 5074,
+      "pr_title": "HSB-514 refactor: remove unused `CollType` GQL enum",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5074",
+      "merged_at": "2025-05-16T10:55:56Z",
+      "components": [
+        "graphql-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:25:07Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 9,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5070": {
+      "pr_number": 5070,
+      "pr_title": "fix(desktop): extend file-write permissions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5070",
+      "merged_at": "2025-05-21T12:57:21Z",
+      "components": [
+        "kernel-desktop-bindings"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:25:12Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-desktop-bindings"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5084": {
+      "pr_number": 5084,
+      "pr_title": "fix: include request body to AWS V4 signer in effective request functions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5084",
+      "merged_at": "2025-05-21T15:32:08Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:25:25Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 0,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5091": {
+      "pr_number": 5091,
+      "pr_title": "chore: display platform links in app header",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5091",
+      "merged_at": "2025-05-21T15:33:58Z",
+      "components": [
+        "ui-component-library",
+        "platform-abstraction"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:25:30Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library",
+        "platform-abstraction"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 240,
+        "deletions": 17,
+        "changed_files": 10
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5116": {
+      "pr_number": 5116,
+      "pr_title": "feat(common): change REST method text color based on selected method",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5116",
+      "merged_at": "2025-06-11T06:26:46Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "0x5b62656e5d",
+      "timestamp": "2026-10-14T02:25:35Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5142": {
+      "pr_number": 5142,
+      "pr_title": "chore: German `i18n` string entry additions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5142",
+      "merged_at": "2025-06-12T15:12:37Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "pavog",
+      "timestamp": "2026-10-14T02:25:39Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 42,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5187": {
+      "pr_number": 5187,
+      "pr_title": "chore: resolve global env in team env and tooltip UI update",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5187",
+      "merged_at": "2025-06-25T08:02:37Z",
+      "components": [
+        "platform-abstraction",
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:25:45Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "platform-abstraction",
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 303,
+        "deletions": 135,
+        "changed_files": 11
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5253": {
+      "pr_number": 5253,
+      "pr_title": "feat(common): add advanced configuration for auth and token request parameters",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5253",
+      "merged_at": "2025-07-28T18:13:08Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "anwarulislam",
+      "timestamp": "2026-10-14T02:25:50Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 1426,
+        "deletions": 113,
+        "changed_files": 24
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5300": {
+      "pr_number": 5300,
+      "pr_title": "fix: resolve typo in `i18n` string",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5300",
+      "merged_at": "2025-07-31T11:01:02Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "xbonell-sage",
+      "timestamp": "2026-10-14T02:25:54Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 1,
+        "deletions": 1,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5323": {
+      "pr_number": 5323,
+      "pr_title": "fix: correctly resolve client IP behind proxies",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5323",
+      "merged_at": "2025-08-18T16:22:18Z",
+      "components": [
+        "graphql-api",
+        "health-module"
+      ],
+      "source": "ai",
+      "author": "L3o-pold",
+      "timestamp": "2026-10-14T02:26:00Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api",
+        "health-module"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 12,
+        "deletions": 2,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5329": {
+      "pr_number": 5329,
+      "pr_title": "chore: bump dependencies and account for breaking changes",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5329",
+      "merged_at": "2025-08-20T17:34:14Z",
+      "components": [
+        "graphql-sync-client",
+        "graphql-admin-client",
+        "app-module-system",
+        "bundle-builder"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-10-14T02:26:28Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-sync-client",
+        "graphql-admin-client",
+        "app-module-system",
+        "bundle-builder"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 7963,
+        "deletions": 5621,
+        "changed_files": 28
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5343": {
+      "pr_number": 5343,
+      "pr_title": "chore: align `tailwindcss` to `3.4.16`",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5343",
+      "merged_at": "2025-08-21T13:56:23Z",
+      "components": [
+        "ui-component-library",
+        "admin-ui-modules"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:26:33Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library",
+        "admin-ui-modules"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 6,
+        "deletions": 81,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5341": {
+      "pr_number": 5341,
+      "pr_title": "feat(desktop): portable phase-2 app loader infra",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5341",
+      "merged_at": "2025-08-26T15:18:31Z",
+      "components": [
+        "kernel-desktop-bindings",
+        "desktop-shell-ui"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:26:39Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-desktop-bindings",
+        "desktop-shell-ui"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 2909,
+        "deletions": 1022,
+        "changed_files": 44
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5363": {
+      "pr_number": 5363,
+      "pr_title": "feat: remove minimum length restriction on shared workspace names",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5363",
+      "merged_at": "2025-09-02T08:18:29Z",
+      "components": [
+        "graphql-api"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:26:44Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 7,
+        "deletions": 7,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5428": {
+      "pr_number": 5428,
+      "pr_title": "refactor: cleanup sync logic and imports",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5428",
+      "merged_at": "2025-10-08T08:01:29Z",
+      "components": [
+        "graphql-sync-client",
+        "kernel-desktop-bindings"
+      ],
+      "source": "ai",
+      "author": "Prit1912",
+      "timestamp": "2026-10-14T02:26:49Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-sync-client",
+        "kernel-desktop-bindings"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 71,
+        "deletions": 110,
+        "changed_files": 33
+      },
+      "labels": [
+        "hacktoberfest-accepted"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5494": {
+      "pr_number": 5494,
+      "pr_title": "fix: ensure graceful shutdown and container stop when stopApp is called",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5494",
+      "merged_at": "2025-10-21T13:39:40Z",
+      "components": [
+        "health-module"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:26:54Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "health-module"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 17,
+        "deletions": 5,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5485": {
+      "pr_number": 5485,
+      "pr_title": "fix: avoid rapid polling while fetching teams in selector",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5485",
+      "merged_at": "2025-10-22T13:36:29Z",
+      "components": [
+        "ui-component-library",
+        "graphql-sync-client"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:26:59Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library",
+        "graphql-sync-client"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 55,
+        "deletions": 24,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5417": {
+      "pr_number": 5417,
+      "pr_title": "feat(scripting-revamp): chai powered assertions and postman compatibility layer",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5417",
+      "merged_at": "2025-10-27T12:19:58Z",
+      "components": [
+        "script-sandbox-runtime"
+      ],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-10-14T02:27:05Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "script-sandbox-runtime"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 30774,
+        "deletions": 1397,
+        "changed_files": 90
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5584": {
+      "pr_number": 5584,
+      "pr_title": "fix: resolve collection variable referencing issues",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5584",
+      "merged_at": "2025-11-24T08:32:07Z",
+      "components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:27:10Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 124,
+        "deletions": 62,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5626": {
+      "pr_number": 5626,
+      "pr_title": "fix: remove `ref_id` field before collection exports and address race conditions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5626",
+      "merged_at": "2025-12-03T17:30:25Z",
+      "components": [
+        "graphql-sync-client",
+        "platform-abstraction"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:27:15Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-sync-client",
+        "platform-abstraction"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 167,
+        "deletions": 35,
+        "changed_files": 12
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5637": {
+      "pr_number": 5637,
+      "pr_title": "feat: add auto-create collection option to mock server creation",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5637",
+      "merged_at": "2025-12-03T17:31:06Z",
+      "components": [
+        "graphql-api",
+        "auth-module",
+        "prisma-data-layer"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:27:21Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api",
+        "auth-module",
+        "prisma-data-layer"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 1346,
+        "deletions": 145,
+        "changed_files": 20
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5658": {
+      "pr_number": 5658,
+      "pr_title": "feat(desktop): atomic write for registry persistence",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5658",
+      "merged_at": "2025-12-04T09:04:22Z",
+      "components": [
+        "native-relay-bridge"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:27:27Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "native-relay-bridge"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 27,
+        "deletions": 23,
+        "changed_files": 7
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5665": {
+      "pr_number": 5665,
+      "pr_title": "fix(common): remove double scrollbar in response pane",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5665",
+      "merged_at": "2025-12-09T13:58:29Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "preeyaX",
+      "timestamp": "2026-10-14T02:27:31Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 5,
+        "deletions": 5,
+        "changed_files": 2
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5672": {
+      "pr_number": 5672,
+      "pr_title": "chore(common): `Czech` translation updates",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5672",
+      "merged_at": "2025-12-21T14:36:14Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "strepon",
+      "timestamp": "2026-10-14T02:27:36Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 28,
+        "deletions": 28,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5773": {
+      "pr_number": 5773,
+      "pr_title": "feat: migrate ESLint to `v9` across packages",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5773",
+      "merged_at": "2026-01-20T09:18:55Z",
+      "components": [],
+      "source": "ai",
+      "author": "jamesgeorge007",
+      "timestamp": "2026-10-14T02:27:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 3194,
+        "deletions": 3234,
+        "changed_files": 88
+      },
+      "labels": [
+        "maintenance"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5783": {
+      "pr_number": 5783,
+      "pr_title": "fix(common): restore scrolling on response panel",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5783",
+      "merged_at": "2026-01-20T13:56:01Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:27:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 3,
+        "deletions": 3,
+        "changed_files": 1
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5750": {
+      "pr_number": 5750,
+      "pr_title": "feat(common): show full request path in tab tooltip",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5750",
+      "merged_at": "2026-01-23T15:00:35Z",
+      "components": [
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "abhibarkade",
+      "timestamp": "2026-10-14T02:27:51Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 67,
+        "deletions": 2,
+        "changed_files": 1
+      },
+      "labels": [
+        "feature"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5843": {
+      "pr_number": 5843,
+      "pr_title": "fix(common): improve responsive layout and overflow in realtime pages",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5843",
+      "merged_at": "2026-02-18T08:58:43Z",
+      "components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "chandraprakash-pandey",
+      "timestamp": "2026-10-14T02:27:57Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 182,
+        "deletions": 171,
+        "changed_files": 4
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5935": {
+      "pr_number": 5935,
+      "pr_title": "fix: restore tooltips on icon-only buttons inside popover triggers",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5935",
+      "merged_at": "2026-03-18T09:41:15Z",
+      "components": [
+        "ui-component-library",
+        "admin-ui-modules"
+      ],
+      "source": "ai",
+      "author": "nikhilmahato21",
+      "timestamp": "2026-10-14T02:28:02Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "ui-component-library",
+        "admin-ui-modules"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 192,
+        "deletions": 9,
+        "changed_files": 6
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5968": {
+      "pr_number": 5968,
+      "pr_title": "feat: show user workspace memberships in admin dashboard",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5968",
+      "merged_at": "2026-03-25T18:58:36Z",
+      "components": [
+        "graphql-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:28:06Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 203,
+        "deletions": 8,
+        "changed_files": 7
+      },
+      "labels": [
+        "feature"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#5917": {
+      "pr_number": 5917,
+      "pr_title": "fix(common): handle File objects in HAR postData text resolution",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/5917",
+      "merged_at": "2026-03-26T15:26:36Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "sh3xu",
+      "timestamp": "2026-10-14T02:28:11Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 23,
+        "deletions": 0,
+        "changed_files": 1
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6068": {
+      "pr_number": 6068,
+      "pr_title": "fix(common): resolve history schema mismatch on page reload",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6068",
+      "merged_at": "2026-03-30T09:57:54Z",
+      "components": [
+        "kernel-integration",
+        "kernel-desktop-bindings"
+      ],
+      "source": "ai",
+      "author": "nivedin",
+      "timestamp": "2026-10-14T02:28:17Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-integration",
+        "kernel-desktop-bindings"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 36,
+        "deletions": 70,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6137": {
+      "pr_number": 6137,
+      "pr_title": "fix(common): handle non-string values in Postman collection import",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6137",
+      "merged_at": "2026-04-15T14:44:43Z",
+      "components": [
+        "protocol-clients"
+      ],
+      "source": "ai",
+      "author": "okxint",
+      "timestamp": "2026-10-14T02:28:22Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 64,
+        "deletions": 4,
+        "changed_files": 2
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6158": {
+      "pr_number": 6158,
+      "pr_title": "docs: security threat model and policy update",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6158",
+      "merged_at": "2026-04-23T12:05:03Z",
+      "components": [],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:28:27Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 119,
+        "deletions": 29,
+        "changed_files": 1
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6238": {
+      "pr_number": 6238,
+      "pr_title": "fix(desktop): unified store scope and migration reroute",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6238",
+      "merged_at": "2026-04-28T09:29:11Z",
+      "components": [
+        "kernel-integration",
+        "kernel-desktop-bindings"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:28:32Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "kernel-integration",
+        "kernel-desktop-bindings"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 168,
+        "deletions": 45,
+        "changed_files": 4
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6373": {
+      "pr_number": 6373,
+      "pr_title": "fix: class validation issue for updateRESTUserRequest",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6373",
+      "merged_at": "2026-05-27T07:33:47Z",
+      "components": [
+        "graphql-api"
+      ],
+      "source": "ai",
+      "author": "mirarifhasan",
+      "timestamp": "2026-10-14T02:28:37Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "graphql-api"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 15,
+        "deletions": 15,
+        "changed_files": 3
+      },
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6447": {
+      "pr_number": 6447,
+      "pr_title": "fix(common): resolve environment variables in inherited collection headers",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6447",
+      "merged_at": "2026-06-24T17:22:35Z",
+      "components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "source": "ai",
+      "author": "sahil29roy",
+      "timestamp": "2026-10-14T02:28:42Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "protocol-clients",
+        "ui-component-library"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 478,
+        "deletions": 224,
+        "changed_files": 14
+      },
+      "labels": [
+        "bug fix"
+      ],
+      "auto_approved": true
+    },
+    "hoppscotch/hoppscotch#6496": {
+      "pr_number": 6496,
+      "pr_title": "fix: bump `relay` for agent response-cookie capture and pin fork revisions",
+      "pr_url": "https://github.com/hoppscotch/hoppscotch/pull/6496",
+      "merged_at": "2026-07-14T14:03:26Z",
+      "components": [
+        "native-relay-bridge",
+        "http-relay-server"
+      ],
+      "source": "ai",
+      "author": "CuriousCorrelation",
+      "timestamp": "2026-10-14T02:28:47Z",
+      "source_repo": "hoppscotch/hoppscotch",
+      "ai_components": [
+        "native-relay-bridge",
+        "http-relay-server"
+      ],
+      "model_version": "2",
+      "diff_stats": {
+        "additions": 13,
+        "deletions": 11,
+        "changed_files": 8
+      },
+      "auto_approved": true
+    }
+  }
+}
