@@ -2,7 +2,7 @@
   "format_version": "1",
   "commit": "f08ee15975e98cd5f93859b5d285ab32ecc00c39",
   "level": "component",
-  "generated_at": "2026-10-14T00:41:17Z",
+  "generated_at": "2026-10-14T00:46:00Z",
   "provider": "claude-code",
   "llm_model": "claude-sonnet-5",
   "components": [
@@ -10,16 +10,16 @@
       "id": "hoppscotch",
       "name": "Hoppscotch",
       "level": "system",
-      "description": "リクエスト送信・コレクション管理・チーム協働機能を持つオープンソースのAPI開発エコシステム",
+      "description": "REST/GraphQL/WebSocket等のAPIを設計・テスト・共同作業するためのオープンソースAPI開発エコシステム",
       "tags": [
         "internal"
       ]
     },
     {
-      "id": "github-oauth",
-      "name": "GitHub OAuth",
+      "id": "github",
+      "name": "GitHub",
       "level": "system",
-      "description": "GitHubアカウントでのログイン認証を提供する外部IDプロバイダ",
+      "description": "OAuthログイン認証とデスクトップ/エージェントアプリの自動更新配信に利用される外部サービス",
       "tags": [
         "external"
       ]
@@ -28,7 +28,7 @@
       "id": "google-oauth",
       "name": "Google OAuth",
       "level": "system",
-      "description": "Googleアカウントでのログイン認証を提供する外部IDプロバイダ",
+      "description": "GoogleアカウントによるSSOログインを提供する外部認証サービス",
       "tags": [
         "external"
       ]
@@ -37,65 +37,65 @@
       "id": "microsoft-oauth",
       "name": "Microsoft OAuth",
       "level": "system",
-      "description": "Microsoftアカウントでのログイン認証を提供する外部IDプロバイダ",
+      "description": "Microsoftアカウント/Azure ADによるSSOログインを提供する外部認証サービス",
       "tags": [
         "external"
       ]
     },
     {
-      "id": "smtp-email-server",
+      "id": "smtp-server",
       "name": "SMTP Email Server",
       "level": "system",
-      "description": "マジックリンクや通知メールを配信する外部メールサーバー",
+      "description": "招待メールやメール認証などトランザクションメールを送信する外部メールサーバー",
       "tags": [
         "external"
       ]
     },
     {
-      "id": "posthog-analytics",
+      "id": "posthog",
       "name": "PostHog",
       "level": "system",
-      "description": "プロダクト利用状況を収集する外部アナリティクスサービス",
+      "description": "プロダクト利用状況の分析データを収集する外部アナリティクスサービス",
+      "tags": [
+        "external"
+      ]
+    },
+    {
+      "id": "target-api",
+      "name": "Target API Under Test",
+      "level": "system",
+      "description": "ユーザーがHoppscotchから任意のHTTP/GraphQL/WebSocket/MQTT/SSEリクエストを送信する対象の外部API",
       "tags": [
         "external"
       ]
     },
     {
       "id": "hoppscotch-proxy",
-      "name": "Hoppscotch Official Proxy",
+      "name": "Hoppscotch Proxy",
       "level": "system",
-      "description": "CORS制限を回避するためにHoppscotchが公式提供する外部プロキシサーバー",
+      "description": "CORS制約やIP秘匿のためにリクエストを中継するHoppscotch公式プロキシサーバー",
       "tags": [
         "external"
       ]
     },
     {
-      "id": "github-releases",
-      "name": "GitHub Releases",
-      "level": "system",
-      "description": "デスクトップアプリ・エージェントの自動更新配布に利用する外部サービス",
-      "tags": [
-        "external"
-      ]
-    },
-    {
-      "id": "selfhost-web",
-      "name": "Self-Hosted Web App",
+      "id": "web-app",
+      "name": "Web Application",
       "level": "container",
       "parent": "hoppscotch",
-      "technology": "Vue 3 + Vite (hoppscotch-common/hoppscotch-selfhost-web)",
+      "technology": "Vue 3 SPA (hoppscotch-common + hoppscotch-selfhost-web)",
       "description": "ブラウザで動作するメインのAPIクライアントWebアプリケーション",
       "tags": [
         "frontend"
       ]
     },
     {
-      "id": "sh-admin",
-      "name": "Admin Dashboard",
+      "id": "admin-dashboard",
+      "name": "Self-Host Admin Dashboard",
       "level": "container",
       "parent": "hoppscotch",
-      "technology": "Vue 3 + Vite + urql",
-      "description": "インフラ設定やユーザー管理を行うセルフホスト管理者向けダッシュボード",
+      "technology": "Vue 3 + urql",
+      "description": "セルフホストインスタンスのユーザー・インフラ設定を管理する管理者向けWebアプリ",
       "tags": [
         "frontend"
       ]
@@ -105,10 +105,45 @@
       "name": "Backend API",
       "level": "container",
       "parent": "hoppscotch",
-      "technology": "NestJS, GraphQL (Apollo), REST, Prisma",
-      "description": "認証・チーム協働・データ永続化を担うバックエンドAPIサーバー",
+      "technology": "NestJS (GraphQL + REST, Apollo Server)",
+      "description": "認証・チーム・コレクション同期などを提供するバックエンドAPIサーバー",
       "tags": [
         "backend"
+      ]
+    },
+    {
+      "id": "desktop-app",
+      "name": "Desktop App",
+      "level": "container",
+      "parent": "hoppscotch",
+      "technology": "Tauri v2 + Vue 3 + Rust",
+      "description": "CORS制約を受けずにネイティブでAPIリクエストを実行できるデスクトップクライアント",
+      "tags": [
+        "frontend",
+        "desktop"
+      ]
+    },
+    {
+      "id": "agent",
+      "name": "Hoppscotch Agent",
+      "level": "container",
+      "parent": "hoppscotch",
+      "technology": "Tauri v2 + Rust (axum)",
+      "description": "ローカルで動作しWebアプリからのリクエストをブラウザ制約なしに中継するリレーサービス",
+      "tags": [
+        "desktop",
+        "relay"
+      ]
+    },
+    {
+      "id": "cli",
+      "name": "Hoppscotch CLI",
+      "level": "container",
+      "parent": "hoppscotch",
+      "technology": "Node.js (TypeScript)",
+      "description": "CI環境でHoppscotchコレクションのテストを実行するコマンドラインツール",
+      "tags": [
+        "cli"
       ]
     },
     {
@@ -117,40 +152,7 @@
       "level": "container",
       "parent": "hoppscotch",
       "technology": "Go",
-      "description": "デスクトップアプリ向けに署名付きWebアプリバンドルを配信するサーバー",
-      "tags": [
-        "backend"
-      ]
-    },
-    {
-      "id": "cli",
-      "name": "Hoppscotch CLI",
-      "level": "container",
-      "parent": "hoppscotch",
-      "technology": "Node.js + TypeScript",
-      "description": "CI環境でコレクションのテストスクリプトを実行するCLIツール",
-      "tags": [
-        "cli"
-      ]
-    },
-    {
-      "id": "desktop-app",
-      "name": "Desktop App",
-      "level": "container",
-      "parent": "hoppscotch",
-      "technology": "Tauri 2 (Rust) + Vue 3",
-      "description": "クロスプラットフォームで動作するデスクトップ版APIクライアント",
-      "tags": [
-        "frontend"
-      ]
-    },
-    {
-      "id": "agent",
-      "name": "Hoppscotch Agent",
-      "level": "container",
-      "parent": "hoppscotch",
-      "technology": "Tauri 2 (Rust/axum) + Vue 3",
-      "description": "ブラウザ制約を回避してHTTPリクエストを中継するローカル常駐エージェント",
+      "description": "署名付きフロントエンドバンドルをデスクトップアプリへ配信するGo製HTTPサーバー",
       "tags": [
         "backend"
       ]
@@ -160,21 +162,21 @@
       "name": "PostgreSQL Database",
       "level": "container",
       "parent": "hoppscotch",
-      "technology": "PostgreSQL",
+      "technology": "PostgreSQL + Prisma",
       "description": "ユーザー・チーム・コレクション等の永続データを保存するデータベース",
       "tags": [
-        "database"
+        "datastore"
       ]
     },
     {
       "id": "redis",
-      "name": "Redis Pub/Sub",
+      "name": "Redis",
       "level": "container",
       "parent": "hoppscotch",
       "technology": "Redis",
-      "description": "GraphQL Subscriptionsのメッセージ配信に使うパブリッシュ/サブスクライブストア",
+      "description": "GraphQL Subscriptionのpub/subに利用されるインメモリデータストア",
       "tags": [
-        "database"
+        "datastore"
       ]
     },
     {
@@ -182,508 +184,452 @@
       "name": "Auth Module",
       "level": "component",
       "parent": "backend-api",
-      "technology": "Passport.js, JWT, Argon2",
-      "description": "ログイン・OAuth・JWT発行を担う認証モジュール"
-    },
-    {
-      "id": "user-module",
-      "name": "User Module",
-      "level": "component",
-      "parent": "backend-api",
-      "technology": "NestJS",
-      "description": "ユーザープロフィールや個人設定を管理するモジュール"
-    },
-    {
-      "id": "team-collaboration-module",
-      "name": "Team Collaboration Module",
-      "level": "component",
-      "parent": "backend-api",
-      "technology": "NestJS",
-      "description": "チーム・共有コレクション・環境・招待を扱う協働機能モジュール"
+      "technology": "Passport.js + JWT",
+      "description": "GitHub/Google/Microsoft/ローカル認証を扱う認証モジュール",
+      "tags": [
+        "auth"
+      ]
     },
     {
       "id": "graphql-api",
-      "name": "GraphQL API Layer",
+      "name": "GraphQL API",
       "level": "component",
       "parent": "backend-api",
-      "technology": "Apollo Server, graphql-redis-subscriptions",
-      "description": "GraphQLスキーマ・クエリ・サブスクリプションを提供する層"
+      "technology": "Apollo Server + @nestjs/graphql",
+      "description": "GraphQLスキーマ・リゾルバ・サブスクリプションを提供するAPI層",
+      "tags": [
+        "api"
+      ]
     },
     {
-      "id": "rest-api",
-      "name": "REST API Layer",
+      "id": "mailer-service",
+      "name": "Mailer Service",
       "level": "component",
       "parent": "backend-api",
-      "technology": "Express, Swagger",
-      "description": "REST/Swaggerエンドポイントを提供する層"
+      "technology": "nodemailer + handlebars",
+      "description": "招待・認証等のメールテンプレートを生成し送信するサービス",
+      "tags": [
+        "notification"
+      ]
     },
     {
-      "id": "mailer-module",
-      "name": "Mailer Module",
-      "level": "component",
-      "parent": "backend-api",
-      "technology": "Nodemailer, Handlebars",
-      "description": "認証メール等のテンプレートメール送信を行うモジュール"
-    },
-    {
-      "id": "admin-infra-module",
-      "name": "Admin & Infra Config Module",
+      "id": "infra-token-module",
+      "name": "Infra Token Module",
       "level": "component",
       "parent": "backend-api",
       "technology": "NestJS",
-      "description": "管理者操作・インフラ設定・ヘルスチェックを扱うモジュール"
+      "description": "インフラ管理用アクセストークンの発行・検証を行うモジュール",
+      "tags": [
+        "auth"
+      ]
     },
     {
-      "id": "shortcode-module",
-      "name": "Shortcode Sharing Module",
+      "id": "health-module",
+      "name": "Health Module",
       "level": "component",
       "parent": "backend-api",
-      "technology": "NestJS",
-      "description": "リクエスト共有用の短縮URLを管理するモジュール"
+      "technology": "@nestjs/terminus",
+      "description": "バックエンドの死活監視エンドポイントを提供するモジュール",
+      "tags": [
+        "ops"
+      ]
     },
     {
-      "id": "rest-client",
-      "name": "REST Client Engine",
+      "id": "prisma-data-layer",
+      "name": "Prisma Data Layer",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "axios, fp-ts",
-      "description": "HTTPリクエストの構築と送信を担うコアロジック"
+      "parent": "backend-api",
+      "technology": "Prisma ORM",
+      "description": "PostgreSQLへのデータアクセスを担うデータレイヤー",
+      "tags": [
+        "data"
+      ]
     },
     {
-      "id": "graphql-client",
-      "name": "GraphQL Client",
+      "id": "analytics-tracking",
+      "name": "Analytics Tracking",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "graphql, codemirror-lang-graphql",
-      "description": "GraphQLクエリの入力・実行・スキーマ探索を担うモジュール"
+      "parent": "backend-api",
+      "technology": "posthog-node",
+      "description": "製品利用状況をPostHogへ送信するトラッキングモジュール",
+      "tags": [
+        "analytics"
+      ]
     },
     {
-      "id": "realtime-protocols",
-      "name": "Realtime Protocols",
+      "id": "app-module-system",
+      "name": "App Module System",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "WebSocket, SSE, Socket.IO, MQTT(paho-mqtt)",
-      "description": "WebSocket/SSE/Socket.IO/MQTT等のリアルタイム通信を扱うモジュール"
+      "parent": "web-app",
+      "technology": "TypeScript (dioc)",
+      "description": "アプリ機能をプラグインとして登録・初期化するモジュールシステム",
+      "tags": [
+        "core"
+      ]
     },
     {
-      "id": "collections-environments",
-      "name": "Collections & Environments Manager",
+      "id": "platform-abstraction",
+      "name": "Platform Abstraction",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "Vue, Pinia-like store",
-      "description": "コレクション・環境変数の管理と同期を担うモジュール"
+      "parent": "web-app",
+      "technology": "TypeScript",
+      "description": "Web/デスクトップ間で認証・バックエンド接続先を切り替えるプラットフォーム抽象層",
+      "tags": [
+        "core"
+      ]
     },
     {
-      "id": "script-runtime",
-      "name": "Script Runtime Integration",
+      "id": "protocol-clients",
+      "name": "Protocol Clients",
       "level": "component",
-      "parent": "selfhost-web",
+      "parent": "web-app",
+      "technology": "axios, paho-mqtt, postman-collection",
+      "description": "REST/GraphQL/WebSocket/SSE/MQTT/Socket.IOリクエストを実行するクライアント群",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "id": "script-sandbox-runtime",
+      "name": "Script Sandbox Runtime",
+      "level": "component",
+      "parent": "web-app",
       "technology": "@hoppscotch/js-sandbox",
-      "description": "プレリクエスト/テストスクリプトをサンドボックス実行するモジュール"
+      "description": "Pre-Request/Testスクリプトを安全に実行するサンドボックス連携",
+      "tags": [
+        "scripting"
+      ]
     },
     {
-      "id": "interceptor-layer",
-      "name": "Interceptor Layer",
+      "id": "graphql-sync-client",
+      "name": "GraphQL Sync Client",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "@hoppscotch/kernel",
-      "description": "Native/Agent/Proxy等のリクエスト送信経路を切り替えるモジュール"
+      "parent": "web-app",
+      "technology": "@urql/core",
+      "description": "コレクション・環境・チーム情報をBackend APIと同期するGraphQLクライアント",
+      "tags": [
+        "networking"
+      ]
     },
     {
-      "id": "platform-auth",
-      "name": "Platform & Auth Abstraction",
+      "id": "kernel-integration",
+      "name": "Kernel Integration",
       "level": "component",
-      "parent": "selfhost-web",
-      "technology": "urql, fp-ts",
-      "description": "Web/デスクトップ共通の認証・プラットフォーム差異を抽象化するモジュール"
+      "parent": "web-app",
+      "technology": "@hoppscotch/kernel (web impl)",
+      "description": "IO/リレー/ストア/ログの実行基盤をWeb向けに抽象化するカーネル連携層",
+      "tags": [
+        "core"
+      ]
     },
     {
-      "id": "admin-auth",
-      "name": "Admin Authentication",
+      "id": "ui-component-library",
+      "name": "UI Component Library",
       "level": "component",
-      "parent": "sh-admin",
-      "technology": "urql",
-      "description": "管理者ログイン認証を扱うモジュール"
+      "parent": "web-app",
+      "technology": "@hoppscotch/ui, CodeMirror, Monaco",
+      "description": "エディタやUIコンポーネントを提供する表示レイヤー",
+      "tags": [
+        "ui"
+      ]
     },
     {
-      "id": "admin-user-mgmt",
-      "name": "User Management UI",
-      "level": "component",
-      "parent": "sh-admin",
-      "technology": "Vue 3",
-      "description": "ユーザー一覧・権限管理画面を提供するモジュール"
-    },
-    {
-      "id": "admin-infra-config-ui",
-      "name": "Infra Configuration UI",
-      "level": "component",
-      "parent": "sh-admin",
-      "technology": "Vue 3",
-      "description": "OAuthやメール等のインフラ設定を編集する画面モジュール"
-    },
-    {
-      "id": "admin-gql-client",
-      "name": "Admin GraphQL Client Layer",
-      "level": "component",
-      "parent": "sh-admin",
-      "technology": "@urql/vue",
-      "description": "バックエンドAPIとのGraphQL通信を担う層"
-    },
-    {
-      "id": "collection-runner",
-      "name": "Collection Runner Engine",
-      "level": "component",
-      "parent": "cli",
-      "technology": "TypeScript, fp-ts",
-      "description": "コレクションJSONを解析し順次リクエストを実行するエンジン"
-    },
-    {
-      "id": "cli-script-runtime",
-      "name": "CLI Script Runtime Integration",
-      "level": "component",
-      "parent": "cli",
-      "technology": "isolated-vm",
-      "description": "pre/postリクエストスクリプトを分離VMで実行するモジュール"
-    },
-    {
-      "id": "cli-reporters",
-      "name": "Report Generators",
-      "level": "component",
-      "parent": "cli",
-      "technology": "TypeScript",
-      "description": "テスト結果のレポート出力を生成するモジュール"
-    },
-    {
-      "id": "request-executor",
-      "name": "HTTP/GraphQL Request Executor",
-      "level": "component",
-      "parent": "cli",
-      "technology": "axios, graphql",
-      "description": "REST/GraphQLリクエストを実際に送信するモジュール"
-    },
-    {
-      "id": "desktop-shell",
-      "name": "Tauri Application Shell",
+      "id": "desktop-shell-ui",
+      "name": "Desktop Shell UI",
       "level": "component",
       "parent": "desktop-app",
-      "technology": "Tauri, Vue Router",
-      "description": "デスクトップアプリのウィンドウ・ルーティングを管理する基盤モジュール"
+      "technology": "Vue 3 + vue-router",
+      "description": "hoppscotch-commonを組み込みTauriウィンドウ内で表示するシェルUI",
+      "tags": [
+        "ui"
+      ]
     },
     {
-      "id": "instance-connector",
-      "name": "Instance Connection Manager",
+      "id": "kernel-desktop-bindings",
+      "name": "Kernel Desktop Bindings",
       "level": "component",
       "parent": "desktop-app",
-      "technology": "TypeScript",
-      "description": "クラウド/セルフホストインスタンスへの接続設定を管理するモジュール"
-    },
-    {
-      "id": "desktop-updater",
-      "name": "Auto-Update Integration",
-      "level": "component",
-      "parent": "desktop-app",
-      "technology": "@tauri-apps/plugin-updater",
-      "description": "アプリの自動更新チェック・適用を行うモジュール"
+      "technology": "@hoppscotch/kernel (desktop impl) + Tauri plugins",
+      "description": "IO/ストア/ログ機能をTauriネイティブ機能へ橋渡しするカーネル実装",
+      "tags": [
+        "core"
+      ]
     },
     {
       "id": "native-relay-bridge",
       "name": "Native Relay Bridge",
       "level": "component",
       "parent": "desktop-app",
-      "technology": "hoppscotch-relay (Rust, curl/openssl)",
-      "description": "ネイティブcurlベースでHTTPリクエストを実行する中継モジュール"
+      "technology": "Rust (hoppscotch-relay crate, curl)",
+      "description": "CORSに縛られずネイティブにHTTPリクエストを実行するリレー連携",
+      "tags": [
+        "networking"
+      ]
     },
     {
-      "id": "agent-http-server",
-      "name": "Local HTTP Server",
+      "id": "auto-updater",
+      "name": "Auto Updater",
       "level": "component",
-      "parent": "agent",
-      "technology": "axum, tower-http",
-      "description": "ローカルポート9119でリクエストを受け付けるHTTPサーバー"
+      "parent": "desktop-app",
+      "technology": "@tauri-apps/plugin-updater",
+      "description": "GitHub Releasesを参照しアプリの自動更新を行うモジュール",
+      "tags": [
+        "ops"
+      ]
     },
     {
-      "id": "agent-registration",
-      "name": "OTP Registration Controller",
+      "id": "registration-ui",
+      "name": "Registration UI",
       "level": "component",
       "parent": "agent",
-      "technology": "Rust, x25519-dalek",
-      "description": "OTPによるWebアプリとのペアリング・鍵交換を処理するモジュール"
+      "technology": "Vue 3 (Tauri window)",
+      "description": "OTPコード表示と登録確認を行うトレイウィンドウUI",
+      "tags": [
+        "ui"
+      ]
     },
     {
-      "id": "agent-relay-executor",
-      "name": "Native Request Relay Executor",
+      "id": "http-relay-server",
+      "name": "HTTP Relay Server",
       "level": "component",
       "parent": "agent",
-      "technology": "hoppscotch-relay (curl/openssl)",
-      "description": "証明書・プロキシ等を適用してリクエストを実行するモジュール"
+      "technology": "Rust (axum)",
+      "description": "ローカルポート9119でWebアプリからのリクエストを受け対象APIへ中継するサーバー",
+      "tags": [
+        "networking"
+      ]
     },
     {
-      "id": "agent-tray-ui",
-      "name": "Tray UI",
+      "id": "otp-auth-handshake",
+      "name": "OTP Auth Handshake",
       "level": "component",
       "parent": "agent",
+      "technology": "Rust (x25519-dalek, ed25519)",
+      "description": "OTPによる登録と暗号化チャネル確立を行う認証ハンドシェイク処理",
+      "tags": [
+        "auth"
+      ]
+    },
+    {
+      "id": "admin-ui-modules",
+      "name": "Admin UI Modules",
+      "level": "component",
+      "parent": "admin-dashboard",
       "technology": "Vue 3",
-      "description": "登録状況表示やOTP入力を行うトレイウィンドウUI"
+      "description": "管理画面の機能をプラグインとして構成するモジュールシステム",
+      "tags": [
+        "core"
+      ]
     },
     {
-      "id": "bundle-packager",
-      "name": "Bundle Packager",
+      "id": "graphql-admin-client",
+      "name": "GraphQL Admin Client",
+      "level": "component",
+      "parent": "admin-dashboard",
+      "technology": "@urql/vue",
+      "description": "管理操作のためBackend APIへGraphQLリクエストを送るクライアント",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "id": "auth-session-helper",
+      "name": "Auth Session Helper",
+      "level": "component",
+      "parent": "admin-dashboard",
+      "technology": "TypeScript + fp-ts",
+      "description": "管理者セッションの認証状態とトークンリフレッシュを管理するヘルパー",
+      "tags": [
+        "auth"
+      ]
+    },
+    {
+      "id": "test-command",
+      "name": "Test Command",
+      "level": "component",
+      "parent": "cli",
+      "technology": "commander",
+      "description": "コレクションを読み込みテスト実行全体を統括するコマンド処理",
+      "tags": [
+        "core"
+      ]
+    },
+    {
+      "id": "collection-loader",
+      "name": "Collection Loader",
+      "level": "component",
+      "parent": "cli",
+      "technology": "jsonc-parser",
+      "description": "ローカルファイルまたはID指定でコレクション/環境を取得するローダー",
+      "tags": [
+        "data"
+      ]
+    },
+    {
+      "id": "request-executor",
+      "name": "Request Executor",
+      "level": "component",
+      "parent": "cli",
+      "technology": "axios, aws4fetch",
+      "description": "REST/GraphQLリクエストを対象APIへ送信し応答を取得する実行エンジン",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "id": "script-runtime",
+      "name": "Script Runtime",
+      "level": "component",
+      "parent": "cli",
+      "technology": "isolated-vm",
+      "description": "Pre-Request/Testスクリプトをサンドボックス内で実行するランタイム",
+      "tags": [
+        "scripting"
+      ]
+    },
+    {
+      "id": "bundle-builder",
+      "name": "Bundle Builder",
       "level": "component",
       "parent": "webapp-bundle-server",
-      "technology": "Go, zstd",
-      "description": "フロントエンド静的資産をzstd圧縮してバンドル化するモジュール"
+      "technology": "Go",
+      "description": "フロントエンド資産をzstd圧縮しed25519署名付きバンドルを生成する処理",
+      "tags": [
+        "build"
+      ]
     },
     {
-      "id": "bundle-signer",
-      "name": "Bundle Signer/Verifier",
-      "level": "component",
-      "parent": "webapp-bundle-server",
-      "technology": "Go, ed25519",
-      "description": "バンドルの署名生成・検証を行うモジュール"
-    },
-    {
-      "id": "bundle-http-handler",
-      "name": "Bundle HTTP Handler",
+      "id": "signed-delivery-server",
+      "name": "Signed Delivery Server",
       "level": "component",
       "parent": "webapp-bundle-server",
       "technology": "Go net/http",
-      "description": "署名付きバンドルをHTTP経由で配信するハンドラ"
+      "description": "署名検証可能なバンドルをHTTP経由で配信するサーバー処理",
+      "tags": [
+        "networking"
+      ]
     }
   ],
   "relations": [
     {
-      "from": "selfhost-web",
-      "to": "backend-api",
-      "description": "ユーザー認証・コレクション同期等のAPI呼び出し",
-      "technology": "HTTPS/GraphQL+REST"
+      "from": "protocol-clients",
+      "to": "target-api",
+      "description": "ユーザー指定APIへのHTTP/WebSocket/GraphQL/MQTT/SSEリクエスト送信",
+      "technology": "HTTP/WebSocket/GraphQL/MQTT/SSE"
     },
     {
-      "from": "sh-admin",
-      "to": "backend-api",
-      "description": "管理用データの取得・更新",
-      "technology": "HTTPS/GraphQL"
-    },
-    {
-      "from": "desktop-app",
-      "to": "backend-api",
-      "description": "クラウド/セルフホストインスタンスへの接続",
-      "technology": "HTTPS/GraphQL+REST"
-    },
-    {
-      "from": "cli",
-      "to": "backend-api",
-      "description": "IDまたはトークン指定でリモートコレクションを取得",
-      "technology": "HTTPS/REST"
-    },
-    {
-      "from": "desktop-app",
-      "to": "webapp-bundle-server",
-      "description": "署名付きWebアプリバンドルの取得",
-      "technology": "HTTPS"
-    },
-    {
-      "from": "selfhost-web",
+      "from": "protocol-clients",
       "to": "agent",
-      "description": "ブラウザ制約回避のためローカルエージェント経由でリクエストを送信",
-      "technology": "HTTPS (localhost:9119)"
+      "description": "ブラウザ制約を回避するためローカルエージェントへリクエストを中継",
+      "technology": "HTTP (localhost:9119)"
     },
     {
-      "from": "backend-api",
-      "to": "postgres-db",
-      "description": "永続データの読み書き",
-      "technology": "Prisma/SQL"
-    },
-    {
-      "from": "backend-api",
-      "to": "redis",
-      "description": "GraphQL Subscriptionsのメッセージ配信",
-      "technology": "Redis Pub/Sub"
-    },
-    {
-      "from": "backend-api",
-      "to": "github-oauth",
-      "description": "GitHubアカウントでのOAuth認証",
-      "technology": "OAuth2"
-    },
-    {
-      "from": "backend-api",
-      "to": "google-oauth",
-      "description": "Googleアカウントでのoauth認証",
-      "technology": "OAuth2"
-    },
-    {
-      "from": "backend-api",
-      "to": "microsoft-oauth",
-      "description": "Microsoftアカウントでのoauth認証",
-      "technology": "OAuth2"
-    },
-    {
-      "from": "backend-api",
-      "to": "smtp-email-server",
-      "description": "認証メールや通知メールの送信",
-      "technology": "SMTP"
-    },
-    {
-      "from": "backend-api",
-      "to": "posthog-analytics",
-      "description": "利用状況イベントの送信",
-      "technology": "HTTPS"
-    },
-    {
-      "from": "selfhost-web",
+      "from": "protocol-clients",
       "to": "hoppscotch-proxy",
-      "description": "プロキシモード有効時のCORS回避リクエスト転送",
+      "description": "CORS回避のためプロキシ経由でリクエストを送信",
       "technology": "HTTPS"
     },
     {
-      "from": "desktop-app",
-      "to": "github-releases",
-      "description": "アプリの更新確認・ダウンロード",
+      "from": "graphql-sync-client",
+      "to": "backend-api",
+      "description": "コレクション・環境・チーム・認証情報の同期",
+      "technology": "GraphQL/HTTPS"
+    },
+    {
+      "from": "http-relay-server",
+      "to": "target-api",
+      "description": "Webアプリから受けたリクエストを対象APIへ転送",
+      "technology": "HTTP/HTTPS"
+    },
+    {
+      "from": "desktop-shell-ui",
+      "to": "backend-api",
+      "description": "クラウド/セルフホストインスタンスへの認証・データ同期",
+      "technology": "GraphQL/HTTPS"
+    },
+    {
+      "from": "desktop-shell-ui",
+      "to": "webapp-bundle-server",
+      "description": "セルフホストインスタンス接続用の署名付きWebアプリバンドルを取得",
+      "technology": "HTTP"
+    },
+    {
+      "from": "native-relay-bridge",
+      "to": "target-api",
+      "description": "ネイティブ環境からCORS制約なしに直接APIへリクエスト送信",
+      "technology": "HTTP/HTTPS"
+    },
+    {
+      "from": "auto-updater",
+      "to": "github",
+      "description": "GitHub Releasesを参照してアプリの更新を確認・取得",
       "technology": "HTTPS"
     },
     {
-      "from": "agent",
-      "to": "github-releases",
-      "description": "エージェントの更新確認・ダウンロード",
-      "technology": "HTTPS"
+      "from": "graphql-admin-client",
+      "to": "backend-api",
+      "description": "ユーザー・インフラ設定などの管理操作リクエスト",
+      "technology": "GraphQL/HTTPS"
+    },
+    {
+      "from": "collection-loader",
+      "to": "backend-api",
+      "description": "アクセストークンを用いてコレクション/環境をIDで取得",
+      "technology": "REST/HTTPS"
+    },
+    {
+      "from": "request-executor",
+      "to": "target-api",
+      "description": "CI実行時にテスト対象APIへリクエストを送信",
+      "technology": "HTTP/GraphQL"
     },
     {
       "from": "auth-module",
-      "to": "github-oauth",
-      "description": "OAuthトークン検証",
-      "technology": "OAuth2"
+      "to": "github",
+      "description": "GitHub OAuthによるログイン認証",
+      "technology": "OAuth2/HTTPS"
     },
     {
       "from": "auth-module",
       "to": "google-oauth",
-      "description": "OAuthトークン検証",
-      "technology": "OAuth2"
+      "description": "Google OAuthによるログイン認証",
+      "technology": "OAuth2/HTTPS"
     },
     {
       "from": "auth-module",
       "to": "microsoft-oauth",
-      "description": "OAuthトークン検証",
-      "technology": "OAuth2"
+      "description": "Microsoft OAuthによるログイン認証",
+      "technology": "OAuth2/HTTPS"
     },
     {
-      "from": "mailer-module",
-      "to": "smtp-email-server",
-      "description": "メールテンプレート送信",
+      "from": "mailer-service",
+      "to": "smtp-server",
+      "description": "招待・認証メールの送信",
       "technology": "SMTP"
+    },
+    {
+      "from": "analytics-tracking",
+      "to": "posthog",
+      "description": "製品利用状況イベントの送信",
+      "technology": "HTTPS"
+    },
+    {
+      "from": "prisma-data-layer",
+      "to": "postgres-db",
+      "description": "ユーザー・チーム・コレクション等の永続化",
+      "technology": "SQL (Prisma)"
     },
     {
       "from": "graphql-api",
       "to": "redis",
-      "description": "サブスクリプションイベントの発行・購読",
-      "technology": "Redis Pub/Sub"
+      "description": "GraphQL Subscriptionのpub/subメッセージング",
+      "technology": "Redis Protocol"
     },
     {
-      "from": "admin-infra-module",
-      "to": "posthog-analytics",
-      "description": "管理操作のイベント送信",
-      "technology": "HTTPS"
-    },
-    {
-      "from": "rest-client",
-      "to": "interceptor-layer",
-      "description": "送信経路（Native/Agent/Proxy）を介してリクエストを送出",
-      "technology": "TypeScript"
-    },
-    {
-      "from": "interceptor-layer",
-      "to": "agent",
-      "description": "エージェント経由でのリクエスト中継",
-      "technology": "HTTPS (localhost:9119)"
-    },
-    {
-      "from": "interceptor-layer",
-      "to": "native-relay-bridge",
-      "description": "デスクトップ環境でのネイティブリレー呼び出し",
-      "technology": "Tauri IPC"
-    },
-    {
-      "from": "script-runtime",
-      "to": "collections-environments",
-      "description": "環境変数の参照・更新",
-      "technology": "TypeScript"
-    },
-    {
-      "from": "collection-runner",
-      "to": "request-executor",
-      "description": "各リクエストの実行委譲",
-      "technology": "TypeScript"
-    },
-    {
-      "from": "collection-runner",
-      "to": "cli-script-runtime",
-      "description": "pre/postリクエストスクリプトの実行",
-      "technology": "isolated-vm"
-    },
-    {
-      "from": "collection-runner",
-      "to": "cli-reporters",
-      "description": "実行結果のレポート生成",
-      "technology": "TypeScript"
-    },
-    {
-      "from": "desktop-shell",
-      "to": "instance-connector",
-      "description": "接続先インスタンスの選択・保存",
-      "technology": "Tauri Store"
-    },
-    {
-      "from": "desktop-shell",
-      "to": "native-relay-bridge",
-      "description": "HTTPリクエストのネイティブ実行",
-      "technology": "Tauri IPC"
-    },
-    {
-      "from": "desktop-shell",
-      "to": "desktop-updater",
-      "description": "起動時の更新確認",
-      "technology": "Tauri IPC"
-    },
-    {
-      "from": "agent-http-server",
-      "to": "agent-registration",
-      "description": "OTP登録エンドポイントの処理",
-      "technology": "axum"
-    },
-    {
-      "from": "agent-http-server",
-      "to": "agent-relay-executor",
-      "description": "受信したリクエストの実行委譲",
-      "technology": "axum"
-    },
-    {
-      "from": "agent-tray-ui",
-      "to": "agent-http-server",
-      "description": "登録状態イベントの購読",
-      "technology": "Tauri event"
-    },
-    {
-      "from": "bundle-http-handler",
-      "to": "bundle-packager",
-      "description": "バンドル生成のトリガー",
-      "technology": "Go"
-    },
-    {
-      "from": "bundle-packager",
-      "to": "bundle-signer",
-      "description": "生成したバンドルの署名付与",
-      "technology": "ed25519"
-    },
-    {
-      "from": "admin-gql-client",
-      "to": "backend-api",
-      "description": "GraphQL API呼び出し",
-      "technology": "HTTPS/GraphQL"
-    },
-    {
-      "from": "admin-auth",
-      "to": "admin-gql-client",
-      "description": "認証状態に応じたリクエストヘッダ付与",
-      "technology": "urql exchange"
+      "from": "backend-api",
+      "to": "postgres-db",
+      "description": "アプリケーションデータの永続化",
+      "technology": "SQL (Prisma)"
     }
   ],
   "warnings": [],
