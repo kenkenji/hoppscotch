@@ -15,8 +15,31 @@ on:
   repository_dispatch:
     types: [regenerate-comment]
 
+# concurrency は同じ group で待機できる run が1つだけで、新しい run が来ると待機中の run はキャンセルされる
+# （cancel-in-progress: false は実行中の run しか守らない）。また、ワークフロー単位の concurrency は
+# ジョブの if より前に適用される。そのため group を次のように分ける（#379）:
+#   - どのジョブも実行しないイベント → run ごとに一意の group（他の run の待機を置き換えない）
+#     条件は各ジョブの if の否定。ジョブの if を変更したら、ここも合わせて見直すこと
+#     （tests/test_workflow_concurrency.py で整合性を検証している）
+#     （ジョブを実行するイベントをここで noop に分類すると直列化が外れるため、迷ったら noop にしない）
+#   - regenerate-comment → PR 単位の regenerate group
+#   - それ以外（承認・マージ・チェックボックス編集・手動実行） → PR 単位の data group
+#     同じ PR のマージ時の run と record-mapping は直列に実行される。別 PR の run は並行して走り、
+#     データブランチへの書き込みは各ステップの push リトライで吸収する
 concurrency:
-  group: architecture-tracker-${{ github.event_name == 'repository_dispatch' && 'regenerate' || 'data' }}
+  group: >-
+    ${{
+    ((github.event_name == 'issue_comment'
+    && !(github.event.issue.pull_request
+    && github.event.sender.type != 'Bot'
+    && contains(github.event.comment.body, '🏗 Architecture Tracker')))
+    || (github.event_name == 'pull_request_review' && github.event.review.state != 'approved')
+    || (github.event_name == 'pull_request' && github.event.pull_request.merged != true))
+    && format('architecture-tracker-noop-{0}', github.run_id)
+    || format('architecture-tracker-{0}-{1}',
+    github.event_name == 'repository_dispatch' && 'regenerate' || 'data',
+    github.event.client_payload.pr_number || github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr-number)
+    }}
   cancel-in-progress: false
 
 jobs:
@@ -304,35 +327,46 @@ jobs:
 
           file_path="proposals/pr-${PR_NUMBER}.json"
 
-          existing_sha=""
-          if sha_result=$(gh api "repos/${REPO}/contents/${file_path}?ref=_architecture-tracker" \
-            --jq '.sha' 2>&1); then
-            existing_sha="$sha_result"
-          elif echo "$sha_result" | grep -q "404"; then
+          # 別 PR の run がデータブランチへ並行して push すると PUT が 409 で失敗し得るため、
+          # sha を取り直してリトライする（#379）
+          max_retries=5
+          retry=0
+          while [ $retry -lt $max_retries ]; do
             existing_sha=""
-          else
-            echo "::warning::Unexpected error checking ${file_path}: ${sha_result}"
-            existing_sha=""
-          fi
+            if sha_result=$(gh api "repos/${REPO}/contents/${file_path}?ref=_architecture-tracker" \
+              --jq '.sha' 2>&1); then
+              existing_sha="$sha_result"
+            elif echo "$sha_result" | grep -q "404"; then
+              existing_sha=""
+            else
+              echo "::warning::Unexpected error checking ${file_path}: ${sha_result}"
+              existing_sha=""
+            fi
 
-          if [ -n "$existing_sha" ]; then
-            gh api "repos/${REPO}/contents/${file_path}" \
+            sha_args=()
+            if [ -n "$existing_sha" ]; then
+              sha_args=(-f sha="${existing_sha}")
+            fi
+
+            if gh api "repos/${REPO}/contents/${file_path}" \
               --method PUT \
               -f message="Save proposals for PR #${PR_NUMBER}" \
               -f content="${encoded}" \
               -f branch="_architecture-tracker" \
-              -f sha="${existing_sha}" \
-              --silent
-          else
-            gh api "repos/${REPO}/contents/${file_path}" \
-              --method PUT \
-              -f message="Save proposals for PR #${PR_NUMBER}" \
-              -f content="${encoded}" \
-              -f branch="_architecture-tracker" \
-              --silent
-          fi
+              "${sha_args[@]}" \
+              --silent; then
+              echo "✅ Saved ${file_path} to _architecture-tracker branch"
+              exit 0
+            fi
 
-          echo "✅ Saved ${file_path} to _architecture-tracker branch"
+            retry=$((retry + 1))
+            echo "⚠️ Failed to save ${file_path} (attempt ${retry}/${max_retries}), retrying..."
+            # 別 PR の run と同じタイミングで再試行し続けないよう、待ち時間に揺らぎを入れる
+            sleep $((retry * 2 + RANDOM % 5))
+          done
+
+          echo "::error::Failed to save ${file_path} after ${max_retries} retries"
+          exit 1
 
   post-comment:
     if: >-
@@ -424,7 +458,7 @@ jobs:
           spa-url: ${{ steps.config.outputs.spa_url }}
           pr-number: ${{ github.event.inputs.pr-number || github.event.client_payload.pr_number }}
           pr-title: ${{ steps.pr-info.outputs.pr_title || steps.pr-info-dispatch.outputs.pr_title }}
-          mode: ${{ github.event_name == 'repository_dispatch' && 'regenerate' || 'new' }}
+          mode: ${{ (github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch') && 'regenerate' || 'new' }}
           comment-id: ${{ needs.post-processing-comment.outputs.comment-id }}
           auto-approve: ${{ steps.config.outputs.auto_approve }}
 
@@ -432,7 +466,7 @@ jobs:
     if: >-
       !failure() && !cancelled()
       && needs.post-comment.result == 'success'
-      && github.event_name == 'repository_dispatch'
+      && (github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch')
     needs: post-comment
     runs-on: ubuntu-latest
     permissions:
@@ -457,7 +491,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number || github.event.inputs.pr-number }}
         run: |
           set -euo pipefail
           gh api "repos/${REPO}/pulls/${PR_NUMBER}" \
@@ -470,7 +504,7 @@ jobs:
         with:
           github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           data-branch: _architecture-tracker
-          pr-number: ${{ github.event.client_payload.pr_number }}
+          pr-number: ${{ github.event.client_payload.pr_number || github.event.inputs.pr-number }}
           pr-title: ${{ steps.pr-info.outputs.pr_title }}
           pr-url: ${{ steps.pr-info.outputs.pr_url }}
           merged-at: ${{ steps.pr-info.outputs.merged_at }}
@@ -511,6 +545,7 @@ jobs:
       github.event_name == 'issue_comment'
       && github.event.action == 'edited'
       && github.event.issue.pull_request
+      && github.event.sender.type != 'Bot'
       && contains(github.event.comment.body, '🏗 Architecture Tracker')
     runs-on: ubuntu-latest
     permissions:

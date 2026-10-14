@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 
 DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-5"
@@ -90,17 +91,31 @@ def call_claude_code(prompt, model=None, max_retries=2, timeout=300):
     """Claude Code CLIを呼び出す。CLAUDE_CODE_OAUTH_TOKENで認証する。
     プロンプトはstdin経由で渡す（コマンドライン引数長制限の回避）。"""
     model = model or DEFAULT_ANTHROPIC_MODEL
-    cmd = ["claude", "-p", "--output-format", "text", "--model", model, "--max-turns", "3"]
+    # プロンプトには第三者が書いた Issue / PR 本文が含まれるため、テキスト生成だけに使う。
+    # --tools "" で組み込みツール（Read / Grep / Bash 等）をすべて無効にし、
+    # --strict-mcp-config で .mcp.json やユーザー設定の MCP サーバーを読み込まない
+    cmd = [
+        "claude", "-p",
+        "--output-format", "text",
+        "--model", model,
+        "--max-turns", "10",
+        "--tools", "",
+        "--strict-mcp-config",
+    ]
 
     for attempt in range(max_retries + 1):
         try:
-            result = subprocess.run(
-                cmd,
-                input=prompt,
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-            )
+            # 作業ディレクトリ（ワークフローではチェックアウトしたリポジトリ）の
+            # CLAUDE.md や .claude/settings.json（hooks 等）を読み込ませないよう、空の一時ディレクトリで実行する
+            with tempfile.TemporaryDirectory() as empty_dir:
+                result = subprocess.run(
+                    cmd,
+                    input=prompt,
+                    capture_output=True,
+                    text=True,
+                    cwd=empty_dir,
+                    timeout=timeout,
+                )
             if result.returncode != 0:
                 error_detail = result.stderr.strip() or result.stdout.strip()
                 if attempt < max_retries:

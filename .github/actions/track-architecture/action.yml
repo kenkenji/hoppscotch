@@ -233,6 +233,7 @@ runs:
         claude-code-oauth-token: ${{ inputs.claude-code-oauth-token }}
         model: ${{ inputs.model }}
         pr-body: ${{ steps.fetch-pr-body.outputs.pr_body }}
+        pr-number: ${{ inputs.pr-number || github.event.pull_request.number }}
 
     - name: Fetch components and build comment
       if: steps.check.outputs.already_posted != 'true'
@@ -277,7 +278,8 @@ runs:
         ai_notice=""
 
         if [ "$MODE" = "regenerate" ]; then
-          # 再生成: LLM再抽出が成功した場合は新しい結果を使用、失敗/スキップ時は既存状態を復元
+          # 再生成: AIコンポーネント情報の決定（メタデータマーカー用）
+          should_auto_record="false"
           if [ "$AI_OUTCOME" = "success" ] && [ "$AI_SKIPPED" != "true" ]; then
             if [ -n "$AI_COMPONENTS" ] && [ "$AI_COMPONENTS" != "[]" ]; then
               extra_args=(--ai-components "$AI_COMPONENTS")
@@ -290,17 +292,54 @@ runs:
             if [ -n "$EXISTING_AI_COMPONENTS" ] && [ "$EXISTING_AI_COMPONENTS" != "[]" ]; then
               extra_args=(--ai-components "$EXISTING_AI_COMPONENTS")
             fi
-            if [ -n "$EXISTING_CHECKED" ] && [ "$EXISTING_CHECKED" != "[]" ]; then
-              extra_args+=(--checked-components "$EXISTING_CHECKED")
-            fi
-            if [ "$EXISTING_NO_IMPACT" = "true" ]; then
-              extra_args+=(--no-impact-checked)
-            fi
             if [ "$AI_SKIPPED" = "true" ]; then
               echo "🔄 LLM API key not configured, regenerating with existing state"
             else
               echo "🔄 LLM re-extraction failed, regenerating with existing state (source: ${EXISTING_SOURCE})"
             fi
+          fi
+
+          # AI再抽出がコンポーネントを返した場合、既存のno_impactを上書きする
+          ai_has_components="false"
+          if [ "$AI_OUTCOME" = "success" ] && [ "$AI_SKIPPED" != "true" ] && [ -n "$AI_COMPONENTS" ] && [ "$AI_COMPONENTS" != "[]" ]; then
+            ai_has_components="true"
+          fi
+
+          # チェックボックス状態: mappings.json（実態）を優先し、未記録なら既存コメントにフォールバック
+          mapping_info=$(gh api "repos/${REPO}/contents/mappings.json?ref=${DATA_BRANCH}" \
+            --jq '.content' 2>/dev/null | base64 -d 2>/dev/null | \
+            python3 -c "
+        import sys, json, os
+        data = json.load(sys.stdin)
+        entry = data.get('mappings', {}).get(os.environ['PR_NUMBER'], {})
+        print('true' if entry else 'false')
+        print(json.dumps(entry.get('components', [])))
+        print('true' if entry.get('no_impact', False) else 'false')
+        " 2>/dev/null || printf 'false\n[]\nfalse')
+          mapping_found=$(echo "$mapping_info" | sed -n '1p')
+          mapped_components=$(echo "$mapping_info" | sed -n '2p')
+          mapped_no_impact=$(echo "$mapping_info" | sed -n '3p')
+
+          if [ "$mapping_found" = "true" ]; then
+            if [ "$mapped_components" != "[]" ]; then
+              extra_args+=(--checked-components "$mapped_components")
+            fi
+            if [ "$mapped_no_impact" = "true" ] && [ "$ai_has_components" != "true" ]; then
+              extra_args+=(--no-impact-checked)
+            elif [ "$mapped_no_impact" = "true" ]; then
+              echo "📋 Clearing no_impact: AI re-extraction found components"
+            fi
+            echo "📋 Checkbox state from mappings.json"
+          else
+            if [ -n "$EXISTING_CHECKED" ] && [ "$EXISTING_CHECKED" != "[]" ]; then
+              extra_args+=(--checked-components "$EXISTING_CHECKED")
+            fi
+            if [ "$EXISTING_NO_IMPACT" = "true" ] && [ "$ai_has_components" != "true" ]; then
+              extra_args+=(--no-impact-checked)
+            elif [ "$EXISTING_NO_IMPACT" = "true" ]; then
+              echo "📋 Clearing no_impact: AI re-extraction found components"
+            fi
+            echo "📋 No mapping recorded, using existing comment state"
           fi
         else
           # 新規: LLM抽出結果を使用
@@ -403,6 +442,7 @@ runs:
       if: >-
         steps.check.outputs.already_posted != 'true'
         && steps.build.outputs.should_auto_record == 'true'
+        && inputs.mode != 'regenerate'
       continue-on-error: true
       shell: bash
       env:
@@ -444,7 +484,7 @@ runs:
           no_impact_args=(--no-impact)
         fi
 
-        max_retries=3
+        max_retries=5
         retry=0
 
         GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
@@ -515,16 +555,217 @@ runs:
           retry=$((retry + 1))
           cd /tmp
           rm -rf "$work_dir"
-          sleep $((retry * 2))
+          # 別 PR の run と同じタイミングで再試行し続けないよう、待ち時間に揺らぎを入れる
+          sleep $((retry * 2 + RANDOM % 5))
         done
 
         echo "::error::Failed to push auto-approved mapping after ${max_retries} retries"
         exit 1
 
+    - name: Auto-apply proposals
+      id: auto-apply-proposals
+      if: >-
+        steps.check.outputs.already_posted != 'true'
+        && inputs.auto-approve == 'true'
+        && inputs.proposals != ''
+        && inputs.proposals != '[]'
+        && inputs.mode != 'regenerate'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        PROPOSALS: ${{ inputs.proposals }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        APPLY_SCRIPT="${ACTION_PATH}/../detect-model-changes/apply_changes.py"
+        BUMP_SCRIPT="${ACTION_PATH}/../bump-model-version/bump_version.py"
+
+        max_retries=5
+        retry=0
+
+        GIT_AUTH_HEADER="AUTHORIZATION: basic $(echo -n "x-access-token:${GH_TOKEN}" | base64 | tr -d '\n')"
+        echo "::add-mask::${GIT_AUTH_HEADER}"
+
+        while [ $retry -lt $max_retries ]; do
+          work_dir=$(mktemp -d)
+          git -c "http.https://github.com/.extraheader=${GIT_AUTH_HEADER}" \
+            clone --branch "${DATA_BRANCH}" --single-branch \
+            "https://github.com/${REPO}.git" "$work_dir"
+          git -C "$work_dir" config --local "http.https://github.com/.extraheader" "${GIT_AUTH_HEADER}"
+
+          components_file="${work_dir}/components.yaml"
+          changelog_file="${work_dir}/model-changelog.json"
+          proposals_file="${work_dir}/proposals/pr-${PR_NUMBER}.json"
+
+          # プロポーザルを一時ファイルに書き出し（シェル引用符問題の回避）
+          proposals_tmp=$(mktemp --suffix=.json)
+          echo "$PROPOSALS" > "$proposals_tmp"
+
+          # apply_changes.py でプロポーザルを適用
+          apply_output=$(python3 "$APPLY_SCRIPT" \
+            --proposals "$proposals_tmp" \
+            --components-file "$components_file") || {
+            echo "::warning::apply_changes.py failed"
+            rm -f "$proposals_tmp"
+            rm -rf "$work_dir"
+            exit 1
+          }
+          rm -f "$proposals_tmp"
+
+          applied_count=$(echo "$apply_output" | python3 -c "import sys,json; print(json.load(sys.stdin).get('applied_count', 0))" 2>/dev/null || echo "0")
+
+          if [ "$applied_count" = "0" ]; then
+            echo "📋 No proposals were applied (all skipped)"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          # バージョンバンプ
+          # apply_changes.py の結果から changes を構築
+          changes_json=$(echo "$apply_output" | python3 -c "
+        import sys, json
+        data = json.load(sys.stdin)
+        changes = []
+        for r in data.get('results', []):
+            if r.get('status') != 'applied':
+                continue
+            action = r.get('action', '')
+            target_id = r.get('id', r.get('relation', ''))
+            target_type = 'relation' if 'relation' in r else 'component'
+            changes.append({'type': action, 'target': target_type, 'id': target_id, 'summary': f'{action}: {target_id}'})
+        print(json.dumps(changes, ensure_ascii=False))
+        ")
+
+          python3 "$BUMP_SCRIPT" \
+            --components-file "$components_file" \
+            --changelog-file "$changelog_file" \
+            --changes "$changes_json" \
+            --trigger-type pr \
+            --trigger-pr-number "$PR_NUMBER" \
+            --trigger-pr-url "https://github.com/${REPO}/pull/${PR_NUMBER}" \
+            --author "auto-approve"
+
+          # mappings.json を更新: 適用したコンポーネントIDを追加し、no_impactを解除
+          mappings_file="${work_dir}/mappings.json"
+          if [ -f "$mappings_file" ]; then
+            MAPPINGS_FILE="$mappings_file" APPLY_OUTPUT="$apply_output" python3 -c "
+        import json, os
+        mappings_path = os.environ['MAPPINGS_FILE']
+        apply_output = json.loads(os.environ['APPLY_OUTPUT'])
+        with open(mappings_path, encoding='utf-8') as f:
+            data = json.load(f)
+        entry = data.get('mappings', {}).get(os.environ['PR_NUMBER'], {})
+        if entry:
+            applied_ids = [r['id'] for r in apply_output.get('results', [])
+                           if r.get('status') == 'applied' and r.get('action') == 'add' and 'id' in r]
+            if applied_ids:
+                existing = set(entry.get('components', []))
+                existing.update(applied_ids)
+                entry['components'] = sorted(existing)
+                entry.pop('no_impact', None)
+                with open(mappings_path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+                    f.write('\n')
+            "
+          fi
+
+          # proposals/pr-N.json を resolved 状態に更新
+          if [ -f "$proposals_file" ]; then
+            PROPOSALS_FILE="$proposals_file" python3 -c "
+        import json, os
+        from datetime import datetime, timezone
+        path = os.environ['PROPOSALS_FILE']
+        with open(path, encoding='utf-8') as f:
+            data = json.load(f)
+        data['resolved_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        data['resolved_by'] = 'auto-approve'
+        for p in data.get('proposals', []):
+            if p.get('status') not in ('accepted', 'rejected'):
+                p['status'] = 'accepted'
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+            f.write('\n')
+        "
+          fi
+
+          cd "$work_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add components.yaml model-changelog.json mappings.json
+          if [ -f "proposals/pr-${PR_NUMBER}.json" ]; then
+            git add "proposals/pr-${PR_NUMBER}.json"
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          git commit -m "Auto-apply proposals for PR #${PR_NUMBER}"
+
+          if git push origin "${DATA_BRANCH}"; then
+            echo "✅ Auto-applied ${applied_count} proposal(s) for PR #${PR_NUMBER}"
+            echo "applied=true" >> "$GITHUB_OUTPUT"
+            rm -rf "$work_dir"
+            exit 0
+          fi
+
+          echo "⚠️ Push failed (attempt $((retry + 1))/${max_retries}), retrying..."
+          retry=$((retry + 1))
+          cd /tmp
+          rm -rf "$work_dir"
+          # 別 PR の run と同じタイミングで再試行し続けないよう、待ち時間に揺らぎを入れる
+          sleep $((retry * 2 + RANDOM % 5))
+        done
+
+        echo "::error::Failed to push auto-applied proposals after ${max_retries} retries"
+        exit 1
+
+    - name: Regenerate comment after auto-apply
+      if: >-
+        steps.auto-apply-proposals.outputs.applied == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        gh api "repos/${REPO}/dispatches" \
+          --method POST \
+          -f event_type=regenerate-comment \
+          -f "client_payload[pr_number]=${PR_NUMBER}"
+        echo "📤 Dispatched regenerate-comment for PR #${PR_NUMBER}"
+
+    - name: Notify visualize-impact (auto-apply)
+      if: >-
+        steps.auto-apply-proposals.outputs.applied == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        gh api "repos/${REPO}/dispatches" \
+          --method POST \
+          -f event_type=visualize-impact \
+          -f "client_payload[pr_number]=${PR_NUMBER}"
+        echo "📤 Dispatched visualize-impact (post auto-apply) for PR #${PR_NUMBER}"
+
     - name: Notify visualize-impact (auto-record)
       if: >-
         steps.build.outputs.should_auto_record == 'true'
         && steps.auto-record.outputs.pushed == 'true'
+        && steps.auto-apply-proposals.outputs.applied != 'true'
       continue-on-error: true
       shell: bash
       env:
@@ -552,6 +793,25 @@ runs:
         gh pr comment "$PR_NUMBER" \
           --repo "$REPO" \
           --body "⚠️ **Architecture Tracker**: 自動記録に失敗しました。トラッキングIssueを作成します。PRコメントのチェックボックスで手動選択してください。"
+
+    - name: Warn auto-apply proposals failure
+      if: >-
+        steps.auto-apply-proposals.outcome == 'failure'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        SPA_URL: ${{ inputs.spa-url }}
+      run: |
+        set -euo pipefail
+        editor_link=""
+        if [ -n "$SPA_URL" ]; then
+          editor_link=" [エディタ](${SPA_URL}/editor?pr=${PR_NUMBER})で手動適用してください。"
+        fi
+        gh pr comment "$PR_NUMBER" \
+          --repo "$REPO" \
+          --body "⚠️ **Architecture Tracker**: 構造変更プロポーザルの自動適用に失敗しました。${editor_link}"
 
     - name: Create tracking issue
       if: >-

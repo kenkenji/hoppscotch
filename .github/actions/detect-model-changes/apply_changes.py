@@ -3,10 +3,14 @@
 
 import argparse
 import json
+import os
 import re
 import sys
 
 import yaml
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
+from schema_utils import check_schema_version, ensure_schema_version
 
 ID_PATTERN = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 MAX_STRING_LENGTH = 200
@@ -201,8 +205,11 @@ def main():
 
     with open(args.components_file, encoding="utf-8") as f:
         data = yaml.safe_load(f) or {}
+    check_schema_version(data, args.components_file)
 
     results = apply_proposals(data, proposals)
+    # schema_version が無い既存ファイルは書き込み時に補完する
+    data = ensure_schema_version(data)
 
     with open(args.components_file, "w", encoding="utf-8") as f:
         yaml.safe_dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)

@@ -1,0 +1,39 @@
+name: Insights Analysis
+
+on:
+  workflow_dispatch:
+  # SPAのAnalyzeボタンから起動する（workflow_dispatchはactions: write権限が必要なため、
+  # contents: writeのみで発火できるrepository_dispatchを使う。docs/known-limitations.md参照）
+  repository_dispatch:
+    types: [run-insights-analysis]
+
+# 同時実行すると insights-report.json の PUT が sha 競合で失敗するため直列化する
+concurrency:
+  group: insights-analysis
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Run insights analysis
+        uses: ./.github/actions/insights-analysis
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

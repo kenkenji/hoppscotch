@@ -3,9 +3,13 @@
 import argparse
 import json
 import os
+import sys
 from datetime import datetime, timezone
 
 import yaml
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
+from schema_utils import check_schema_version, ensure_schema_version
 
 
 def parse_version(version_str: str) -> int:
@@ -30,10 +34,13 @@ def bump_version(yaml_path: str) -> tuple:
     """components.yamlのversionを+1してファイルに書き戻す。"""
     with open(yaml_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
+    check_schema_version(data, yaml_path)
 
     old_version = parse_version(data.get("version", ""))
     new_version = old_version + 1
     data["version"] = str(new_version)
+    # schema_version が無い既存ファイルは書き込み時に補完する
+    data = ensure_schema_version(data)
 
     with open(yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(data, f, allow_unicode=True, default_flow_style=False,

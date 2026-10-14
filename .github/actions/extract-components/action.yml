@@ -29,6 +29,10 @@ inputs:
     description: "PR description text (override for github.event.pull_request.body)"
     required: false
     default: ""
+  pr-number:
+    description: "PR number (for API fallback when pr-body and event context are unavailable)"
+    required: false
+    default: ""
 
 outputs:
   components:
@@ -98,12 +102,22 @@ runs:
         MODEL: ${{ inputs.model }}
         COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
         PR_BODY: ${{ inputs.pr-body || github.event.pull_request.body }}
+        PR_NUMBER: ${{ inputs.pr-number || github.event.pull_request.number }}
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
         ACTION_PATH: ${{ github.action_path }}
       run: |
         set -euo pipefail
 
         pr_body_file=$(mktemp --suffix=.txt)
-        printf '%s' "$PR_BODY" > "$pr_body_file"
+        if [ -n "$PR_BODY" ]; then
+          printf '%s' "$PR_BODY" > "$pr_body_file"
+        elif [ -n "$PR_NUMBER" ]; then
+          echo "⚠️ PR body not provided, fetching from GitHub API for PR #${PR_NUMBER}" >&2
+          gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.body // ""' > "$pr_body_file"
+        else
+          printf '' > "$pr_body_file"
+        fi
 
         model_args=()
         if [ -n "$MODEL" ]; then

@@ -19,6 +19,7 @@ import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
 from llm_utils import call_llm, detect_provider, parse_llm_response
+from schema_utils import check_schema_version
 
 
 def format_components_for_prompt(components_data):
@@ -398,6 +399,7 @@ def main():
 
     with open(args.components_file, encoding="utf-8") as f:
         components_data = yaml.safe_load(f) or {}
+    check_schema_version(components_data, args.components_file)
 
     with open(args.mappings_file, encoding="utf-8") as f:
         mappings_data = json.load(f) if os.path.getsize(args.mappings_file) > 2 else {}

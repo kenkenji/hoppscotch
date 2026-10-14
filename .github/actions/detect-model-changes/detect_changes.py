@@ -16,6 +16,7 @@ import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
 from llm_utils import detect_provider, call_llm, parse_llm_response
+from schema_utils import check_schema_version
 
 SKIP_PATTERNS = [
     "docs/**",
@@ -181,6 +182,7 @@ def main():
 
     with open(args.components_file, encoding="utf-8") as f:
         components_data = yaml.safe_load(f) or {}
+    check_schema_version(components_data, args.components_file)
 
     pr_body = ""
     if args.pr_body_file:

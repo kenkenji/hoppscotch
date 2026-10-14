@@ -2,9 +2,13 @@
 
 import argparse
 import json
+import os
 import re
 import sys
 import yaml
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
+from schema_utils import check_schema_version
 
 
 # record-mapping/parse_checkboxes.py の NO_IMPACT_ID と同期が必要
@@ -75,7 +79,7 @@ def build_checkbox_section(data, ai_component_ids=None, checked_ids=None):
         ai_component_ids = set(ai_component_ids)
 
     if checked_ids is not None:
-        pre_checked = set(checked_ids) | ai_component_ids
+        pre_checked = set(checked_ids)
     else:
         pre_checked = ai_component_ids
 
@@ -212,10 +216,6 @@ def build_comment(pr_number, pr_title, data, source="manual", ai_component_ids=N
     if source == "ai" and ai_component_ids:
         ai_marker = f"\n<!-- ai-components: {json.dumps(ai_component_ids, ensure_ascii=False)} -->"
 
-    auto_approve_marker = ""
-    if auto_approve:
-        auto_approve_marker = "\n<!-- auto-approved: true -->"
-
     proposals_markers = ""
     if proposals:
         proposals_markers = f"\n<!-- has-proposals: true -->\n<!-- detection-method: {detection_method} -->"
@@ -235,7 +235,7 @@ def build_comment(pr_number, pr_title, data, source="manual", ai_component_ids=N
     return f"""\
 ## 🏗 Architecture Tracker
 
-<!-- source: {source} -->{ai_marker}{auto_approve_marker}{proposals_markers}
+<!-- source: {source} -->{ai_marker}{proposals_markers}
 
 **PR #{pr_number}**: {escape_markdown(pr_title)}
 
@@ -257,6 +257,7 @@ def main():
     if not data or "components" not in data:
         print("::error::Invalid components.yaml: 'components' key not found", file=sys.stderr)
         sys.exit(1)
+    check_schema_version(data, args.components_file)
 
     ai_ids = []
     source = "manual"

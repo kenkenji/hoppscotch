@@ -2,9 +2,13 @@
 
 import argparse
 import json
+import os
 import re
 import sys
 import yaml
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'shared'))
+from schema_utils import check_schema_version
 
 
 def parse_args():
@@ -18,7 +22,9 @@ def parse_args():
 
 def load_components(path):
     with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        data = yaml.safe_load(f)
+    check_schema_version(data, path)
+    return data
 
 
 def load_mappings(path):

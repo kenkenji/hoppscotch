@@ -1,0 +1,65 @@
+name: "Generate Model"
+
+# コードベースから C4 モデル（components.yaml）を生成する（gh architecture-tracker generate-model から起動する）。
+# 実体は .github/actions/generate-model。terraform の plan / apply のように、
+#   - apply: false（plan）: 生成して Job Summary に表示し、生成結果を generated-model.json に保存する
+#   - apply: true          : さらに components.yaml に適用する（既存のモデルに要素も関係もない場合のみ）
+# 同じコミット・同じ粒度の生成結果が保存済みなら、LLM を呼ばずに再利用する（regenerate: true で作り直す）。
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: "生成する粒度（container: System + Container / component: Component まで）"
+        type: choice
+        options: [component, container]
+        default: component
+      apply:
+        description: "生成結果を components.yaml に適用する（モデルが空の場合のみ）"
+        type: boolean
+        default: false
+      regenerate:
+        description: "保存済みの生成結果を使わずに作り直す"
+        type: boolean
+        default: false
+
+# データブランチの generated-model.json / components.yaml への書き込みを直列にする
+concurrency:
+  group: architecture-tracker-generate-model
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate-model:
+    runs-on: ubuntu-latest
+    # 想定外に長引いた場合に、concurrency で後続の実行を何時間も待たせないようにする
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # 解析するだけなので、認証情報を .git/config に残さない
+          persist-credentials: false
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          # データブランチへの書き込みに必要な権限だけにする（LLM の CLI 等の子プロセスにも渡るため）
+          permission-contents: write
+
+      - name: Generate model
+        uses: ./.github/actions/generate-model
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          level: ${{ inputs.level }}
+          apply: ${{ inputs.apply }}
+          regenerate: ${{ inputs.regenerate }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          author: ${{ github.actor }}

@@ -1,0 +1,70 @@
+# マッピング記録後の影響図可視化・トラッキングIssueクローズを一元実行する。
+# 各記録アクション（record-mapping, catch-up-mapping, track-architecture auto-record）が
+# push成功後に repository_dispatch(visualize-impact) を発火する。
+# 新しい記録パスを追加する際は、push成功後に同様のdispatch呼び出しを追加すること。
+name: Visualize Impact
+
+on:
+  repository_dispatch:
+    types: [visualize-impact]
+
+# 同じ PR への dispatch が並行すると、古いデータを読んだ run が後から図を上書きし得るため PR 単位で直列化する。
+# 各 run は実行時点の最新の mappings.json を読むので、待機中の run が新しい run に置き換えられても問題ない（#379）
+concurrency:
+  group: visualize-impact-${{ github.event.client_payload.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  visualize-impact:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Validate input
+        id: validate
+        shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PR_NUMBER" ] || ! echo "$PR_NUMBER" | grep -qE '^[0-9]+$'; then
+            echo "::error::Invalid pr_number in client_payload: '${PR_NUMBER}'"
+            exit 1
+          fi
+          echo "📋 Visualize impact for PR #${PR_NUMBER}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate Installation Token
+        id: app-token
+        if: ${{ vars.APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Generate Mermaid diagram
+        id: mermaid
+        continue-on-error: true
+        uses: ./.github/actions/generate-mermaid
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          pr-number: ${{ github.event.client_payload.pr_number }}
+
+      - name: Warn Mermaid failure
+        if: steps.mermaid.outcome == 'failure'
+        shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+        run: echo "::warning::Mermaid diagram generation failed for PR #${PR_NUMBER}"
+
+      - name: Close tracking issue
+        uses: ./.github/actions/close-tracking-issue
+        with:
+          github-token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          data-branch: _architecture-tracker
+          pr-number: ${{ github.event.client_payload.pr_number }}

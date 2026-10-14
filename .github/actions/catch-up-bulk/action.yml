@@ -49,6 +49,10 @@ inputs:
     description: "プレビューモード"
     required: false
     default: "false"
+  detect-changes:
+    description: "モデル変更検出を有効にする"
+    required: false
+    default: "false"
 
 outputs:
   processed:
@@ -128,6 +132,7 @@ runs:
         SOURCE_REPO: ${{ inputs.source-repo }}
         BATCH_SIZE: ${{ inputs.batch-size }}
         DRY_RUN: ${{ inputs.dry-run }}
+        DETECT_CHANGES: ${{ inputs.detect-changes }}
         WORK_DIR: ${{ steps.clone.outputs.work_dir }}
         ACTION_PATH: ${{ github.action_path }}
       run: |
@@ -158,6 +163,10 @@ runs:
         fi
         if [ "$DRY_RUN" = "true" ]; then
           args+=(--dry-run)
+        fi
+        if [ "$DETECT_CHANGES" = "true" ]; then
+          args+=(--detect-changes)
+          args+=(--detect-changes-prompt-template "${ACTION_PATH}/../detect-model-changes/prompt.txt")
         fi
 
         args+=(--summary-file "${WORK_DIR}/catch_up_summary.json")

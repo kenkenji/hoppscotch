@@ -38,6 +38,10 @@ def parse_args():
     parser.add_argument("--changed-files", type=int, default=None, help="Number of changed files")
     parser.add_argument("--labels", default=None, help="JSON array of label names")
     parser.add_argument("--auto-approved", action="store_true", help="Mark as auto-approved by auto_approve mode")
+    parser.add_argument(
+        "--write-mode", default="merge", choices=["merge", "replace"],
+        help="components/no_impact の書き込み方式。手動入力（チェックボックス編集）は replace、LLM・自動処理は merge",
+    )
     return parser.parse_args()
 
 
@@ -52,7 +56,14 @@ def update_mappings(data, pr_number, pr_title, pr_url, merged_at, components,
                     author, timestamp, source="manual", ai_components=None,
                     no_impact=False, model_version=None,
                     diff_stats=None, labels=None, auto_approved=False,
-                    source_repo=None):
+                    source_repo=None, merge=True):
+    """mappings.json の PR エントリを更新する。
+
+    既存エントリがある場合の components / no_impact の扱いは書き込み元で決める（CLAUDE.md 設計原則 #2）:
+    - merge=True（既定。LLM・自動処理）: 既存の components との和集合。確定済みデータを消さない
+    - merge=False（手動入力）: 渡された components / no_impact で置き換える。外した項目や「影響なし」を反映する
+    どちらの場合も ai_components 等のメタデータは、明示されなければ既存値を引き継ぐ。
+    """
     if components and no_impact:
         no_impact = False
     entry = {
@@ -79,7 +90,23 @@ def update_mappings(data, pr_number, pr_title, pr_url, merged_at, components,
         entry["labels"] = labels
     if auto_approved:
         entry["auto_approved"] = True
+
     key = _mapping_key(pr_number, source_repo)
+    existing = data["mappings"].get(key)
+    if existing:
+        for field in ("ai_components", "model_version", "diff_stats", "labels", "source_repo"):
+            if field not in entry and field in existing:
+                entry[field] = existing[field]
+        if merge:
+            entry["components"] = sorted(set(existing.get("components", [])) | set(components))
+            if entry["components"]:
+                entry.pop("no_impact", None)
+            elif existing.get("no_impact") and "no_impact" not in entry:
+                entry["no_impact"] = True
+        else:
+            # 既存エントリ更新時は MERGE と同じくソートして形式を揃える
+            entry["components"] = sorted(components)
+
     data["mappings"][key] = entry
     return data
 
@@ -189,6 +216,7 @@ def main():
         no_impact=args.no_impact, model_version=args.model_version,
         diff_stats=diff_stats, labels=labels,
         auto_approved=args.auto_approved,
+        merge=args.write_mode == "merge",
     )
     entry_count_before = len(timeline_data.get("entries", []))
     timeline_data = update_timeline(

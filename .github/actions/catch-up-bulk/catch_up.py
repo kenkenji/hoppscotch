@@ -16,14 +16,25 @@ actions_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, os.path.join(actions_dir, "shared"))
 sys.path.insert(0, os.path.join(actions_dir, "extract-components"))
 sys.path.insert(0, os.path.join(actions_dir, "record-mapping"))
+sys.path.insert(0, os.path.join(actions_dir, "detect-model-changes"))
+sys.path.insert(0, os.path.join(actions_dir, "bump-model-version"))
 
 from llm_utils import detect_provider, call_llm, parse_llm_response
+from schema_utils import check_schema_version
 from extract_components import (
     format_components_for_prompt,
     build_prompt,
     validate_component_ids,
 )
 from update_data import update_mappings, update_timeline, read_model_version, _mapping_key
+from detect_changes import (
+    build_llm_prompt as build_detect_prompt,
+    validate_llm_results as validate_detect_results,
+    get_existing_ids,
+    is_doc_or_test_only,
+)
+from apply_changes import apply_proposals
+from bump_version import bump_version as do_bump_version, update_changelog
 
 
 def parse_args(argv=None):
@@ -40,6 +51,10 @@ def parse_args(argv=None):
     parser.add_argument("--source-repo", default=None, help="外部リポジトリ (OWNER/REPO)")
     parser.add_argument("--batch-size", type=int, default=10)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--detect-changes", action="store_true",
+                        help="モデル変更検出を有効にする")
+    parser.add_argument("--detect-changes-prompt-template", default=None,
+                        help="モデル変更検出用prompt.txtのパス")
     parser.add_argument("--summary-file", default=None, help="サマリーJSON出力先")
     return parser.parse_args(argv)
 
@@ -68,7 +83,7 @@ def _format_elapsed(seconds):
     return f"{hours}時間{mins:02d}分{secs:02d}秒"
 
 
-def _estimate_cost(num_prs, model=None):
+def _estimate_cost(num_prs, model=None, detect_changes=False):
     """LLM処理のコストを概算する（1PR ≈ 500入力 + 200出力トークン想定）。"""
     if model:
         m = model.lower()
@@ -86,7 +101,8 @@ def _estimate_cost(num_prs, model=None):
             per_pr, label = 0.03, model
     else:
         per_pr, label = 0.03, "default"
-    return num_prs * per_pr, label
+    calls_per_pr = 2 if detect_changes else 1
+    return num_prs * per_pr * calls_per_pr, label
 
 
 def _write_summary(summary_file, data):
@@ -96,6 +112,122 @@ def _write_summary(summary_file, data):
     with open(summary_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
+
+
+def read_auto_approve(work_dir):
+    """config.yamlからauto_approve設定を読み取る。"""
+    config_path = os.path.join(work_dir, "config.yaml")
+    try:
+        with open(config_path, encoding="utf-8") as f:
+            config = yaml.safe_load(f) or {}
+        return config.get("auto_approve", False) is True
+    except (OSError, yaml.YAMLError):
+        return False
+
+
+def fetch_pr_changed_files(repo, pr_number):
+    """PRの変更ファイルリストをGitHub APIで取得する。"""
+    result = subprocess.run(
+        ["gh", "api", f"repos/{repo}/pulls/{pr_number}/files", "--paginate",
+         "--jq", "[.[] | {filename, status}]"],
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        return []
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return []
+
+
+def detect_model_changes_for_pr(pr, components_data, detect_prompt_template,
+                                provider, model, components_path, changelog_path,
+                                target_repo, dry_run=False):
+    """PRからモデル変更を検出し、適用する。
+
+    Returns:
+        (proposals, version_info): proposals はLLM提案リスト、
+        version_info は適用時の版情報 dict（dry_run時やapply=0のときは None）。
+    """
+    pr_number = pr["number"]
+    pr_body = pr.get("body") or ""
+
+    pr_files = fetch_pr_changed_files(target_repo, pr_number)
+    if not pr_files:
+        return [], None
+
+    if is_doc_or_test_only(pr_files):
+        return [], None
+
+    prompt = build_detect_prompt(detect_prompt_template, pr_body, pr_files, components_data)
+    raw = call_llm(provider, prompt, model, max_tokens=2048)
+    llm_result = parse_llm_response(raw)
+
+    existing_ids = get_existing_ids(components_data)
+    proposals = validate_detect_results(llm_result, existing_ids)
+
+    if not proposals or dry_run:
+        return proposals, None
+
+    results = apply_proposals(components_data, proposals)
+    applied = [r for r in results if r.get("status") == "applied"]
+
+    if not applied:
+        return proposals, None
+
+    with open(components_path, "w", encoding="utf-8") as f:
+        yaml.safe_dump(components_data, f, allow_unicode=True,
+                       default_flow_style=False, sort_keys=False)
+
+    old_ver, new_ver = do_bump_version(components_path)
+    components_data["version"] = str(new_ver)
+
+    changes = []
+    for r in applied:
+        action = r.get("action", "")
+        if "id" in r:
+            target_id = r["id"]
+            target_type = "component"
+            matching = next((p for p in proposals if p.get("id") == target_id), None)
+            name = matching.get("name", target_id) if matching else target_id
+        else:
+            target_id = r.get("relation", "")
+            target_type = "relation"
+            name = target_id
+            action = r.get("action", "add")
+
+        summary_text = {
+            "add": f"{name} コンポーネントを追加",
+            "remove": f"{name} コンポーネントを削除",
+            "modify": f"{name} コンポーネントを変更",
+        }.get(action, f"{action}: {name}")
+        if target_type == "relation":
+            summary_text = {
+                "add": f"Relation {target_id} を追加",
+                "remove": f"Relation {target_id} を削除",
+                "modify": f"Relation {target_id} を変更",
+            }.get(action, f"{action}: {target_id}")
+
+        changes.append({
+            "type": action,
+            "target": target_type,
+            "id": target_id,
+            "summary": summary_text,
+        })
+
+    trigger = {
+        "type": "pr",
+        "pr_number": pr_number,
+        "pr_url": pr.get("html_url", ""),
+    }
+    update_changelog(changelog_path, new_ver, changes, trigger, "catch-up")
+
+    return proposals, {
+        "old_version": old_ver,
+        "new_version": new_ver,
+        "applied": len(applied),
+        "changes": changes,
+    }
 
 
 def fetch_merged_prs(repo, since=None, until=None, pr_numbers=None, is_source_repo=False):
@@ -231,10 +363,13 @@ def fetch_pr_diff_stats(repo, pr_number):
         return None, None
 
 
-def git_commit_and_push(work_dir, data_branch, message, max_retries=3):
+def git_commit_and_push(work_dir, data_branch, message, max_retries=3, include_model_files=False):
     """データブランチにコミット&プッシュする。push失敗時はpull --rebaseでリトライ。"""
+    files = ["mappings.json", "timeline.json"]
+    if include_model_files:
+        files.extend(["components.yaml", "model-changelog.json"])
     subprocess.run(
-        ["git", "-C", work_dir, "add", "mappings.json", "timeline.json"],
+        ["git", "-C", work_dir, "add"] + files,
         check=True,
     )
 
@@ -276,7 +411,8 @@ def git_commit_and_push(work_dir, data_branch, message, max_retries=3):
 def run(args):
     """メイン処理ループ。"""
     provider = args.provider or detect_provider()
-    if provider is None and not args.dry_run:
+    needs_llm = not args.dry_run or args.detect_changes
+    if provider is None and needs_llm:
         print("Error: LLMプロバイダーが設定されていません", file=sys.stderr)
         sys.exit(1)
 
@@ -301,6 +437,7 @@ def run(args):
     mappings_path = os.path.join(args.work_dir, "mappings.json")
     timeline_path = os.path.join(args.work_dir, "timeline.json")
     components_path = os.path.join(args.work_dir, "components.yaml")
+    changelog_path = os.path.join(args.work_dir, "model-changelog.json")
 
     with open(mappings_path, encoding="utf-8") as f:
         mappings_data = json.load(f)
@@ -308,11 +445,30 @@ def run(args):
         timeline_data = json.load(f)
     with open(components_path, encoding="utf-8") as f:
         components_data = yaml.safe_load(f)
+    check_schema_version(components_data, components_path)
 
     with open(args.prompt_template, encoding="utf-8") as f:
         prompt_template = f.read()
 
     model_version = read_model_version(components_path)
+
+    # --detect-changes のバリデーション
+    detect_prompt_template = None
+    if args.detect_changes:
+        auto_approve = read_auto_approve(args.work_dir)
+        if not auto_approve:
+            print("Error: --detect-changes は全自動モード（auto_approve: true）が必要です",
+                  file=sys.stderr)
+            print("config.yaml で auto_approve: true に設定してください。", file=sys.stderr)
+            sys.exit(1)
+
+        if args.detect_changes_prompt_template:
+            with open(args.detect_changes_prompt_template, encoding="utf-8") as f:
+                detect_prompt_template = f.read()
+        else:
+            default_path = os.path.join(actions_dir, "detect-model-changes", "prompt.txt")
+            with open(default_path, encoding="utf-8") as f:
+                detect_prompt_template = f.read()
 
     source_repo = args.source_repo
     is_source_repo = source_repo is not None
@@ -350,7 +506,7 @@ def run(args):
 
     total = len(prs_to_process)
 
-    if args.dry_run:
+    if args.dry_run and not args.detect_changes:
         print(f"\n[DRY RUN] 以下の{total}件のPRが処理対象です:")
         dry_run_prs = []
         for pr in prs_to_process:
@@ -361,7 +517,7 @@ def run(args):
                 "title": pr.get("title", ""),
                 "merged_at": pr.get("merged_at", ""),
             })
-        cost, cost_label = _estimate_cost(total, args.model)
+        cost, cost_label = _estimate_cost(total, args.model, detect_changes=args.detect_changes)
         print(f"推定LLMコスト: ~${cost:.2f} ({cost_label})")
         _set_outputs(0, 0, 0, len(skipped_prs))
         elapsed = time.time() - start_time
@@ -379,8 +535,14 @@ def run(args):
     failed = 0
     failed_details = []
     batch_count = 0
+    model_changes_count = 0
+    initial_model_version = model_version
 
-    print(f"\n🚀 処理開始: {total}件のPR ({total_batches}バッチ予定)")
+    mode_label = "マッピング + モデル変更検出" if args.detect_changes else "マッピング"
+    if args.dry_run:
+        print(f"\n🔍 [DRY RUN] 処理開始: {total}件のPR ({mode_label})")
+    else:
+        print(f"\n🚀 処理開始: {total}件のPR ({total_batches}バッチ予定, {mode_label})")
 
     for i, pr in enumerate(prs_to_process):
         pr_number = pr["number"]
@@ -390,6 +552,7 @@ def run(args):
         author = pr.get("user", {}).get("login", "unknown")
 
         result_str = ""
+        detect_log_lines = []
         try:
             components, reasoning = extract_for_pr(
                 pr, components_data, prompt_template, provider, args.model,
@@ -401,34 +564,57 @@ def run(args):
             else:
                 result_str = "no_impact (0 components) ✅"
 
-            diff_stats, labels = extract_diff_stats_from_pr(pr)
-            if diff_stats is None:
-                diff_stats, labels = fetch_pr_diff_stats(target_repo, pr_number)
-            now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            # モデル変更検出
+            if args.detect_changes:
+                try:
+                    proposals, version_info = detect_model_changes_for_pr(
+                        pr, components_data, detect_prompt_template,
+                        provider, args.model, components_path, changelog_path,
+                        target_repo, dry_run=args.dry_run,
+                    )
+                    if proposals:
+                        for p in proposals:
+                            action = p.get("action", "add").upper()
+                            name = p.get("name", p.get("id", ""))
+                            parent = p.get("parent", "")
+                            loc = f" (under {parent})" if parent else ""
+                            detect_log_lines.append(
+                                f"  → Model change: {action} component \"{name}\"{loc}")
+                    if version_info:
+                        model_changes_count += version_info["applied"]
+                        model_version = str(version_info["new_version"])
+                except Exception as e:
+                    detect_log_lines.append(f"  → Model change detection error: {e}")
 
-            mappings_data = update_mappings(
-                mappings_data, pr_number, pr_title, pr_url, merged_at,
-                components, author, now,
-                source="ai", ai_components=components,
-                model_version=model_version,
-                diff_stats=diff_stats, labels=labels,
-                auto_approved=True, source_repo=source_repo,
-            )
-            timeline_data = update_timeline(
-                timeline_data, pr_number, pr_title, pr_url,
-                components, author, now,
-                source="ai", ai_components=components,
-                diff_stats=diff_stats, labels=labels,
-                auto_approved=True, merged_at=merged_at,
-                source_repo=source_repo,
-            )
+            if not args.dry_run:
+                diff_stats, labels = extract_diff_stats_from_pr(pr)
+                if diff_stats is None:
+                    diff_stats, labels = fetch_pr_diff_stats(target_repo, pr_number)
+                now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-            with open(mappings_path, "w", encoding="utf-8") as f:
-                json.dump(mappings_data, f, indent=2, ensure_ascii=False)
-                f.write("\n")
-            with open(timeline_path, "w", encoding="utf-8") as f:
-                json.dump(timeline_data, f, indent=2, ensure_ascii=False)
-                f.write("\n")
+                mappings_data = update_mappings(
+                    mappings_data, pr_number, pr_title, pr_url, merged_at,
+                    components, author, now,
+                    source="ai", ai_components=components,
+                    model_version=model_version,
+                    diff_stats=diff_stats, labels=labels,
+                    auto_approved=True, source_repo=source_repo,
+                )
+                timeline_data = update_timeline(
+                    timeline_data, pr_number, pr_title, pr_url,
+                    components, author, now,
+                    source="ai", ai_components=components,
+                    diff_stats=diff_stats, labels=labels,
+                    auto_approved=True, merged_at=merged_at,
+                    source_repo=source_repo,
+                )
+
+                with open(mappings_path, "w", encoding="utf-8") as f:
+                    json.dump(mappings_data, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
+                with open(timeline_path, "w", encoding="utf-8") as f:
+                    json.dump(timeline_data, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
 
             succeeded += 1
             batch_count += 1
@@ -439,16 +625,19 @@ def run(args):
             failed_details.append({"pr_number": pr_number, "title": pr_title, "error": str(e)})
 
         # バッチコミット（LLM抽出のtry/exceptとは分離し二重カウントを防ぐ）
-        do_batch = batch_count >= args.batch_size
+        do_batch = batch_count >= args.batch_size and not args.dry_run
         if do_batch:
             elapsed = time.time() - start_time
             time_info = f" [経過: {_format_elapsed(elapsed)}]"
             print(f'[{i+1}/{total}] PR #{pr_number} "{pr_title}" ... {result_str}')
+            for line in detect_log_lines:
+                print(line)
             print(f"--- Batch {current_batch}/{total_batches} committed ({batch_count} PRs) ---{time_info}")
             try:
                 pushed = git_commit_and_push(
                     args.work_dir, args.data_branch,
                     f"Catch-up bulk: {batch_count} PRs (up to PR #{pr_number})",
+                    include_model_files=args.detect_changes,
                 )
             except Exception as e:
                 print(f"⚠️ バッチコミット失敗: {e}", file=sys.stderr)
@@ -473,23 +662,26 @@ def run(args):
             time_info = f" [経過: {_format_elapsed(elapsed)}]"
 
         print(f'[{i+1}/{total}] PR #{pr_number} "{pr_title}" ... {result_str}{time_info}')
+        for line in detect_log_lines:
+            print(line)
 
         if i < total - 1:
             time.sleep(1)
 
-    if batch_count > 0:
+    if batch_count > 0 and not args.dry_run:
         try:
             print(f"--- Final batch committed ({batch_count} PRs) ---")
             pushed = git_commit_and_push(
                 args.work_dir, args.data_branch,
                 f"Catch-up bulk: {batch_count} PRs (final batch)",
+                include_model_files=args.detect_changes,
             )
             if not pushed:
                 print("⚠️ 最終バッチのプッシュ失敗", file=sys.stderr)
         except Exception as e:
             print(f"❌ 最終バッチコミット失敗: {e}", file=sys.stderr)
 
-    if succeeded > 0:
+    if succeeded > 0 and not args.dry_run:
         last_pr = prs_to_process[-1]["number"]
         _dispatch_visualize_impact(args.repo, last_pr)
 
@@ -501,6 +693,8 @@ def run(args):
     print(f"   成功: {succeeded}件")
     print(f"   失敗: {failed}件")
     print(f"   スキップ(既記録): {len(skipped_prs)}件")
+    if args.detect_changes and model_changes_count > 0:
+        print(f"   モデル変更: {model_changes_count}件適用 (v{initial_model_version} → v{model_version})")
     print(f"   処理時間: {_format_elapsed(elapsed)}")
     if failed_details:
         print(f"\n❌ 失敗詳細:")
@@ -516,8 +710,12 @@ def run(args):
         "elapsed_seconds": round(elapsed, 1),
         "elapsed_display": _format_elapsed(elapsed),
         "failed_details": failed_details,
-        "dry_run": False,
+        "dry_run": args.dry_run,
     }
+    if args.detect_changes:
+        summary["model_changes"] = model_changes_count
+        summary["initial_model_version"] = initial_model_version
+        summary["final_model_version"] = model_version
     _write_summary(args.summary_file, summary)
 
 

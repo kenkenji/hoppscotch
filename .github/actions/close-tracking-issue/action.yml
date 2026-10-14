@@ -1,0 +1,76 @@
+name: "Close Tracking Issue"
+description: "マッピング記録が完了したPRのトラッキングIssueを、影響なし／紐付け完了に応じたコメントを付けてクローズする"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  pr-number:
+    description: "PR number whose tracking issue should be closed"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    # 読み取り専用: mappings.json とトラッキングIssueの一覧を取得し、クローズ対象とコメントを決める
+    - name: Find tracking issue
+      id: find
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        work_dir=$(mktemp -d)
+        trap 'rm -rf "$work_dir"' EXIT
+        mappings_file="${work_dir}/mappings.json"
+        issues_file="${work_dir}/issues.json"
+
+        # mappings.json を取得できなかった場合はファイルなしとし、no_impact=false として扱う
+        if ! gh api "repos/${REPO}/contents/mappings.json?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null \
+          | base64 -d > "$mappings_file" 2>/dev/null; then
+          rm -f "$mappings_file"
+          echo "ℹ️ Could not fetch mappings.json; treating PR #${PR_NUMBER} as no_impact=false"
+        fi
+
+        gh issue list \
+          --label "architecture-tracking" \
+          --state open \
+          --limit 1000 \
+          --json number,title \
+          --repo "$REPO" > "$issues_file"
+
+        python3 "${ACTION_PATH}/close_tracking_issue.py" \
+          --pr-number "$PR_NUMBER" \
+          --mappings-file "$mappings_file" \
+          --issues-file "$issues_file" >> "$GITHUB_OUTPUT"
+
+    - name: Close tracking issue
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        ISSUE_NUMBER: ${{ steps.find.outputs.issue_number }}
+        CLOSE_COMMENT: ${{ steps.find.outputs.close_comment }}
+      run: |
+        set -euo pipefail
+
+        if [ -z "$ISSUE_NUMBER" ]; then
+          echo "ℹ️ No open tracking issue found for PR #${PR_NUMBER}"
+          exit 0
+        fi
+
+        gh issue close "$ISSUE_NUMBER" \
+          --comment "$CLOSE_COMMENT" \
+          --repo "$REPO"
+        echo "✅ Closed tracking issue #${ISSUE_NUMBER}"

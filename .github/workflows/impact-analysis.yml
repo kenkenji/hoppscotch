@@ -6,8 +6,24 @@ on:
   issue_comment:
     types: [created]
 
+# ワークフロー単位の concurrency はジョブの if より前に適用され、待機中の run は新しい run に置き換えられる。
+# analyze を実行しないイベント（ボット自身の分析結果コメントや無関係なコメント）が、待機中の
+# @architecture-tracker 依頼をキャンセルしないよう、run ごとに一意の group に入れる（#379）。
+# 条件は analyze ジョブの if と同じ。if を変更したら、ここも合わせて変更すること
+# （tests/test_workflow_concurrency.py で整合性を検証している）
 concurrency:
-  group: impact-analysis-${{ github.event.issue.number }}
+  group: >-
+    ${{
+    ((github.event_name == 'issues'
+    && contains(github.event.issue.body, '@architecture-tracker'))
+    || (github.event_name == 'issue_comment'
+    && !github.event.issue.pull_request
+    && github.event.comment.user.type != 'Bot'
+    && github.actor != 'github-actions[bot]'
+    && contains(github.event.comment.body, '@architecture-tracker')))
+    && format('impact-analysis-{0}', github.event.issue.number)
+    || format('impact-analysis-noop-{0}', github.run_id)
+    }}
   cancel-in-progress: false
 
 jobs:

@@ -12,7 +12,7 @@ inputs:
 
 outputs:
   skipped:
-    description: "Whether the mapping was skipped (not a tracker comment or PR not merged)"
+    description: "Whether the mapping was skipped (not a tracker comment, edited by a bot, or PR not merged)"
     value: ${{ steps.result.outputs.skipped }}
 
 runs:
@@ -23,9 +23,19 @@ runs:
       shell: bash
       env:
         COMMENT_BODY: ${{ github.event.comment.body }}
+        SENDER_TYPE: ${{ github.event.sender.type }}
         ACTION_PATH: ${{ github.action_path }}
       run: |
         set -euo pipefail
+
+        # ボット（GitHub App）によるコメント更新は表示の更新であり、ユーザーの確定操作ではない。
+        # ここで記録すると、auto-apply 前のコメント本文で mappings.json を REPLACE してしまうためスキップする。
+        # （GITHUB_TOKEN による更新はそもそもワークフローを起動しないが、Installation Token による更新は起動する）
+        if [ "$SENDER_TYPE" = "Bot" ]; then
+          echo "Comment was edited by a bot (display update), skipping."
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
 
         result=$(python3 "${ACTION_PATH}/parse_checkboxes.py")
 
@@ -112,7 +122,7 @@ runs:
       run: |
         set -euo pipefail
 
-        max_retries=3
+        max_retries=5
         retry=0
 
         ai_args=()
@@ -154,6 +164,8 @@ runs:
             labels_args=(--labels "$LABELS")
           fi
 
+          # チェックボックス編集はユーザーが Source of Truth を確定させる操作のため REPLACE
+          # （外した項目や「影響なし」への変更を反映する）
           python3 "${ACTION_PATH}/update_data.py" \
             --mappings-file "${work_dir}/mappings.json" \
             --timeline-file "${work_dir}/timeline.json" \
@@ -164,6 +176,7 @@ runs:
             --components "$COMPONENTS" \
             --author "$AUTHOR" \
             --source "$SOURCE" \
+            --write-mode replace \
             "${ai_args[@]}" \
             "${model_version_args[@]}" \
             "${diff_stats_args[@]}" \
@@ -194,7 +207,8 @@ runs:
           retry=$((retry + 1))
           cd /tmp
           rm -rf "$work_dir"
-          sleep $((retry * 2))
+          # 別 PR の run と同じタイミングで再試行し続けないよう、待ち時間に揺らぎを入れる
+          sleep $((retry * 2 + RANDOM % 5))
         done
 
         echo "::error::Failed to push after ${max_retries} retries"

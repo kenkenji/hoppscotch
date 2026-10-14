@@ -24,6 +24,11 @@ on:
         type: boolean
         required: false
         default: false
+      detect-changes:
+        description: "モデル変更検出を有効にする（auto_approve: true が必要）"
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: architecture-tracker-catch-up
@@ -92,6 +97,7 @@ jobs:
           source-repo: ${{ inputs.source-repo }}
           batch-size: ${{ inputs.batch-size }}
           dry-run: ${{ inputs.dry-run }}
+          detect-changes: ${{ inputs.detect-changes }}
 
       - name: Job Summary
         if: always() && steps.catch-up.conclusion != 'skipped'
@@ -109,6 +115,7 @@ jobs:
           PR_NUMBERS: ${{ inputs.pr-numbers }}
           SOURCE_REPO: ${{ inputs.source-repo }}
           BATCH_SIZE: ${{ inputs.batch-size }}
+          DETECT_CHANGES: ${{ inputs.detect-changes }}
         run: |
           set -euo pipefail
 
@@ -142,6 +149,9 @@ jobs:
           fi
           echo "| バッチサイズ | ${BATCH_SIZE} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| dry-run | ${DRY_RUN} |" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$DETECT_CHANGES" = "true" ]; then
+            echo "| detect-changes | true |" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
           if [ "$CATCH_UP_CONCLUSION" != "failure" ]; then
             # 処理時間をサマリーJSONから取得（フォーマット済み文字列）

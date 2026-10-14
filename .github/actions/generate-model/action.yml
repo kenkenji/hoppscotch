@@ -1,0 +1,125 @@
+name: "Generate Model"
+description: "コードベースから LLM で C4 モデル（components.yaml）を生成し、モデルが空なら適用する（plan / apply）"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access（データブランチへの書き込みに contents: write が必要）"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: false
+    default: "_architecture-tracker"
+  level:
+    description: "生成する粒度: container（System + Container）/ component（Component まで）"
+    required: false
+    default: "component"
+  apply:
+    description: "true なら生成結果を components.yaml に適用する（既存のモデルに要素も関係もない場合のみ）"
+    required: false
+    default: "false"
+  regenerate:
+    description: "true なら保存済みの生成結果（generated-model.json）を使わずに作り直す"
+    required: false
+    default: "false"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based generation"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name（省略時は config.yaml の llm.model、なければプロバイダーの標準モデル）"
+    required: false
+    default: ""
+  author:
+    description: "model-changelog.json に記録する変更者"
+    required: false
+    default: "github-actions[bot]"
+
+outputs:
+  applied:
+    description: "components.yaml に適用したか（true / false）"
+    value: ${{ steps.generate.outputs.applied }}
+  model-version:
+    description: "適用したモデルバージョン（適用しなかった場合は空）"
+    value: ${{ steps.generate.outputs.model_version }}
+  reused:
+    description: "保存済みの生成結果を再利用したか（true / false）"
+    value: ${{ steps.generate.outputs.reused }}
+  commit:
+    description: "解析したコミットの SHA"
+    value: ${{ steps.generate.outputs.commit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        # キーの本体は渡さず、設定されているかだけを渡す
+        HAS_ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key != '' }}
+        HAS_OPENAI_API_KEY: ${{ inputs.openai-api-key != '' }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ "$HAS_ANTHROPIC_API_KEY" = "true" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ "$HAS_OPENAI_API_KEY" = "true" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Generate model
+      id: generate
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        REPO: ${{ github.repository }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        LEVEL: ${{ inputs.level }}
+        APPLY: ${{ inputs.apply }}
+        REGENERATE: ${{ inputs.regenerate }}
+        MODEL: ${{ inputs.model }}
+        AUTHOR: ${{ inputs.author }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        args=(--repo "$REPO" --data-branch "$DATA_BRANCH" --root "$GITHUB_WORKSPACE" --level "$LEVEL"
+              --author "$AUTHOR" --summary-file "$GITHUB_STEP_SUMMARY")
+        if [ "$APPLY" = "true" ]; then
+          args+=(--apply)
+        fi
+        if [ "$REGENERATE" = "true" ]; then
+          args+=(--regenerate)
+        fi
+        if [ -n "$MODEL" ]; then
+          args+=(--model "$MODEL")
+        fi
+
+        # 適用に失敗した場合も結果（JSON）を出力してから非0で終了するため、終了コードを保持して出力を書き出す
+        status=0
+        result=$(python3 "${ACTION_PATH}/generate_model.py" "${args[@]}") || status=$?
+
+        if [ -n "$result" ]; then
+          echo "$result" | python3 -c '
+        import json, sys
+        d = json.load(sys.stdin)
+        for key, value in (("applied", d["applied"]), ("model_version", d["model_version"]),
+                           ("reused", d["reused"]), ("commit", d["commit"])):
+            print(f"{key}={str(value).lower() if isinstance(value, bool) else value}")
+        ' >> "$GITHUB_OUTPUT"
+        fi
+        exit "$status"

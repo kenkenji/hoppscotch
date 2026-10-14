@@ -10,7 +10,6 @@ MARKER = "## \U0001f3d7 Architecture Tracker"
 CHECKBOX_PATTERN = re.compile(r"^(\s*)- \[([ xX])\] `([^`]+)`")
 SOURCE_PATTERN = re.compile(r"<!--\s*source:\s*(ai|manual)\s*-->")
 AI_COMPONENTS_PATTERN = re.compile(r"<!--\s*ai-components:\s*(\[.*?\])\s*-->")
-AUTO_APPROVED_PATTERN = re.compile(r"<!--\s*auto-approved:\s*true\s*-->")
 NO_IMPACT_ID = "__no_impact__"
 
 
@@ -48,10 +47,6 @@ def extract_ai_components(body):
     return []
 
 
-def extract_auto_approved(body):
-    return bool(AUTO_APPROVED_PATTERN.search(body))
-
-
 def main():
     body = os.environ.get("COMMENT_BODY", "")
 
@@ -64,7 +59,6 @@ def main():
         "source": extract_source(body),
         "ai_components": extract_ai_components(body),
         "no_impact": extract_no_impact(body),
-        "auto_approved": extract_auto_approved(body),
     }
     print(json.dumps(result))
 

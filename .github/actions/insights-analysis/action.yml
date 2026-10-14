@@ -1,0 +1,212 @@
+name: "Insights Analysis"
+description: "LLMでアーキテクチャ分析レポート（insights-report.json）を生成し、データブランチに保存する"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  data-branch:
+    description: "Branch name where architecture data is stored"
+    required: true
+    default: "_architecture-tracker"
+  anthropic-api-key:
+    description: "Anthropic API key for Claude"
+    required: false
+    default: ""
+  openai-api-key:
+    description: "OpenAI API key for GPT"
+    required: false
+    default: ""
+  claude-code-oauth-token:
+    description: "Claude Code OAuth token for CLI-based analysis"
+    required: false
+    default: ""
+  model:
+    description: "LLM model name (default: provider's standard model)"
+    required: false
+    default: ""
+
+outputs:
+  findings-count:
+    description: "Number of findings generated"
+    value: ${{ steps.analyze.outputs.findings_count }}
+  skipped:
+    description: "Whether analysis was skipped (no data to analyze)"
+    value: ${{ steps.analyze.outputs.skipped }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate LLM API key
+      id: validate
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+      run: |
+        set -euo pipefail
+        if [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$OPENAI_API_KEY" ] && [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+          echo "::error::No LLM API key configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or CLAUDE_CODE_OAUTH_TOKEN."
+          exit 1
+        fi
+
+    - name: Setup Python dependencies
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+      run: |
+        pip install "pyyaml>=6,<7"
+        if [ -n "$ANTHROPIC_API_KEY" ]; then
+          pip install "anthropic>=0.39,<1"
+        elif [ -n "$OPENAI_API_KEY" ]; then
+          pip install "openai>=1,<2"
+        fi
+
+    - name: Install Claude Code CLI
+      if: inputs.claude-code-oauth-token != '' && inputs.anthropic-api-key == '' && inputs.openai-api-key == ''
+      shell: bash
+      run: npm install -g @anthropic-ai/claude-code
+
+    - name: Fetch data from data branch
+      id: fetch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        REPO: ${{ github.repository }}
+      run: |
+        set -euo pipefail
+
+        components_file=$(mktemp --suffix=.yaml)
+        components_content=$(gh api "repos/${REPO}/contents/components.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+        if [ -z "$components_content" ]; then
+          echo "::error::components.yaml not found on branch ${DATA_BRANCH}"
+          exit 1
+        fi
+        echo "$components_content" > "$components_file"
+        echo "components_file=${components_file}" >> "$GITHUB_OUTPUT"
+
+        # model_version を components.yaml の version フィールドから取得
+        model_version=$(python3 -c "
+        import yaml, sys
+        with open('$components_file') as f:
+            data = yaml.safe_load(f)
+        print(data.get('version', ''))
+        " 2>/dev/null || echo "")
+        echo "model_version=${model_version}" >> "$GITHUB_OUTPUT"
+
+        timeline_file=$(mktemp --suffix=.json)
+        timeline_content=$(gh api "repos/${REPO}/contents/timeline.json?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+        if [ -n "$timeline_content" ]; then
+          echo "$timeline_content" > "$timeline_file"
+        else
+          echo '{"version":"1.0","entries":[]}' > "$timeline_file"
+        fi
+        echo "timeline_file=${timeline_file}" >> "$GITHUB_OUTPUT"
+
+        # config.yaml から LLM モデル設定を取得
+        config_model=""
+        config_yaml=$(gh api "repos/${REPO}/contents/config.yaml?ref=${DATA_BRANCH}" \
+          --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo "")
+        if [ -n "$config_yaml" ]; then
+          config_model=$(echo "$config_yaml" | grep -A1 '^llm:' | grep 'model:' | sed 's/.*model:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
+        fi
+        echo "config_model=${config_model}" >> "$GITHUB_OUTPUT"
+
+    - name: Run LLM analysis
+      id: analyze
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        CLAUDE_CODE_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+        MODEL: ${{ inputs.model || steps.fetch.outputs.config_model }}
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+        TIMELINE_FILE: ${{ steps.fetch.outputs.timeline_file }}
+        MODEL_VERSION: ${{ steps.fetch.outputs.model_version }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+
+        output_file=$(mktemp --suffix=.json)
+
+        model_args=()
+        if [ -n "$MODEL" ]; then
+          model_args=(--model "$MODEL")
+        fi
+
+        python3 "${ACTION_PATH}/analyze_insights.py" \
+          --components-file "$COMPONENTS_FILE" \
+          --timeline-file "$TIMELINE_FILE" \
+          --prompt-template "${ACTION_PATH}/prompt.txt" \
+          --model-version "$MODEL_VERSION" \
+          --output "$output_file" \
+          "${model_args[@]}"
+
+        findings_count=$(python3 -c "import json; d=json.load(open('$output_file')); print(d['summary']['findings_count'])")
+        total_prs=$(python3 -c "import json; d=json.load(open('$output_file')); print(d['summary']['total_prs_analyzed'])")
+        echo "findings_count=${findings_count}" >> "$GITHUB_OUTPUT"
+        echo "output_file=${output_file}" >> "$GITHUB_OUTPUT"
+
+        if [ "$total_prs" = "0" ]; then
+          echo "skipped=true" >> "$GITHUB_OUTPUT"
+          echo "⚠️ No PR data to analyze — skipped LLM call"
+        else
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Save insights-report.json to data branch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        DATA_BRANCH: ${{ inputs.data-branch }}
+        REPO: ${{ github.repository }}
+        OUTPUT_FILE: ${{ steps.analyze.outputs.output_file }}
+      run: |
+        set -euo pipefail
+
+        encoded=$(base64 -w 0 < "$OUTPUT_FILE")
+        file_path="insights-report.json"
+
+        existing_sha=""
+        if sha_result=$(gh api "repos/${REPO}/contents/${file_path}?ref=${DATA_BRANCH}" \
+          --jq '.sha' 2>&1); then
+          existing_sha="$sha_result"
+        elif echo "$sha_result" | grep -q "404"; then
+          existing_sha=""
+        else
+          echo "::warning::Unexpected error checking ${file_path}: ${sha_result}"
+          existing_sha=""
+        fi
+
+        if [ -n "$existing_sha" ]; then
+          gh api "repos/${REPO}/contents/${file_path}" \
+            --method PUT \
+            -f message="Update insights-report.json" \
+            -f content="${encoded}" \
+            -f branch="${DATA_BRANCH}" \
+            -f sha="${existing_sha}" \
+            --silent
+        else
+          gh api "repos/${REPO}/contents/${file_path}" \
+            --method PUT \
+            -f message="Add insights-report.json" \
+            -f content="${encoded}" \
+            -f branch="${DATA_BRANCH}" \
+            --silent
+        fi
+
+        echo "✅ Saved insights-report.json to ${DATA_BRANCH} branch"
+
+    - name: Cleanup
+      if: always()
+      shell: bash
+      env:
+        COMPONENTS_FILE: ${{ steps.fetch.outputs.components_file }}
+        TIMELINE_FILE: ${{ steps.fetch.outputs.timeline_file }}
+        OUTPUT_FILE: ${{ steps.analyze.outputs.output_file }}
+      run: rm -f "$COMPONENTS_FILE" "$TIMELINE_FILE" "$OUTPUT_FILE"

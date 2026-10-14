@@ -1,0 +1,57 @@
+あなたはソフトウェアアーキテクチャの専門家です。
+以下のアーキテクチャモデルとPRマッピングの集計データを分析し、改善提案を生成してください。
+
+## コンポーネント一覧
+
+{components}
+
+## PRマッピング集計データ
+
+{aggregated_data}
+
+## 分析観点
+
+以下の3つの観点で分析してください:
+
+1. **変更集中** — 変更が集中しているコンポーネントの責務分離の提案
+2. **共変更パターン** — 常に一緒に変更されるコンポーネント間の結合度の指摘
+3. **粒度の妥当性** — 変更が少なすぎるコンポーネントの統合、多すぎるコンポーネントの分割の提案
+
+## 出力形式
+
+以下のJSON形式で出力してください。余分なテキストは出力しないでください。
+
+```json
+{
+  "findings": [
+    {
+      "id": "finding-001",
+      "type": "change_concentration | co_change_coupling | granularity",
+      "severity": "critical | warning | info",
+      "components": ["component-id-1"],
+      "title": "指摘のタイトル（日本語）",
+      "description": "詳細な説明（日本語）",
+      "evidence": {
+        "pr_count": 64,
+        "period_pr_counts": [
+          {"month": "2024-10", "count": 12}
+        ]
+      },
+      "suggestion": "改善提案（日本語）"
+    }
+  ]
+}
+```
+
+### 出力ルール
+
+- `id` は `finding-001` から連番で採番する
+- `type` は `change_concentration`, `co_change_coupling`, `granularity` のいずれか
+- `severity` は `critical`（重大な問題）, `warning`（注意が必要）, `info`（参考情報）のいずれか
+- `components` は対象コンポーネントのIDの配列（コンポーネント一覧に存在するIDのみ使用すること）
+- `evidence` はデータに基づく根拠を含めること
+  - `change_concentration` の場合: `pr_count`（PR数）と `period_pr_counts`（月別推移）
+  - `co_change_coupling` の場合: `co_change_count`（共変更回数）と `co_change_ratio`（共変更率）
+  - `granularity` の場合: `pr_count`（PR数）
+- findingsは重要度の高い順に並べること
+- 該当する分析結果がない観点については、findingsに含めなくてよい
