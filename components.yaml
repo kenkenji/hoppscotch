@@ -1,8 +1,450 @@
 # Architecture Tracker — コンポーネント定義
-# SPA上のエディタで編集できます
-schema_version: "1"
-version: "1"
+# gh architecture-tracker generate-model でコードベースから生成した初期案です。SPA のエディタで調整してください
+schema_version: '1'
+version: '2'
 model:
-  type: "c4"
-components: []
-relations: []
+  type: c4
+components:
+- id: hoppscotch
+  name: Hoppscotch
+  level: system
+  description: REST/GraphQL/WebSocket等のAPIを設計・テスト・共同作業するためのオープンソースAPI開発エコシステム
+  tags:
+  - internal
+- id: github
+  name: GitHub
+  level: system
+  description: OAuthログイン認証とデスクトップ/エージェントアプリの自動更新配信に利用される外部サービス
+  tags:
+  - external
+- id: google-oauth
+  name: Google OAuth
+  level: system
+  description: GoogleアカウントによるSSOログインを提供する外部認証サービス
+  tags:
+  - external
+- id: microsoft-oauth
+  name: Microsoft OAuth
+  level: system
+  description: Microsoftアカウント/Azure ADによるSSOログインを提供する外部認証サービス
+  tags:
+  - external
+- id: smtp-server
+  name: SMTP Email Server
+  level: system
+  description: 招待メールやメール認証などトランザクションメールを送信する外部メールサーバー
+  tags:
+  - external
+- id: posthog
+  name: PostHog
+  level: system
+  description: プロダクト利用状況の分析データを収集する外部アナリティクスサービス
+  tags:
+  - external
+- id: target-api
+  name: Target API Under Test
+  level: system
+  description: ユーザーがHoppscotchから任意のHTTP/GraphQL/WebSocket/MQTT/SSEリクエストを送信する対象の外部API
+  tags:
+  - external
+- id: hoppscotch-proxy
+  name: Hoppscotch Proxy
+  level: system
+  description: CORS制約やIP秘匿のためにリクエストを中継するHoppscotch公式プロキシサーバー
+  tags:
+  - external
+- id: web-app
+  name: Web Application
+  level: container
+  parent: hoppscotch
+  technology: Vue 3 SPA (hoppscotch-common + hoppscotch-selfhost-web)
+  description: ブラウザで動作するメインのAPIクライアントWebアプリケーション
+  tags:
+  - frontend
+- id: admin-dashboard
+  name: Self-Host Admin Dashboard
+  level: container
+  parent: hoppscotch
+  technology: Vue 3 + urql
+  description: セルフホストインスタンスのユーザー・インフラ設定を管理する管理者向けWebアプリ
+  tags:
+  - frontend
+- id: backend-api
+  name: Backend API
+  level: container
+  parent: hoppscotch
+  technology: NestJS (GraphQL + REST, Apollo Server)
+  description: 認証・チーム・コレクション同期などを提供するバックエンドAPIサーバー
+  tags:
+  - backend
+- id: desktop-app
+  name: Desktop App
+  level: container
+  parent: hoppscotch
+  technology: Tauri v2 + Vue 3 + Rust
+  description: CORS制約を受けずにネイティブでAPIリクエストを実行できるデスクトップクライアント
+  tags:
+  - frontend
+  - desktop
+- id: agent
+  name: Hoppscotch Agent
+  level: container
+  parent: hoppscotch
+  technology: Tauri v2 + Rust (axum)
+  description: ローカルで動作しWebアプリからのリクエストをブラウザ制約なしに中継するリレーサービス
+  tags:
+  - desktop
+  - relay
+- id: cli
+  name: Hoppscotch CLI
+  level: container
+  parent: hoppscotch
+  technology: Node.js (TypeScript)
+  description: CI環境でHoppscotchコレクションのテストを実行するコマンドラインツール
+  tags:
+  - cli
+- id: webapp-bundle-server
+  name: Webapp Bundle Server
+  level: container
+  parent: hoppscotch
+  technology: Go
+  description: 署名付きフロントエンドバンドルをデスクトップアプリへ配信するGo製HTTPサーバー
+  tags:
+  - backend
+- id: postgres-db
+  name: PostgreSQL Database
+  level: container
+  parent: hoppscotch
+  technology: PostgreSQL + Prisma
+  description: ユーザー・チーム・コレクション等の永続データを保存するデータベース
+  tags:
+  - datastore
+- id: redis
+  name: Redis
+  level: container
+  parent: hoppscotch
+  technology: Redis
+  description: GraphQL Subscriptionのpub/subに利用されるインメモリデータストア
+  tags:
+  - datastore
+- id: auth-module
+  name: Auth Module
+  level: component
+  parent: backend-api
+  technology: Passport.js + JWT
+  description: GitHub/Google/Microsoft/ローカル認証を扱う認証モジュール
+  tags:
+  - auth
+- id: graphql-api
+  name: GraphQL API
+  level: component
+  parent: backend-api
+  technology: Apollo Server + @nestjs/graphql
+  description: GraphQLスキーマ・リゾルバ・サブスクリプションを提供するAPI層
+  tags:
+  - api
+- id: mailer-service
+  name: Mailer Service
+  level: component
+  parent: backend-api
+  technology: nodemailer + handlebars
+  description: 招待・認証等のメールテンプレートを生成し送信するサービス
+  tags:
+  - notification
+- id: infra-token-module
+  name: Infra Token Module
+  level: component
+  parent: backend-api
+  technology: NestJS
+  description: インフラ管理用アクセストークンの発行・検証を行うモジュール
+  tags:
+  - auth
+- id: health-module
+  name: Health Module
+  level: component
+  parent: backend-api
+  technology: '@nestjs/terminus'
+  description: バックエンドの死活監視エンドポイントを提供するモジュール
+  tags:
+  - ops
+- id: prisma-data-layer
+  name: Prisma Data Layer
+  level: component
+  parent: backend-api
+  technology: Prisma ORM
+  description: PostgreSQLへのデータアクセスを担うデータレイヤー
+  tags:
+  - data
+- id: analytics-tracking
+  name: Analytics Tracking
+  level: component
+  parent: backend-api
+  technology: posthog-node
+  description: 製品利用状況をPostHogへ送信するトラッキングモジュール
+  tags:
+  - analytics
+- id: app-module-system
+  name: App Module System
+  level: component
+  parent: web-app
+  technology: TypeScript (dioc)
+  description: アプリ機能をプラグインとして登録・初期化するモジュールシステム
+  tags:
+  - core
+- id: platform-abstraction
+  name: Platform Abstraction
+  level: component
+  parent: web-app
+  technology: TypeScript
+  description: Web/デスクトップ間で認証・バックエンド接続先を切り替えるプラットフォーム抽象層
+  tags:
+  - core
+- id: protocol-clients
+  name: Protocol Clients
+  level: component
+  parent: web-app
+  technology: axios, paho-mqtt, postman-collection
+  description: REST/GraphQL/WebSocket/SSE/MQTT/Socket.IOリクエストを実行するクライアント群
+  tags:
+  - networking
+- id: script-sandbox-runtime
+  name: Script Sandbox Runtime
+  level: component
+  parent: web-app
+  technology: '@hoppscotch/js-sandbox'
+  description: Pre-Request/Testスクリプトを安全に実行するサンドボックス連携
+  tags:
+  - scripting
+- id: graphql-sync-client
+  name: GraphQL Sync Client
+  level: component
+  parent: web-app
+  technology: '@urql/core'
+  description: コレクション・環境・チーム情報をBackend APIと同期するGraphQLクライアント
+  tags:
+  - networking
+- id: kernel-integration
+  name: Kernel Integration
+  level: component
+  parent: web-app
+  technology: '@hoppscotch/kernel (web impl)'
+  description: IO/リレー/ストア/ログの実行基盤をWeb向けに抽象化するカーネル連携層
+  tags:
+  - core
+- id: ui-component-library
+  name: UI Component Library
+  level: component
+  parent: web-app
+  technology: '@hoppscotch/ui, CodeMirror, Monaco'
+  description: エディタやUIコンポーネントを提供する表示レイヤー
+  tags:
+  - ui
+- id: desktop-shell-ui
+  name: Desktop Shell UI
+  level: component
+  parent: desktop-app
+  technology: Vue 3 + vue-router
+  description: hoppscotch-commonを組み込みTauriウィンドウ内で表示するシェルUI
+  tags:
+  - ui
+- id: kernel-desktop-bindings
+  name: Kernel Desktop Bindings
+  level: component
+  parent: desktop-app
+  technology: '@hoppscotch/kernel (desktop impl) + Tauri plugins'
+  description: IO/ストア/ログ機能をTauriネイティブ機能へ橋渡しするカーネル実装
+  tags:
+  - core
+- id: native-relay-bridge
+  name: Native Relay Bridge
+  level: component
+  parent: desktop-app
+  technology: Rust (hoppscotch-relay crate, curl)
+  description: CORSに縛られずネイティブにHTTPリクエストを実行するリレー連携
+  tags:
+  - networking
+- id: auto-updater
+  name: Auto Updater
+  level: component
+  parent: desktop-app
+  technology: '@tauri-apps/plugin-updater'
+  description: GitHub Releasesを参照しアプリの自動更新を行うモジュール
+  tags:
+  - ops
+- id: registration-ui
+  name: Registration UI
+  level: component
+  parent: agent
+  technology: Vue 3 (Tauri window)
+  description: OTPコード表示と登録確認を行うトレイウィンドウUI
+  tags:
+  - ui
+- id: http-relay-server
+  name: HTTP Relay Server
+  level: component
+  parent: agent
+  technology: Rust (axum)
+  description: ローカルポート9119でWebアプリからのリクエストを受け対象APIへ中継するサーバー
+  tags:
+  - networking
+- id: otp-auth-handshake
+  name: OTP Auth Handshake
+  level: component
+  parent: agent
+  technology: Rust (x25519-dalek, ed25519)
+  description: OTPによる登録と暗号化チャネル確立を行う認証ハンドシェイク処理
+  tags:
+  - auth
+- id: admin-ui-modules
+  name: Admin UI Modules
+  level: component
+  parent: admin-dashboard
+  technology: Vue 3
+  description: 管理画面の機能をプラグインとして構成するモジュールシステム
+  tags:
+  - core
+- id: graphql-admin-client
+  name: GraphQL Admin Client
+  level: component
+  parent: admin-dashboard
+  technology: '@urql/vue'
+  description: 管理操作のためBackend APIへGraphQLリクエストを送るクライアント
+  tags:
+  - networking
+- id: auth-session-helper
+  name: Auth Session Helper
+  level: component
+  parent: admin-dashboard
+  technology: TypeScript + fp-ts
+  description: 管理者セッションの認証状態とトークンリフレッシュを管理するヘルパー
+  tags:
+  - auth
+- id: test-command
+  name: Test Command
+  level: component
+  parent: cli
+  technology: commander
+  description: コレクションを読み込みテスト実行全体を統括するコマンド処理
+  tags:
+  - core
+- id: collection-loader
+  name: Collection Loader
+  level: component
+  parent: cli
+  technology: jsonc-parser
+  description: ローカルファイルまたはID指定でコレクション/環境を取得するローダー
+  tags:
+  - data
+- id: request-executor
+  name: Request Executor
+  level: component
+  parent: cli
+  technology: axios, aws4fetch
+  description: REST/GraphQLリクエストを対象APIへ送信し応答を取得する実行エンジン
+  tags:
+  - networking
+- id: script-runtime
+  name: Script Runtime
+  level: component
+  parent: cli
+  technology: isolated-vm
+  description: Pre-Request/Testスクリプトをサンドボックス内で実行するランタイム
+  tags:
+  - scripting
+- id: bundle-builder
+  name: Bundle Builder
+  level: component
+  parent: webapp-bundle-server
+  technology: Go
+  description: フロントエンド資産をzstd圧縮しed25519署名付きバンドルを生成する処理
+  tags:
+  - build
+- id: signed-delivery-server
+  name: Signed Delivery Server
+  level: component
+  parent: webapp-bundle-server
+  technology: Go net/http
+  description: 署名検証可能なバンドルをHTTP経由で配信するサーバー処理
+  tags:
+  - networking
+relations:
+- from: protocol-clients
+  to: target-api
+  description: ユーザー指定APIへのHTTP/WebSocket/GraphQL/MQTT/SSEリクエスト送信
+  technology: HTTP/WebSocket/GraphQL/MQTT/SSE
+- from: protocol-clients
+  to: agent
+  description: ブラウザ制約を回避するためローカルエージェントへリクエストを中継
+  technology: HTTP (localhost:9119)
+- from: protocol-clients
+  to: hoppscotch-proxy
+  description: CORS回避のためプロキシ経由でリクエストを送信
+  technology: HTTPS
+- from: graphql-sync-client
+  to: backend-api
+  description: コレクション・環境・チーム・認証情報の同期
+  technology: GraphQL/HTTPS
+- from: http-relay-server
+  to: target-api
+  description: Webアプリから受けたリクエストを対象APIへ転送
+  technology: HTTP/HTTPS
+- from: desktop-shell-ui
+  to: backend-api
+  description: クラウド/セルフホストインスタンスへの認証・データ同期
+  technology: GraphQL/HTTPS
+- from: desktop-shell-ui
+  to: webapp-bundle-server
+  description: セルフホストインスタンス接続用の署名付きWebアプリバンドルを取得
+  technology: HTTP
+- from: native-relay-bridge
+  to: target-api
+  description: ネイティブ環境からCORS制約なしに直接APIへリクエスト送信
+  technology: HTTP/HTTPS
+- from: auto-updater
+  to: github
+  description: GitHub Releasesを参照してアプリの更新を確認・取得
+  technology: HTTPS
+- from: graphql-admin-client
+  to: backend-api
+  description: ユーザー・インフラ設定などの管理操作リクエスト
+  technology: GraphQL/HTTPS
+- from: collection-loader
+  to: backend-api
+  description: アクセストークンを用いてコレクション/環境をIDで取得
+  technology: REST/HTTPS
+- from: request-executor
+  to: target-api
+  description: CI実行時にテスト対象APIへリクエストを送信
+  technology: HTTP/GraphQL
+- from: auth-module
+  to: github
+  description: GitHub OAuthによるログイン認証
+  technology: OAuth2/HTTPS
+- from: auth-module
+  to: google-oauth
+  description: Google OAuthによるログイン認証
+  technology: OAuth2/HTTPS
+- from: auth-module
+  to: microsoft-oauth
+  description: Microsoft OAuthによるログイン認証
+  technology: OAuth2/HTTPS
+- from: mailer-service
+  to: smtp-server
+  description: 招待・認証メールの送信
+  technology: SMTP
+- from: analytics-tracking
+  to: posthog
+  description: 製品利用状況イベントの送信
+  technology: HTTPS
+- from: prisma-data-layer
+  to: postgres-db
+  description: ユーザー・チーム・コレクション等の永続化
+  technology: SQL (Prisma)
+- from: graphql-api
+  to: redis
+  description: GraphQL Subscriptionのpub/subメッセージング
+  technology: Redis Protocol
+- from: backend-api
+  to: postgres-db
+  description: アプリケーションデータの永続化
+  technology: SQL (Prisma)
